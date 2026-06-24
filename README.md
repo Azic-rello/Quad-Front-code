@@ -72,3 +72,4 @@ export default defineConfig([
 ])
 ```
 # Quad-front
+# Quad-Front-code
