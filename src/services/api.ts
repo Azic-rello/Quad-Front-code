@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 // Zustand bilan aylanma bog'liqlikni (circular dependency) buzish uchun in-memory token storage
 let accessTokenMemory: string | null = null;
 
+// Zustand ichidagi `setAccessToken` yoki boshqa joydan tokenni yangilash funksiyasi
 export const setApiAccessToken = (token: string | null) => {
   accessTokenMemory = token;
 };
@@ -60,9 +61,10 @@ export const refreshAuthTokens = async (): Promise<RefreshResponse> => {
   return response.data;
 };
 
-// Request Interceptor
+// ➡️ Request Interceptor
 $api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    // Agar xotirada bo'lsa, uni srazi header'ga qo'shadi
     if (accessTokenMemory && config.headers) {
       config.headers.Authorization = `Bearer ${accessTokenMemory}`;
     }
@@ -71,7 +73,7 @@ $api.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// Response Interceptor
+// ⬅️ Response Interceptor
 $api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError<BackendError>) => {
@@ -118,10 +120,21 @@ $api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Yangi qo'shilgan va markazlashtirilgan refresh funksiyasini chaqiramiz
+        // Markazlashtirilgan refresh funksiyasini chaqiramiz
         const data = await refreshAuthTokens();
 
+        // ⚡️ Zustand'ni import qilmasdan turib, xotirani va Zustand holatini yangilaymiz
         accessTokenMemory = data.accessToken;
+
+        // Bu joyda `useAuthStore` orqali Zustand store'ni ham ogohlantiramiz (agar ilova ochiq bo'lsa)
+        // Shunda Zustand'da ham accessToken qiymati yangilanadi va o'chib ketmaydi
+        try {
+          const { useAuthStore } = await import("../modules/auth/authStore");
+          useAuthStore.getState().setAccessToken(data.accessToken);
+        } catch (storeError) {
+          console.warn("Zustand store yuklashda ogohlantirish:", storeError);
+        }
+
         Cookies.set("refreshToken", data.refreshToken, {
           expires: 7,
           secure: true,
@@ -144,6 +157,8 @@ $api.interceptors.response.use(
         isRefreshing = false;
         accessTokenMemory = null;
         Cookies.remove("refreshToken");
+
+        // Agar refresh token ham o'lib ketgan bo'lsa, foydalanuvchini login'ga haydaydi
         window.location.href = "/auth/login";
         return Promise.reject(refreshError);
       }

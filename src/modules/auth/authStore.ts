@@ -1,10 +1,5 @@
-// src/store/auth.store.ts
-
 import { create } from "zustand";
-import Cookies from "js-cookie";
 import { $api, setApiAccessToken } from "../../services/api";
-
-
 
 interface User {
   id: string;
@@ -20,6 +15,7 @@ interface LoginDto {
 interface AuthState {
   user: User | null;
   accessToken: string | null;
+
   isAuthenticated: boolean;
   isLoading: boolean;
 
@@ -29,11 +25,13 @@ interface AuthState {
 
   setUser: (user: User | null) => void;
   setAccessToken: (token: string | null) => void;
+  setTokens: (accessToken: string, user: User) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   accessToken: null,
+
   isAuthenticated: false,
   isLoading: false,
 
@@ -44,8 +42,22 @@ export const useAuthStore = create<AuthState>((set) => ({
     }),
 
   setAccessToken: (token) => {
-    set({ accessToken: token });
     setApiAccessToken(token);
+
+    set({
+      accessToken: token,
+      isAuthenticated: !!token,
+    });
+  },
+
+  setTokens: (accessToken, user) => {
+    setApiAccessToken(accessToken);
+
+    set({
+      user,
+      accessToken,
+      isAuthenticated: true,
+    });
   },
 
   login: async (data) => {
@@ -54,13 +66,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       const response = await $api.post("/auth/login", data);
 
-      const { accessToken, refreshToken, user } = response.data;
-
-      Cookies.set("refreshToken", refreshToken, {
-        expires: 7,
-        secure: true,
-        sameSite: "strict",
-      });
+      const { accessToken, user } = response.data;
 
       setApiAccessToken(accessToken);
 
@@ -69,6 +75,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         accessToken,
         isAuthenticated: true,
       });
+      return response.data;
     } finally {
       set({ isLoading: false });
     }
@@ -85,13 +92,13 @@ export const useAuthStore = create<AuthState>((set) => ({
         isAuthenticated: true,
       });
     } catch {
+      setApiAccessToken(null);
+
       set({
         user: null,
         accessToken: null,
         isAuthenticated: false,
       });
-
-      setApiAccessToken(null);
     } finally {
       set({ isLoading: false });
     }
@@ -100,11 +107,9 @@ export const useAuthStore = create<AuthState>((set) => ({
   logout: async () => {
     try {
       await $api.post("/auth/logout");
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     } finally {
-      Cookies.remove("refreshToken");
-
       setApiAccessToken(null);
 
       set({

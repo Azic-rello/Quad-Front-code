@@ -33,14 +33,22 @@ const Login: React.FC = () => {
       setIsLoading(true);
 
       // Backend bizdan username kutgani uchun inputdagi qiymatni username sifatida yuboramiz
-      await login({
+      const data = await login({
         username: email,
         password,
       });
-
-      navigate("/dashboard");
+      if (((data as any).user as any)?.role === "ADMIN") {
+        return navigate("/admin"); // Agar foydalanuvchi ADMIN bo'lmasa, dashboardga yo'naltirish
+      } else if (((data as any).user as any)?.role === "MANAGER") {
+        return navigate("/manager"); // Agar foydalanuvchi MANAGER bo'lsa, manager panelga yo'naltirish
+      } else if (((data as any).user as any)?.role === "WAITER") {
+        return navigate("/waiter"); // Agar foydalanuvchi WAITER bo'lsa, waiter panelga yo'naltirish
+      } else {
+        setError("Foydalanuvchi roli noma'lum");
+      }
     } catch (err) {
-      // Axios xatoligini any ishlatmasdan toza tiplash
+      // Axios xat
+      // oligini any ishlatmasdan toza tiplash
       const axiosError = err as AxiosError<BackendErrorResponse>;
       const message =
         axiosError.response?.data?.message ||
