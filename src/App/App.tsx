@@ -17,6 +17,12 @@ import Login from "../pages/auth/Login";
 import SuperAdmin from "../pages/dashboard/SuperAdmin/SuperAdmin";
 import ManagerSidebar from "../pages/dashboard/manager/Components/ManagerSidebar";
 import AuthGuard from "../components/guards/AuthGuard";
+import Menucreate from "../pages/dashboard/manager/Components/Manu/Menucreate";
+
+// 📂 Category komponentlari (Siz yuborgan aniq fayl yo'llari bo'yicha)
+import CategoryLoyaut from "../pages/public/Category/categoryloyaut";
+import CreatCategory from "../pages/public/Category/creatcategory";
+import CategoryDelete from "../pages/public/Category/Categorydelete";
 
 function App() {
   return (
@@ -39,17 +45,35 @@ function App() {
       <Route path="/login" element={<Navigate to="/auth/login" replace />} />
 
       <Route path="/admin" element={<SuperAdmin />} />
-      {/* Manager */}
+
+      {/* 🏢 Manager Dashboard */}
       <Route element={<AuthGuard roles={["MANAGER"]} />}>
         <Route path="manager" element={<ManagerSidebar />}>
+          {/* 1. Dashboard Asosiy Sahifa */}
           <Route
             index
             element={<div className="text-slate-400">Dashboard</div>}
           />
 
-          <Route path="create-user" element={<div>Create User</div>} />
+          {/* 2. Buyurtmalar (Orders) */}
+          <Route
+            path="buyurtmalar"
+            element={<div className="text-white">Buyurtmalar sahifasi</div>}
+          />
 
-          <Route path="create-menu" element={<div>Create Menu</div>} />
+          {/* 3. Menyu (Menu) bo'limi */}
+          <Route path="menu" element={<div>Menyu ro'yxati sahifasi</div>} />
+          {/* Senda rasmda ishlab turgan yo'l mana shu: /manager/create-menu */}
+          <Route path="create-menu" element={<Menucreate />} />
+
+          {/* 4. Category (Kategoriya) bo'limi - Xuddi yuqoridagi Menyu kabi yozildi */}
+          {/* /manager/category yozilganda to'g'ridan-to'g'ri Kategoriya yaratish ochiladi */}
+          <Route path="category" element={<CreatCategory />} />
+          <Route path="category-layout" element={<CategoryLoyaut />} />
+          <Route path="category-delete" element={<CategoryDelete />} />
+
+          {/* Eski keraksiz route */}
+          <Route path="create-user" element={<div>Create User</div>} />
         </Route>
       </Route>
 
