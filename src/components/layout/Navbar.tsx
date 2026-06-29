@@ -1,6 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ShoppingCart, Globe, Menu, X, ChevronDown } from "lucide-react";
+import {
+  ShoppingCart,
+  Globe,
+  Menu,
+  X,
+  ChevronDown,
+  LayoutDashboard,
+  LogOut,
+} from "lucide-react";
+// Auth store olib kiriladi, tokenni tekshirish va logout qilish uchun
+import { useAuthStore } from "../../modules/auth/authStore";
 
 // Tillari ro'yxati
 const LANGUAGES = [
@@ -12,6 +22,10 @@ const LANGUAGES = [
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false); // Mobil menyu holati
+
+  // 🌐 Global Auth holatlarini olamiz
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
 
   // 🌐 Til tanlash shtatlari
   const [currentLang, setCurrentLang] = useState("EN");
@@ -58,13 +72,13 @@ const Navbar: React.FC = () => {
           </h1>
         </div>
 
-        {/* 2. MARKAZDA: Navigatsiya Linklari (O'zbekcha qilindi) */}
+        {/* 2. MARKAZDA: Navigatsiya Linklari */}
         <nav className="hidden md:flex items-center space-x-8">
           {[
-            { path: "/", label: "Bosh sahifa" },
-            { path: "/menu", label: "Menyu" },
-            { path: "/news", label: "Yangiliklar" },
-            { path: "/about", label: "Biz haqimizda" },
+            { path: "/", label: "Home" },
+            { path: "/menu", label: "Menu" },
+            { path: "/news", label: "News" },
+            { path: "/about", label: "About Us" },
           ].map((item) => (
             <NavLink
               key={item.path}
@@ -88,7 +102,7 @@ const Navbar: React.FC = () => {
           <div ref={langDropdownRef} className="relative hidden md:block">
             <div
               onClick={() => setIsLangOpen(!isLangOpen)}
-              className="flex items-center space-x-1 bg-white border border-gray-200 px-2.5 py-1.5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition-all text-sm font-medium text-gray-700 select-none active:scale-95"
+              className="flex items-center space-x-1 bg-white border border-gray-200 px-3 py-1.5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition-all text-sm font-medium text-gray-700 select-none active:scale-95"
             >
               <Globe className="w-4 h-4 text-gray-500" />
               <span className="flex items-center space-x-1">
@@ -132,28 +146,59 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* 🛒 Savat tugmasi */}
+          {/* 🛒 Savat tugmasi (Rasmda ustida qizil bildirishnoma bor ekan, o'shani chiroyli qildim) */}
           <button
             onClick={() => {
               navigate("/basket");
               closeMenu();
             }}
-            className="relative p-2 text-gray-700 hover:text-gray-950 transition-all"
+            className="relative p-2 text-gray-700 hover:text-gray-950 transition-all mr-1"
           >
             <ShoppingCart className="w-5 h-5 stroke-2" />
-           
+            <span className="absolute -top-0.5 -right-0.5 bg-[#E30A17] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              11
+            </span>
           </button>
 
-          {/* Kirish tugmasi */}
-          <button
-            onClick={() => {
-              navigate("/login");
-              closeMenu();
-            }}
-            className="hidden md:block bg-[#E30A17] text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-md shadow-red-600/10 hover:bg-red-700 active:scale-[0.98] transition-all"
-          >
-            Kirish
-          </button>
+          {/* 🔐 Dinamik Tugmalar: Token bor/yo'qligiga qarab rasmga mos dizayn */}
+          {user ? (
+            <div className="hidden md:flex items-center space-x-3">
+              {/* Dashboard Tugmasi - image_b0e1be.png dagi oq borderli tugma */}
+              <button
+                onClick={() => {
+                  navigate("/manager"); // Yoki manager yo'lagi
+                  closeMenu();
+                }}
+                className="flex items-center space-x-1.5 bg-white border border-gray-200 px-4 py-2 rounded-xl shadow-sm text-xs font-bold text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5 text-gray-500" />
+                <span>Dashboard</span>
+              </button>
+
+              {/* Sign Out Tugmasi */}
+              <button
+                onClick={() => {
+                  logout();
+                  closeMenu();
+                }}
+                className="flex items-center space-x-1.5 text-xs font-bold text-gray-600 hover:text-gray-950 transition-colors py-2 px-1"
+              >
+                <LogOut className="w-4 h-4 text-gray-400" />
+                <span>Sign Out</span>
+              </button>
+            </div>
+          ) : (
+            /* Agar login qilmagan bo'lsa oddiy Kirish tugmasi */
+            <button
+              onClick={() => {
+                navigate("/login");
+                closeMenu();
+              }}
+              className="hidden md:block bg-[#E30A17] text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-md shadow-red-600/10 hover:bg-red-700 active:scale-[0.98] transition-all"
+            >
+              Kirish
+            </button>
+          )}
 
           {/* 📱 Mobil Gamburger Tugmasi */}
           <button
@@ -181,7 +226,7 @@ const Navbar: React.FC = () => {
 
       {/* 📱 MOBIL MENYU PANEL */}
       <div
-        className={`fixed top-0 right-0 h-full w-70 bg-white z-40 shadow-2xl p-6 pt-24 flex flex-col justify-between transform transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 right-0 h-full w-72 bg-white z-40 shadow-2xl p-6 pt-24 flex flex-col justify-between transform transition-transform duration-300 ease-in-out md:hidden ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -235,10 +280,10 @@ const Navbar: React.FC = () => {
           {/* Mobil Navigatsiya Linklari */}
           <nav className="flex flex-col space-y-3">
             {[
-              { path: "/", label: "Bosh sahifa" },
-              { path: "/menu", label: "Menyu" },
-              { path: "/news", label: "Yangiliklar" },
-              { path: "/about", label: "Biz haqimizda" },
+              { path: "/", label: "Home" },
+              { path: "/menu", label: "Menu" },
+              { path: "/news", label: "News" },
+              { path: "/about", label: "About Us" },
             ].map((item) => (
               <NavLink
                 key={item.path}
@@ -258,17 +303,42 @@ const Navbar: React.FC = () => {
           </nav>
         </div>
 
-        {/* Mobil Sign In tugmasi */}
-        <div className="space-y-4">
-          <button
-            onClick={() => {
-              navigate("/login");
-              closeMenu();
-            }}
-            className="w-full bg-[#E30A17] text-white font-bold text-center py-3.5 rounded-xl shadow-lg shadow-red-600/10 hover:bg-red-700 transition-all text-sm"
-          >
-            Kirish
-          </button>
+        {/* Mobil Sign In / Dashboard bloklari */}
+        <div className="space-y-3">
+          {user ? (
+            <>
+              <button
+                onClick={() => {
+                  navigate("/manager");
+                  closeMenu();
+                }}
+                className="w-full bg-white border border-gray-200 text-gray-800 font-bold text-center py-3 rounded-xl hover:bg-gray-50 transition-all text-sm flex items-center justify-center space-x-2"
+              >
+                <LayoutDashboard className="w-4 h-4 text-gray-500" />
+                <span>Dashboard</span>
+              </button>
+              <button
+                onClick={() => {
+                  logout();
+                  closeMenu();
+                }}
+                className="w-full bg-gray-100 text-gray-700 font-bold text-center py-3 rounded-xl hover:bg-gray-200 transition-all text-sm flex items-center justify-center space-x-2"
+              >
+                <LogOut className="w-4 h-4 text-gray-500" />
+                <span>Sign Out</span>
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                navigate("/login");
+                closeMenu();
+              }}
+              className="w-full bg-[#E30A17] text-white font-bold text-center py-3.5 rounded-xl shadow-lg shadow-red-600/10 hover:bg-red-700 transition-all text-sm"
+            >
+              Kirish
+            </button>
+          )}
         </div>
       </div>
     </>
