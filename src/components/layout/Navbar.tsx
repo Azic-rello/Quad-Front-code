@@ -155,9 +155,6 @@ const Navbar: React.FC = () => {
             className="relative p-2 text-gray-700 hover:text-gray-950 transition-all mr-1"
           >
             <ShoppingCart className="w-5 h-5 stroke-2" />
-            <span className="absolute -top-0.5 -right-0.5 bg-[#E30A17] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-              11
-            </span>
           </button>
 
           {/* 🔐 Dinamik Tugmalar: Token bor/yo'qligiga qarab rasmga mos dizayn */}
