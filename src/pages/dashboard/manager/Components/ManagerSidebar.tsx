@@ -1,23 +1,22 @@
 import React, { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom"; // navigate qo'shildi
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../../modules/auth/authStore";
-// Zamonaviy va chiroyli ikonkalarni olib kiramiz
 import {
   LayoutDashboard,
   ShoppingBag,
-  GraduationCap,
-  Users,
-  LogOut,
   Menu,
   X,
   UserCheck,
-  Home, // Home ikonka qo'shildi
+  Home,
+  LogOut,
+  UtensilsCrossed,
+  Layers,
 } from "lucide-react";
 
 const ManagerSidebar: React.FC = () => {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
-  const navigate = useNavigate(); // Yo'naltirish uchun
+  const navigate = useNavigate();
 
   // Mobil menyu holati uchun state
   const [isOpen, setIsOpen] = useState(false);
@@ -44,46 +43,75 @@ const ManagerSidebar: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center space-x-3 px-2 py-3">
             <div className="w-9 h-9 bg-[#e31221] rounded-full flex items-center justify-center font-black text-white shadow-md">
-              Q
+              🍔
             </div>
             <span className="font-bold text-white tracking-wide text-sm uppercase">
               Quad Pizza
             </span>
           </div>
 
-          {/* Navigation Menu */}
+          {/* Navigatsiya Menyusi (To'g'ri NavLink routerlari bilan) */}
           <nav className="space-y-1">
-            <a
-              href="#"
-              className="flex items-center space-x-3 px-4 py-2.5 rounded-xl bg-[#e31221] text-white font-medium transition-all duration-200"
+            {/* 1. Dashboard */}
+            <NavLink
+              to="/manager"
+              end
+              className={({ isActive }) =>
+                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#e31221] text-white"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
+                }`
+              }
             >
               <LayoutDashboard className="w-5 h-5 opacity-90" />
               <span>Dashboard</span>
-            </a>
+            </NavLink>
 
-            <a
-              href="#"
-              className="flex items-center space-x-3 px-4 py-2.5 rounded-xl text-stone-400 hover:text-stone-100 hover:bg-[#221313] transition-all duration-200"
+            {/* 2. Buyurtmalar */}
+            <NavLink
+              to="/manager/buyurtmalar"
+              className={({ isActive }) =>
+                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#e31221] text-white"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
+                }`
+              }
             >
               <ShoppingBag className="w-5 h-5 opacity-80" />
               <span>Buyurtmalar</span>
-            </a>
+            </NavLink>
 
-            <a
-              href="#"
-              className="flex items-center space-x-3 px-4 py-2.5 rounded-xl text-stone-400 hover:text-stone-100 hover:bg-[#221313] transition-all duration-200"
+            {/* 3. Menyu */}
+            <NavLink
+              to="/manager/create-menu"
+              className={({ isActive }) =>
+                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#e31221] text-white"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
+                }`
+              }
             >
-              <GraduationCap className="w-5 h-5 opacity-80" />
-              <span>O'quvchilar</span>
-            </a>
+              <UtensilsCrossed className="w-5 h-5 opacity-80" />
+              <span>Menyu</span>
+            </NavLink>
 
-            <a
-              href="#"
-              className="flex items-center space-x-3 px-4 py-2.5 rounded-xl text-stone-400 hover:text-stone-100 hover:bg-[#221313] transition-all duration-200"
+            {/* 4. Kategoriyalar */}
+            <NavLink
+              to="/manager/category"
+              className={({ isActive }) =>
+                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#e31221] text-white"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
+                }`
+              }
             >
-              <Users className="w-5 h-5 opacity-80" />
-              <span>Mentorlar</span>
-            </a>
+              <Layers className="w-5 h-5 opacity-80" />
+              <span>Kategoriyalar</span>
+            </NavLink>
           </nav>
         </div>
 
@@ -135,7 +163,7 @@ const ManagerSidebar: React.FC = () => {
           <div className="flex items-center space-x-2.5 bg-stone-50 border border-stone-200 px-3 py-1.5 rounded-full text-xs sm:text-sm text-stone-600 shadow-sm">
             <UserCheck className="w-4 h-4 text-[#e31221]" />
             <span className="max-w-[120px] sm:max-w-none truncate font-medium text-stone-700">
-              {user?.username}
+              {user?.username || "jahon"}
             </span>
           </div>
         </header>
