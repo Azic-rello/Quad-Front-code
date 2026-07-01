@@ -46,7 +46,7 @@ const TablesManagerPage: React.FC = () => {
       const response = await axios.get('http://localhost:3000/tables', {
         headers: { Authorization: token ? `Bearer ${token}` : '' }
       });
-
+///fewrqtwte
       const resData = response.data;
       let finalTables: Table[] = [];
 
