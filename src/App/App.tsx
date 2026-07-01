@@ -19,10 +19,13 @@ import ManagerSidebar from "../pages/dashboard/manager/Components/ManagerSidebar
 import AuthGuard from "../components/guards/AuthGuard";
 import Menucreate from "../pages/dashboard/manager/Components/Manu/Menucreate";
 
-// 📂 Category komponentlari (Siz yuborgan aniq fayl yo'llari bo'yicha)
+// 📂 Category komponentlari
 import CategoryLoyaut from "../pages/public/Category/categoryloyaut";
 import CreatCategory from "../pages/public/Category/creatcategory";
 import CategoryDelete from "../pages/public/Category/Categorydelete";
+import WaitersPage from "../pages/dashboard/manager/Components/waiter/WaitersPage";
+
+// 👥 Ofitsiantlar paneli sahifasi
 
 function App() {
   return (
@@ -52,25 +55,26 @@ function App() {
           {/* 1. Dashboard Asosiy Sahifa */}
           <Route
             index
-            element={<div className="text-slate-400">Dashboard</div>}
+            element={<div className="text-slate-400 font-medium">Dashboard sahifasi</div>}
           />
 
           {/* 2. Buyurtmalar (Orders) */}
           <Route
             path="buyurtmalar"
-            element={<div className="text-white">Buyurtmalar sahifasi</div>}
+            element={<div className="text-stone-800 font-medium">Buyurtmalar sahifasi</div>}
           />
 
           {/* 3. Menyu (Menu) bo'limi */}
-          <Route path="menu" element={<div>Menyu ro'yxati sahifasi</div>} />
-          {/* Senda rasmda ishlab turgan yo'l mana shu: /manager/create-menu */}
+          <Route path="menu" element={<div className="text-stone-800 font-medium">Menyu ro'yxati sahifasi</div>} />
           <Route path="create-menu" element={<Menucreate />} />
 
-          {/* 4. Category (Kategoriya) bo'limi - Xuddi yuqoridagi Menyu kabi yozildi */}
-          {/* /manager/category yozilganda to'g'ridan-to'g'ri Kategoriya yaratish ochiladi */}
+          {/* 4. Category (Kategoriya) bo'limi */}
           <Route path="category" element={<CreatCategory />} />
           <Route path="category-layout" element={<CategoryLoyaut />} />
           <Route path="category-delete" element={<CategoryDelete />} />
+
+          {/* 5. Ofitsiantlar (Waiters) boshqaruv sahifasi */}
+          <Route path="waiters" element={<WaitersPage />} />
 
           {/* Eski keraksiz route */}
           <Route path="create-user" element={<div>Create User</div>} />
@@ -82,7 +86,7 @@ function App() {
         <Route index element={<div>Ofitsiant Asosiy Sahifa</div>} />
       </Route>
 
-      {/* ❌ 404 */}
+      {/* ❌ 404 (Topilmagan sahifalar uchun default yo'naltirish) */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
