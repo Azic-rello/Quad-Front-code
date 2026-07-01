@@ -19,10 +19,13 @@ import ManagerSidebar from "../pages/dashboard/manager/Components/ManagerSidebar
 import AuthGuard from "../components/guards/AuthGuard";
 import Menucreate from "../pages/dashboard/manager/Components/Manu/Menucreate";
 
-// 📂 Category komponentlari (Siz yuborgan aniq fayl yo'llari bo'yicha)
+// 📂 Category komponentlari
 import CategoryLoyaut from "../pages/public/Category/categoryloyaut";
 import CreatCategory from "../pages/public/Category/creatcategory";
 import CategoryDelete from "../pages/public/Category/Categorydelete";
+
+// 🔥 YANGI QO'SHILDI: Stollar boshqaruvi sahifasi (index.tsx fayli)
+import TablesManagerPage from "../pages/dashboard/manager"; 
 
 function App() {
   return (
@@ -63,14 +66,16 @@ function App() {
 
           {/* 3. Menyu (Menu) bo'limi */}
           <Route path="menu" element={<div>Menyu ro'yxati sahifasi</div>} />
-          {/* Senda rasmda ishlab turgan yo'l mana shu: /manager/create-menu */}
           <Route path="create-menu" element={<Menucreate />} />
 
-          {/* 4. Category (Kategoriya) bo'limi - Xuddi yuqoridagi Menyu kabi yozildi */}
-          {/* /manager/category yozilganda to'g'ridan-to'g'ri Kategoriya yaratish ochiladi */}
+          {/* 4. Category (Kategoriya) bo'limi */}
           <Route path="category" element={<CreatCategory />} />
           <Route path="category-layout" element={<CategoryLoyaut />} />
           <Route path="category-delete" element={<CategoryDelete />} />
+
+          {/* 🔥 YANGI QO'SHILDI: 5. Stollar Boshqaruvi Sahifasi */}
+          {/* Sidebarda to="/manager/tables" bosilganda shu qism ochiladi */}
+          <Route path="tables" element={<TablesManagerPage />} />
 
           {/* Eski keraksiz route */}
           <Route path="create-user" element={<div>Create User</div>} />

@@ -11,6 +11,7 @@ import {
   LogOut,
   UtensilsCrossed,
   Layers,
+  Table2, // Stollar uchun yangi ikonka olib kirdik
 } from "lucide-react";
 
 const ManagerSidebar: React.FC = () => {
@@ -50,7 +51,7 @@ const ManagerSidebar: React.FC = () => {
             </span>
           </div>
 
-          {/* Navigatsiya Menyusi (To'g'ri NavLink routerlari bilan) */}
+          {/* Navigatsiya Menyusi */}
           <nav className="space-y-1">
             {/* 1. Dashboard */}
             <NavLink
@@ -112,12 +113,27 @@ const ManagerSidebar: React.FC = () => {
               <Layers className="w-5 h-5 opacity-80" />
               <span>Kategoriyalar</span>
             </NavLink>
+
+            {/* 🔥 YANGI QO'SHILDI: 5. Stollar Boshqaruvi */}
+            <NavLink
+              to="/manager/tables" // Routeringizdagi path qanday bo'lsa shunday yozing
+              className={({ isActive }) =>
+                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#e31221] text-white"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
+                }`
+              }
+            >
+              <Table2 className="w-5 h-5 opacity-80" />
+              <span>Stollar</span>
+            </NavLink>
           </nav>
         </div>
 
         {/* Pastki tugmalar qismi (Bosh sahifa va Chiqish) */}
         <div className="p-4 border-t border-stone-800/60 bg-[#0d0707] space-y-1">
-          {/* Bosh sahifa tugmasi - Token saqlangan holda bosh sahifaga o'tadi */}
+          {/* Bosh sahifa tugmasi */}
           <button
             onClick={() => navigate("/")}
             className="w-full py-2.5 flex items-center space-x-3 px-4 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800/40 font-medium transition-all duration-200"
