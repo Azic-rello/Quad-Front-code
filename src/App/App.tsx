@@ -17,12 +17,12 @@ import Login from "../pages/auth/Login";
 import SuperAdmin from "../pages/dashboard/SuperAdmin/SuperAdmin";
 import ManagerSidebar from "../pages/dashboard/manager/Components/ManagerSidebar";
 import AuthGuard from "../components/guards/AuthGuard";
-import Menucreate from "../pages/dashboard/manager/Components/Manu/Menucreate";
 
 // 📂 Category komponentlari (Siz yuborgan aniq fayl yo'llari bo'yicha)
 import CategoryLoyaut from "../pages/public/Category/categoryloyaut";
 import CreatCategory from "../pages/public/Category/creatcategory";
 import CategoryDelete from "../pages/public/Category/Categorydelete";
+import { Divide } from "lucide-react";
 
 function App() {
   return (
@@ -64,7 +64,7 @@ function App() {
           {/* 3. Menyu (Menu) bo'limi */}
           <Route path="menu" element={<div>Menyu ro'yxati sahifasi</div>} />
           {/* Senda rasmda ishlab turgan yo'l mana shu: /manager/create-menu */}
-          <Route path="create-menu" element={<Menucreate />} />
+          <Route path="create-menu" element={<div>menu page</div>} />
 
           {/* 4. Category (Kategoriya) bo'limi - Xuddi yuqoridagi Menyu kabi yozildi */}
           {/* /manager/category yozilganda to'g'ridan-to'g'ri Kategoriya yaratish ochiladi */}

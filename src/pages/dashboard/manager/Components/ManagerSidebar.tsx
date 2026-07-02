@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../../modules/auth/authStore";
 import {
@@ -10,7 +10,6 @@ import {
   Home,
   LogOut,
   UtensilsCrossed,
-  Layers,
 } from "lucide-react";
 
 const ManagerSidebar: React.FC = () => {
@@ -97,24 +96,8 @@ const ManagerSidebar: React.FC = () => {
               <UtensilsCrossed className="w-5 h-5 opacity-80" />
               <span>Menyu</span>
             </NavLink>
-
-            {/* 4. Kategoriyalar */}
-            <NavLink
-              to="/manager/category"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
-                }`
-              }
-            >
-              <Layers className="w-5 h-5 opacity-80" />
-              <span>Kategoriyalar</span>
-            </NavLink>
           </nav>
         </div>
-
         {/* Pastki tugmalar qismi (Bosh sahifa va Chiqish) */}
         <div className="p-4 border-t border-stone-800/60 bg-[#0d0707] space-y-1">
           {/* Bosh sahifa tugmasi - Token saqlangan holda bosh sahifaga o'tadi */}
