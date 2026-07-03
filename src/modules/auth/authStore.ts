@@ -1,80 +1,58 @@
 import { create } from "zustand";
+import Cookies from "js-cookie";
+import axios from "axios";
 import { $api, setApiAccessToken } from "../../services/api";
-
-interface User {
-  id: string;
-  username: string;
-  role: string;
-}
-
-interface LoginDto {
-  username: string;
-  password: string;
-}
+import type { AuthResponse, LoginDto, User } from "./authTypes";
 
 interface AuthState {
   user: User | null;
   accessToken: string | null;
-
   isAuthenticated: boolean;
   isLoading: boolean;
+  isInitialized: boolean; // Ilova boshlang'ich tekshiruvdan o'tganini bilish uchun
 
-  login: (data: LoginDto) => Promise<void>;
+  login: (data: LoginDto) => Promise<AuthResponse>;
   logout: () => Promise<void>;
   getMe: () => Promise<void>;
-
-  setUser: (user: User | null) => void;
   setAccessToken: (token: string | null) => void;
-  setTokens: (accessToken: string, user: User) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   accessToken: null,
-
   isAuthenticated: false,
   isLoading: false,
-
-  setUser: (user) =>
-    set({
-      user,
-      isAuthenticated: !!user,
-    }),
+  isInitialized: false,
 
   setAccessToken: (token) => {
     setApiAccessToken(token);
-
     set({
       accessToken: token,
       isAuthenticated: !!token,
     });
   },
 
-  setTokens: (accessToken, user) => {
-    setApiAccessToken(accessToken);
-
-    set({
-      user,
-      accessToken,
-      isAuthenticated: true,
-    });
-  },
-
   login: async (data) => {
     try {
       set({ isLoading: true });
-
-      const response = await $api.post("/auth/login", data);
-
-      const { accessToken, user } = response.data;
+      const response = await $api.post<AuthResponse>("/auth/login", data);
+      const { accessToken, refreshToken, user } = response.data;
 
       setApiAccessToken(accessToken);
+
+      Cookies.set("refreshToken", refreshToken, {
+        expires: 7,
+        secure: true,
+        sameSite: "strict",
+      });
 
       set({
         user,
         accessToken,
         isAuthenticated: true,
+        isInitialized: true,
       });
+
       return response.data;
     } finally {
       set({ isLoading: false });
@@ -84,21 +62,34 @@ export const useAuthStore = create<AuthState>((set) => ({
   getMe: async () => {
     try {
       set({ isLoading: true });
-
-      const response = await $api.get("/auth/me");
-
+      const response = await $api.get<User>("/auth/me");
+      
       set({
         user: response.data,
         isAuthenticated: true,
+        isInitialized: true,
       });
-    } catch {
-      setApiAccessToken(null);
+    } catch (error) {
+      console.error("⚠️ [getMe] Xatolik aniqlandi:", error);
 
-      set({
-        user: null,
-        accessToken: null,
-        isAuthenticated: false,
-      });
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        setApiAccessToken(null);
+        Cookies.remove("refreshToken");
+        set({
+          user: null,
+          accessToken: null,
+          isAuthenticated: false,
+          isInitialized: true,
+        });
+      } else {
+        // 403 Forbidden (Manager huquqi yetmaganda) cookiega tegmaymiz!
+        set({
+          user: null,
+          isAuthenticated: false,
+          isInitialized: true,
+        });
+      }
+      throw error;
     } finally {
       set({ isLoading: false });
     }
@@ -108,14 +99,16 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       await $api.post("/auth/logout");
     } catch (err) {
-      console.error(err);
+      console.error("Logout xatoligi:", err);
     } finally {
       setApiAccessToken(null);
+      Cookies.remove("refreshToken");
 
       set({
         user: null,
         accessToken: null,
         isAuthenticated: false,
+        isInitialized: false,
       });
 
       window.location.href = "/auth/login";
