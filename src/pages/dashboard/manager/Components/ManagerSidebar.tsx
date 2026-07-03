@@ -11,7 +11,7 @@ import {
   LogOut,
   UtensilsCrossed,
   Layers,
-  Table2, // Stollar uchun yangi ikonka olib kirdik
+  Table2, // Stollar ikonkasini ishlatamiz
 } from "lucide-react";
 
 const ManagerSidebar: React.FC = () => {
@@ -114,9 +114,9 @@ const ManagerSidebar: React.FC = () => {
               <span>Kategoriyalar</span>
             </NavLink>
 
-            {/* 🔥 YANGI QO'SHILDI: 5. Stollar Boshqaruvi */}
+            {/* 5. Stollar Boshqaruvi */}
             <NavLink
-              to="/manager/tables" // Routeringizdagi path qanday bo'lsa shunday yozing
+              to="/manager/tables"
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive
