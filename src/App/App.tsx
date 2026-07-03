@@ -67,8 +67,6 @@ function App() {
           {/* 5. Ofitsiantlar (Waiters) boshqaruv sahifasi */}
           <Route path="waiters" element={<WaitersPage />} />
 
-          {/* Eski keraksiz route */}
-          <Route path="create-user" element={<div>Create User</div>} />
         </Route>
       </Route>
 
