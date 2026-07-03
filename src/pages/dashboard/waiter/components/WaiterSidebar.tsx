@@ -1,72 +1,131 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Grid, Home, LogOut, Utensils } from "lucide-react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Grid, Home, LogOut, Menu, UserCheck, X, Utensils } from "lucide-react";
+import { useState } from "react";
+import { useAuthStore } from "../../../../modules/auth/authStore";
 
 const WaiterSidebar: React.FC = () => {
-  const navigate = useNavigate();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
 
-  const handleSignOut = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-64 h-full bg-[#120808] text-white flex flex-col justify-between p-4 border-r border-zinc-800/40 select-none shrink-0">
-      {/* Yuqori qism: Logo va Sarlavha */}
-      <div>
-        <div className="flex items-center space-x-3 px-3 py-4 mb-6">
-          <div className="w-10 h-10 bg-[#E30A17] rounded-full flex items-center justify-center shadow-lg shadow-red-600/20">
-            <Utensils className="w-5 h-5 text-white" />
+    <div className="flex h-screen bg-[#faf9f6] text-stone-800 overflow-hidden">
+      {/* Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+        fixed left-0 top-0 z-50 h-screen w-64 bg-[#140b0b]
+        flex flex-col justify-between
+        transition-transform duration-300
+        lg:translate-x-0
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+      `}
+      >
+        <div className="p-4 space-y-6 flex-1 overflow-y-auto">
+          {/* Logo */}
+          <div className="flex items-center gap-3 py-3">
+            <div className="w-10 h-10 rounded-full bg-[#e31221] flex items-center justify-center shadow-lg">
+              <Utensils className="w-5 h-5 text-white" />
+            </div>
+
+            <div>
+              <h1 className="text-white font-bold text-lg">
+                Burger<span className="text-[#e31221]">Uz</span>
+              </h1>
+
+              <p className="text-xs text-stone-400">Waiter Panel</p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-extrabold text-lg tracking-wide flex items-center">
-              Burger<span className="text-[#E30A17]">Uz</span>
-            </h1>
-            <p className="text-xs text-zinc-400">Tables</p>
-          </div>
+
+          {/* Menu */}
+          <nav className="space-y-2">
+            <NavLink
+              to="/waiter/tables"
+              end
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                  isActive
+                    ? "bg-[#e31221] text-white"
+                    : "text-stone-400 hover:bg-[#221313] hover:text-white"
+                }`
+              }
+            >
+              <Grid className="w-5 h-5" />
+              <span>Tables</span>
+            </NavLink>
+          </nav>
         </div>
 
-        {/* Navigatsiya Havolalari */}
-        <nav className="space-y-1">
-          <NavLink
-            to="/dashboard/waiter/tables"
-            className={({ isActive }) =>
-              `flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-200 ${
-                isActive
-                  ? "bg-[#E30A17] text-white shadow-md shadow-red-600/10 font-semibold"
-                  : "text-zinc-400 hover:bg-zinc-900/50 hover:text-white"
-              }`
-            }
+        {/* Bottom */}
+        <div className="border-t border-stone-800 bg-[#0d0707] p-4 space-y-2">
+          <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-[#1b1010]">
+            <UserCheck className="w-5 h-5 text-[#e31221]" />
+
+            <div className="overflow-hidden">
+              <p className="text-sm font-semibold text-white truncate">
+                {user?.username}
+              </p>
+
+              <p className="text-xs text-stone-400 uppercase">{user?.role}</p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => navigate("/")}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-stone-400 hover:bg-[#221313] hover:text-white transition"
           >
-            <Grid className="w-5 h-5" />
-            <span>Tables</span>
-          </NavLink>
-        </nav>
-      </div>
+            <Home className="w-4 h-4" />
+            Home
+          </button>
 
-      {/* Pastki qism: Profil, Home va Chiqish */}
-      <div className="border-t border-zinc-800/60 pt-4 space-y-2">
-        <div className="px-4 py-2">
-          <p className="text-xs text-zinc-500 font-medium">Aziz • waiter</p>
+          <button
+            onClick={logout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-stone-400 hover:bg-[#221313] hover:text-white transition"
+          >
+            <LogOut className="w-4 h-4" />
+            Sign Out
+          </button>
         </div>
+      </aside>
 
-        {/* Bosh sahifaga qaytish */}
-        <NavLink
-          to="/"
-          className="flex items-center space-x-3 px-4 py-2.5 rounded-xl text-zinc-400 hover:bg-zinc-900/50 hover:text-white transition-all font-medium text-sm"
-        >
-          <Home className="w-4 h-4" />
-          <span>Home</span>
-        </NavLink>
+      {/* Main */}
+      <div className="flex-1 flex flex-col lg:ml-64">
+        {/* Header */}
+        <header className="sticky top-0 z-30 h-16 bg-white border-b border-stone-200 flex items-center justify-between px-6 shadow-sm">
+          <div className="flex items-center gap-3">
+            <button
+              className="lg:hidden p-2 rounded-lg hover:bg-stone-100"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
 
-        {/* Tizimdan chiqish */}
-        <button
-          onClick={handleSignOut}
-          className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-zinc-400 hover:bg-red-950/30 hover:text-red-400 transition-all font-medium text-sm text-left"
-        >
-          <LogOut className="w-4 h-4" />
-          <span>Sign Out</span>
-        </button>
+            <h1 className="font-bold text-lg text-stone-800">
+              Waiter Dashboard
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-2 bg-stone-100 px-4 py-2 rounded-full">
+            <UserCheck className="w-4 h-4 text-[#e31221]" />
+
+            <span className="font-medium text-sm">{user?.username}</span>
+          </div>
+        </header>
+
+        {/* Pages */}
+        <main className="flex-1 overflow-y-auto p-6 bg-[#faf9f6]">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

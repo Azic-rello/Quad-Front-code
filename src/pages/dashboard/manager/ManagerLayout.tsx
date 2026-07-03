@@ -6,8 +6,8 @@ import { useAuthStore } from "../../../modules/auth/authStore";
 const ManagerLayout: React.FC = () => {
   const user = useAuthStore((state) => state.user);
 
-  // Agar user mavjud bo'lmasa yoki manager bo'lmasa
-  if (!user || user.role !== "manager") {
+  // 🎯 TUZATISH: Prisma enumi katta harflarda ("MANAGER") bo'lgani uchun tekshiruvni o'zgartirdik
+  if (!user || user.role !== "MANAGER") {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -32,7 +32,7 @@ const ManagerLayout: React.FC = () => {
 
           <div className="text-right hidden sm:block">
             <p className="text-xs font-semibold text-slate-300">
-              {(user as any).name}
+              {user.username} {/* 👈 any kastingi olib tashlandi va tiplar tozalandi */}
             </p>
             <p className="text-[10px] text-teal-400/60 font-mono">
               Status: Active
