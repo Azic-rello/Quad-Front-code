@@ -22,7 +22,6 @@ import AuthGuard from "../components/guards/AuthGuard";
 import CategoryLoyaut from "../pages/public/Category/categoryloyaut";
 import CreatCategory from "../pages/public/Category/creatcategory";
 import CategoryDelete from "../pages/public/Category/Categorydelete";
-import { Divide } from "lucide-react";
 
 function App() {
   return (
