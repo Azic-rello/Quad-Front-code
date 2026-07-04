@@ -23,9 +23,9 @@ import Menucreate from "../pages/dashboard/manager/Components/Manu/Menucreate";
 import CategoryLoyaut from "../pages/public/Category/categoryloyaut";
 import CreatCategory from "../pages/public/Category/creatcategory";
 import CategoryDelete from "../pages/public/Category/Categorydelete";
+import TablesPage from "../pages/dashboard/manager/Components/Tables/TablesPage";
 
 // 🔥 YANGI QO'SHILDI: Stollar boshqaruvi sahifasi (index.tsx fayli)
-import TablesManagerPage from "../pages/dashboard/manager"; 
 
 function App() {
   return (
@@ -75,7 +75,7 @@ function App() {
 
           {/* 🔥 YANGI QO'SHILDI: 5. Stollar Boshqaruvi Sahifasi */}
           {/* Sidebarda to="/manager/tables" bosilganda shu qism ochiladi */}
-          <Route path="tables" element={<TablesManagerPage />} />
+          <Route path="tables" element={<TablesPage />} />
 
           {/* Eski keraksiz route */}
           <Route path="create-user" element={<div>Create User</div>} />
