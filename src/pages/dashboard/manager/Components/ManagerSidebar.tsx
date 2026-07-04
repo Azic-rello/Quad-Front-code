@@ -177,7 +177,7 @@ const ManagerSidebar: React.FC = () => {
           {/* User Greeting */}
           <div className="flex items-center space-x-2.5 bg-stone-50 border border-stone-200 px-3 py-1.5 rounded-full text-xs sm:text-sm text-stone-600 shadow-sm">
             <UserCheck className="w-4 h-4 text-[#e31221]" />
-            <span className="max-w-[120px] sm:max-w-none truncate font-medium text-stone-700">
+            <span className="max-w-30 sm:max-w-none truncate font-medium text-stone-700">
               {user?.username || "jahon"}
             </span>
           </div>

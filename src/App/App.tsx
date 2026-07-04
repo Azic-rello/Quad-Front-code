@@ -53,26 +53,36 @@ function App() {
           {/* 1. Dashboard Asosiy Sahifa */}
           <Route
             index
-            element={<div className="text-slate-400 font-medium">Dashboard sahifasi</div>}
+            element={
+              <div className="text-slate-400 font-medium">
+                Dashboard sahifasi
+              </div>
+            }
           />
 
           {/* 3. Menyu (Menu) bo'limi */}
 
-          <Route path="menu" element={<div className="text-stone-800 font-medium">Menyu ro'yxati sahifasi</div>} />
-          <Route path="create-menu" element={ <div>menu</div>} />
+          <Route
+            path="menu"
+            element={
+              <div className="text-stone-800 font-medium">
+                Menyu ro'yxati sahifasi
+              </div>
+            }
+          />
+          <Route path="create-menu" element={<div>menu</div>} />
 
           {/* 4. Category (Kategoriya) bo'limi */}
           <Route path="category" element={<CreatCategory />} />
 
           {/* 5. Ofitsiantlar (Waiters) boshqaruv sahifasi */}
           <Route path="waiters" element={<WaitersPage />} />
-
         </Route>
       </Route>
 
       {/* Waiter */}
-      <Route path="waiter">
-        <Route index element={<WaiterSidebar/>} />
+      <Route element={<AuthGuard roles={["WAITER"]} />} path="waiter">
+        <Route index element={<WaiterSidebar />} />
       </Route>
 
       {/* ❌ 404 (Topilmagan sahifalar uchun default yo'naltirish) */}
