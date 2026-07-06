@@ -83,7 +83,7 @@ export const waiterService = {
 
   /**
    * ➕ 2. Yangi ofitsiant qo'shish (POST /users)
-   * NestJS backend standart bo'yicha yangi foydalanuvchini yaratganda role default 'WAITER' bo'ladi, 
+   * NestJS backend standart bo'yicha yangi foydalanuvchini yaratganda role default 'WAITER' bo'ladi,
    * yoki backend o'zi hal qiladi.
    */
   createWaiter: async (dto: CreateWaiterDto): Promise<UserResponseDto> => {
@@ -97,17 +97,26 @@ export const waiterService = {
    * ✏️ 3. Ofitsiant ma'lumotlarini tahrirlash (PATCH /users/:id)
    * NestJS arxitekturasida qisman yangilash uchun PATCH ishlatiladi
    */
-  updateWaiter: async (id: string, dto: UpdateWaiterDto): Promise<UserResponseDto> => {
+  updateWaiter: async (
+    id: string,
+    dto: UpdateWaiterDto,
+  ): Promise<UserResponseDto> => {
+    console.log("PATCH URL:", `/users/${id}`);
+    console.log("BODY:", dto);
+
     const response = await $api.patch<UserResponseDto>(`/users/${id}`, dto);
+
+    console.log("RESPONSE:", response.data);
+
     return response.data;
   },
 
-  /**
-   * 🗑 4. Ofitsiantni o'chirish (DELETE /users/:id)
-   * Tizimdan foydalanuvchini ID bo'yicha butkul yoki soft delete qilish
-   */
-  deleteWaiter: async (id: string): Promise<{ success: boolean; message?: string }> => {
-    const response = await $api.delete<{ success: boolean; message?: string }>(`/users/${id}`);
+  deleteWaiter: async (
+    id: string,
+  ): Promise<{ success: boolean; message?: string }> => {
+    const response = await $api.delete<{ success: boolean; message?: string }>(
+      `/users/${id}`,
+    );
     return response.data;
   },
 };
