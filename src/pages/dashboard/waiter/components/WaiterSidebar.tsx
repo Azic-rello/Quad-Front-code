@@ -48,22 +48,21 @@ const WaiterSidebar: React.FC = () => {
           </div>
 
           {/* Menu */}
-          <nav className="space-y-2">
-            <NavLink
-              to="/waiter/tables"
-              end
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                  isActive
-                    ? "bg-[#e31221] text-white"
-                    : "text-stone-400 hover:bg-[#221313] hover:text-white"
-                }`
-              }
-            >
-              <Grid className="w-5 h-5" />
-              <span>Tables</span>
-            </NavLink>
-          </nav>
+   <nav className="space-y-2">
+  <NavLink
+    to="/waiter/tables" // Routeringdagi aniq yo'l
+    className={({ isActive }) =>
+      `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+        isActive
+          ? "bg-[#e31221] text-white"
+          : "text-stone-400 hover:bg-[#221313] hover:text-white"
+      }`
+    }
+  >
+    <Grid className="w-5 h-5" />
+    <span>Stollar</span> {/* 🛠 <a> tegi olib tashlandi, o'rniga span qo'yildi */}
+  </NavLink>
+</nav>
         </div>
 
         {/* Bottom */}

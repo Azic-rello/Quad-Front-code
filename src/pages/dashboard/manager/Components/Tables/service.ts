@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '../../../../../modules/auth/authStore';
 
 export interface Table {
+  name: import("react/jsx-runtime").JSX.Element;
   id: string;
   number: number;
   capacity: number;
@@ -12,6 +13,7 @@ export interface Table {
 }
 
 export interface TablesResponse {
+  data: Table[];
   items: Table[];
   meta: {
     page: number;
