@@ -11,6 +11,7 @@ import {
   UtensilsCrossed,
   Layers,
   Users, // 👈 Ofitsiantlar uchun ikonka qo'shildi
+  Table2, // Stollar ikonkasini ishlatamiz
 } from "lucide-react";
 import { useAuthStore } from "../../../../modules/auth/authStore";
 
@@ -51,7 +52,7 @@ const ManagerSidebar: React.FC = () => {
             </span>
           </div>
 
-          {/* Navigatsiya Menyusi (To'g'ri NavLink routerlari bilan) */}
+          {/* Navigatsiya Menyusi */}
           <nav className="space-y-1">
             {/* 1. Dashboard */}
             <NavLink
@@ -127,6 +128,20 @@ const ManagerSidebar: React.FC = () => {
             >
               <Users className="w-5 h-5 opacity-80" />
               <span>Ofitsiantlar</span>
+            </NavLink>
+            {/* 5. Stollar Boshqaruvi */}
+            <NavLink
+              to="/manager/tables"
+              className={({ isActive }) =>
+                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#e31221] text-white"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
+                }`
+              }
+            >
+              <Table2 className="w-5 h-5 opacity-80" />
+              <span>Stollar</span>
             </NavLink>
           </nav>
         </div>

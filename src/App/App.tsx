@@ -22,8 +22,7 @@ import AuthGuard from "../components/guards/AuthGuard";
 import CreatCategory from "../pages/dashboard/manager/Components/Category/creatcategory";
 import WaitersPage from "../pages/dashboard/manager/Components/waiter/WaitersPage";
 import WaiterSidebar from "../pages/dashboard/waiter/components/WaiterSidebar";
-
-// 👥 Ofitsiantlar paneli sahifasi
+import TablesPage from "../pages/dashboard/manager/Components/Tables/TablesPage";
 
 function App() {
   return (
@@ -61,22 +60,19 @@ function App() {
           />
 
           {/* 3. Menyu (Menu) bo'limi */}
-
-          <Route
-            path="menu"
-            element={
-              <div className="text-stone-800 font-medium">
-                Menyu ro'yxati sahifasi
-              </div>
-            }
-          />
-          <Route path="create-menu" element={<div>menu</div>} />
+          <Route path="menu" element={<div>Menyu ro'yxati sahifasi</div>} />
 
           {/* 4. Category (Kategoriya) bo'limi */}
           <Route path="category" element={<CreatCategory />} />
 
           {/* 5. Ofitsiantlar (Waiters) boshqaruv sahifasi */}
           <Route path="waiters" element={<WaitersPage />} />
+          {/* 🔥 YANGI QO'SHILDI: 5. Stollar Boshqaruvi Sahifasi */}
+          {/* Sidebarda to="/manager/tables" bosilganda shu qism ochiladi */}
+          <Route path="tables" element={<TablesPage />} />
+
+          {/* Eski keraksiz route */}
+          <Route path="create-user" element={<div>Create User</div>} />
         </Route>
       </Route>
 
