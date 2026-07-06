@@ -70,21 +70,6 @@ const ManagerSidebar: React.FC = () => {
               <span>Dashboard</span>
             </NavLink>
 
-            {/* 2. Buyurtmalar */}
-            <NavLink
-              to="/manager/buyurtmalar"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
-                }`
-              }
-            >
-              <ShoppingBag className="w-5 h-5 opacity-80" />
-              <span>Buyurtmalar</span>
-            </NavLink>
-
             {/* 3. Menyu */}
             <NavLink
               to="/manager/create-menu"
@@ -98,21 +83,6 @@ const ManagerSidebar: React.FC = () => {
             >
               <UtensilsCrossed className="w-5 h-5 opacity-80" />
               <span>Menyu</span>
-            </NavLink>
-
-            {/* 4. Kategoriyalar */}
-            <NavLink
-              to="/manager/category"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
-                }`
-              }
-            >
-              <Layers className="w-5 h-5 opacity-80" />
-              <span>Kategoriyalar</span>
             </NavLink>
 
             {/* 5. Ofitsiantlar (Yangi qo'shilgan qism) */}

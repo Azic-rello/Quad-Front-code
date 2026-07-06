@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import WaiterSidebar from "./components/WaiterSidebar";
 import { useAuthStore } from "../../../modules/auth/authStore";
+import WaiterTables from "./components/WaiterTables";
 
 const WaiterLayout: React.FC = () => {
   const user = useAuthStore((state) => state.user);
@@ -42,6 +43,7 @@ const WaiterLayout: React.FC = () => {
 
         {/* Pages */}
         <main className="flex-1 p-6 overflow-y-auto bg-[#faf9f6]">
+          <WaiterTables/>
           <Outlet />
         </main>
       </div>

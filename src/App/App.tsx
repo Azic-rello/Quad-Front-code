@@ -63,9 +63,11 @@ function App() {
         </Route>
       </Route>
 
-      <Route element={<AuthGuard roles={["WAITER"]} />} path="waiter">
-        <Route index element={<WaiterSidebar />} />
-        <Route path="/waiter/tables" element={<WaiterTables />} />
+      <Route element={<AuthGuard roles={["WAITER"]} />} >
+        <Route path="waiter/tables" element={<WaiterSidebar />} >
+        <Route index path="tables" element={<WaiterTables />} />
+        </Route>
+        
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
