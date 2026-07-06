@@ -43,13 +43,11 @@ const processQueue = (error: unknown, token: string | null = null) => {
 export const refreshAuthTokens = async () => {
   const refreshToken = Cookies.get("refreshToken");
 
-  console.log("Refresh token:", refreshToken);
 
   const response = await axios.post("http://localhost:3000/auth/refresh", {
     refreshToken,
   });
 
-  console.log("Refresh response:", response.data);
 
   return response.data;
 };
