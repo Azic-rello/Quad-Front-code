@@ -24,10 +24,6 @@ interface BackendError {
   message: string;
 }
 
-interface RefreshResponse {
-  accessToken: string;
-  refreshToken: string;
-}
 
 let isRefreshing = false;
 let failedRequestsQueue: FailedRequest[] = [];
