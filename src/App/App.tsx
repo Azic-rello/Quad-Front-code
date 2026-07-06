@@ -53,14 +53,10 @@ function App() {
           />
 
           <Route path="menu" element={<div>Menyu ro'yxati sahifasi</div>} />
-
           <Route path="category" element={<CreatCategory />} />
-
           <Route path="waiters" element={<WaitersPage />} />
           <Route path="tables" element={<TablesPage />} />
           <Route path="katagory" element={<CreatCategory />} />
-
-          <Route path="create-user" element={<div>Create User</div>} />
         </Route>
       </Route>
 
