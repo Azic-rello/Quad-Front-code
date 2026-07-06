@@ -23,6 +23,7 @@ import CreatCategory from "../pages/dashboard/manager/Components/Category/creatc
 import WaitersPage from "../pages/dashboard/manager/Components/waiter/WaitersPage";
 import WaiterSidebar from "../pages/dashboard/waiter/components/WaiterSidebar";
 import TablesPage from "../pages/dashboard/manager/Components/Tables/TablesPage";
+import WaiterTables from "../pages/dashboard/waiter/components/WaiterTables";
 
 function App() {
   return (
@@ -79,6 +80,7 @@ function App() {
       {/* Waiter */}
       <Route element={<AuthGuard roles={["WAITER"]} />} path="waiter">
         <Route index element={<WaiterSidebar />} />
+        <Route path="/waiter/tables" element={<WaiterTables />} />
       </Route>
 
       {/* ❌ 404 (Topilmagan sahifalar uchun default yo'naltirish) */}
