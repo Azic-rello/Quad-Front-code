@@ -2,15 +2,21 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Plus, X, AlertCircle } from "lucide-react";
 
-import { waiterService, type UserResponseDto, type BackendErrorResponse } from "./service";
+import {
+  waiterService,
+  type UserResponseDto,
+  type BackendErrorResponse,
+} from "./service";
 import { WaitersList } from "./waiterlist";
 import { CreateWaiterForm } from "./CreateWaiter";
 import { EditWaiterForm } from "./waiteredit";
 
 const WaitersPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [editingWaiter, setEditingWaiter] = useState<UserResponseDto | null>(null); // Tahrirlanayotgan ob'ekt statesi
-  
+  const [editingWaiter, setEditingWaiter] = useState<UserResponseDto | null>(
+    null,
+  ); // Tahrirlanayotgan ob'ekt statesi
+
   const [waiters, setWaiters] = useState<UserResponseDto[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isActionLoading, setIsActionLoading] = useState<string | null>(null);
@@ -23,7 +29,7 @@ const WaitersPage: React.FC = () => {
       setError(null);
 
       const data = await waiterService.getWaiters();
-      
+
       // Faqat WAITER roldagi xodimlarni qat'iy filterlash
       const filteredWaiters = data.filter((user) => user.role === "WAITER");
 
@@ -60,11 +66,17 @@ const WaitersPage: React.FC = () => {
       setError(null);
 
       await waiterService.deleteWaiter(id);
-      setWaiters((prevWaiters) => prevWaiters.filter((waiter) => waiter.id !== id));
+      setWaiters((prevWaiters) =>
+        prevWaiters.filter((waiter) => waiter.id !== id),
+      );
     } catch (err: unknown) {
       if (axios.isAxiosError<BackendErrorResponse>(err) && err.response) {
         const backendMessage = err.response.data.message;
-        alert(Array.isArray(backendMessage) ? backendMessage.join(", ") : backendMessage);
+        alert(
+          Array.isArray(backendMessage)
+            ? backendMessage.join(", ")
+            : backendMessage,
+        );
       } else {
         alert("Xodimni o'chirishda kutilmagan xatolik yuz berdi.");
       }
@@ -86,24 +98,19 @@ const WaitersPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 text-stone-800 relative min-h-[calc(100vh-120px)]">
-      {/* ================= Sarlavha qismi ================= */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-5 select-none">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight text-stone-900">
-            Ofitsiantlar Boshqaruvi
-          </h2>
-          <p className="text-sm text-stone-500 mt-1">
-            Tizimdagi barcha faol ofitsiantlar ro{"'"}yxati va ularni boshqarish.
-          </p>
-        </div>
+    <div className="space-y-6 text-stone-800 relative min-h-[calc(100vh-120px)] p-6 bg-stone-50">
+      {/* ================= Sarlavha va Qo'shish Tugmasi (Aralashgan) ================= */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 mb-6 select-none">
+        <h2 className="text-xl font-semibold tracking-tight text-stone-950">
+          Waiters
+        </h2>
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center justify-center space-x-2 bg-[#e31221] hover:bg-[#c40f1c] text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-md active:scale-95 transition-all duration-200"
+          className="flex items-center justify-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-xl text-sm font-semibold shadow-sm active:scale-95 transition-all duration-200"
         >
           <Plus className="w-4 h-4" />
-          <span>Yangi Ofitsiant Qo{"'"}shish</span>
+          <span>Add</span>
         </button>
       </div>
 
@@ -118,8 +125,8 @@ const WaitersPage: React.FC = () => {
         </div>
       )}
 
-      {/* ================= Jadval Konteyneri ================= */}
-      <div className="bg-white border border-stone-200/80 rounded-2xl shadow-sm overflow-hidden">
+      {/* ================= Jadval Konteyneri (Rasmga moslashtirilgan) ================= */}
+      <div className="bg-white border border-stone-100 rounded-3xl shadow-lg shadow-black/5 overflow-hidden">
         <WaitersList
           waiters={waiters}
           isLoading={isLoading}
@@ -136,7 +143,7 @@ const WaitersPage: React.FC = () => {
             className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
             onClick={() => setIsModalOpen(false)}
           />
-          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl border border-stone-100 z-10 transform overflow-hidden transition-all animate-in fade-in zoom-in-95 duration-200 relative">
+          <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-stone-100 z-10 transform overflow-hidden transition-all animate-in fade-in zoom-in-95 duration-200 relative">
             <button
               onClick={() => setIsModalOpen(false)}
               className="absolute top-5 right-5 text-stone-400 hover:text-stone-600 hover:bg-stone-50 p-2 rounded-xl transition-all duration-200 z-20"
@@ -155,7 +162,7 @@ const WaitersPage: React.FC = () => {
             className="fixed inset-0 bg-stone-900/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
             onClick={() => setEditingWaiter(null)}
           />
-          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl border border-stone-100 z-10 transform overflow-hidden transition-all animate-in fade-in zoom-in-95 duration-200 relative">
+          <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-stone-100 z-10 transform overflow-hidden transition-all animate-in fade-in zoom-in-95 duration-200 relative">
             <button
               onClick={() => setEditingWaiter(null)}
               className="absolute top-5 right-5 text-stone-400 hover:text-stone-600 hover:bg-stone-50 p-2 rounded-xl transition-all duration-200 z-20"
