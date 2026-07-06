@@ -14,7 +14,7 @@ export const CreateTable: React.FC<CreateTableProps> = ({ onSuccess }) => {
   const handleCreateTable = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTableNumber.trim()) return alert("Stol raqamini kiriting!");
-
+//vbt
     setIsCreating(true);
     try {
       await tableService.create({
