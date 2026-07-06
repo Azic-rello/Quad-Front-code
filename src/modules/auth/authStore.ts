@@ -63,7 +63,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       set({ isLoading: true });
       const response = await $api.get<User>("/auth/me");
-      
+
       set({
         user: response.data,
         isAuthenticated: true,

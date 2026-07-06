@@ -40,17 +40,16 @@ const processQueue = (error: unknown, token: string | null = null) => {
   failedRequestsQueue = [];
 };
 
-export const refreshAuthTokens = async (): Promise<RefreshResponse> => {
+export const refreshAuthTokens = async () => {
   const refreshToken = Cookies.get("refreshToken");
-  if (!refreshToken) {
-    throw new Error("Refresh token topilmadi");
-  }
 
-  const response = await axios.post<RefreshResponse>(
-    "http://localhost:3000/auth/refresh",
-    { refreshToken },
-    { headers: { Authorization: `Bearer ${refreshToken}` } }
-  );
+  console.log("Refresh token:", refreshToken);
+
+  const response = await axios.post("http://localhost:3000/auth/refresh", {
+    refreshToken,
+  });
+
+  console.log("Refresh response:", response.data);
 
   return response.data;
 };
@@ -63,14 +62,16 @@ $api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Response Interceptor
 $api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError<BackendError>) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
     if (!originalRequest) return Promise.reject(error);
 
@@ -137,5 +138,5 @@ $api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
