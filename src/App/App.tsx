@@ -58,16 +58,16 @@ function App() {
 
           <Route path="waiters" element={<WaitersPage />} />
           <Route path="tables" element={<TablesPage />} />
+          <Route path="katagory" element={<CreatCategory />} />
 
           <Route path="create-user" element={<div>Create User</div>} />
         </Route>
       </Route>
 
-      <Route element={<AuthGuard roles={["WAITER"]} />} >
-        <Route path="waiter/tables" element={<WaiterSidebar />} >
-        <Route index path="tables" element={<WaiterTables />} />
+      <Route element={<AuthGuard roles={["WAITER"]} />}>
+        <Route path="waiter/tables" element={<WaiterSidebar />}>
+          <Route index path="tables" element={<WaiterTables />} />
         </Route>
-        
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
