@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { tableService, type Table } from "./service"; 
-import { Edit2, Trash2, Users, Plus, RefreshCw, Layers } from "lucide-react";
+import { Edit2, Trash2, Plus, Grid } from "lucide-react";
 
 export default function TablesPage() {
   const [tables, setTables] = useState<Table[]>([]);
@@ -15,12 +15,9 @@ export default function TablesPage() {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 
-  // Form statelari (Endi faqat bitta "Stol nomi/raqami" maydoni bor)
-  const [newTableIdentifier, setNewTableIdentifier] = useState<string>( "");
-  const [newTableCapacity, setNewTableCapacity] = useState<string>("2");
-  
-  const [updateTableIdentifier, setUpdateTableIdentifier] = useState<string>(""); 
-  const [updateTableCapacity, setUpdateTableCapacity] = useState<string>("2");
+  // Form statelari
+  const [tableIdentifier, setTableIdentifier] = useState<string>("");
+  const [tableCapacity, setTableCapacity] = useState<string>("2");
 
   const [modalError, setModalError] = useState<string | null>(null);
   const [modalLoading, setModalLoading] = useState<boolean>(false);
@@ -29,7 +26,7 @@ export default function TablesPage() {
   const fetchTables = useCallback(async () => {
     setError(null);
     try {
-      const data = await tableService.getAll(currentPage, 8, statusFilter);
+      const data = await tableService.getAll(currentPage, 12, statusFilter);
       if (Array.isArray(data)) {
         setTables(data);
         setMeta({ totalPages: 1, total: data.length });
@@ -41,7 +38,7 @@ export default function TablesPage() {
         setMeta({ totalPages, total });
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "Stollarni yuklashda xatolik yuz berdi.");
+      setError(err.response?.data?.message || "Stollarni yuklashda xatolik.");
     }
   }, [currentPage, statusFilter]);
 
@@ -49,28 +46,32 @@ export default function TablesPage() {
     fetchTables();
   }, [fetchTables]);
 
-  // ➕ Yangi stol yaratish
+  // 🔢 Faqat raqam kiritishni tekshirish
+  const handleNumberChange = (value: string) => {
+    if (/^\d*$/.test(value)) {
+      setTableIdentifier(value);
+    }
+  };
+
+  // ➕ Yangi Stol Yaratish
   const handleCreateTable = async (e: React.FormEvent) => {
     e.preventDefault();
     setModalError(null);
-    
-    if (!newTableIdentifier.trim()) {
-      setModalError("Stol nomini kiriting!");
+    if (!tableIdentifier.trim()) {
+      setModalError("Stol raqamini kiriting!");
       return;
     }
-
     setModalLoading(true);
     try {
-      // Backend raqam (number) kutayotgan bo'lsa raqamga o'giradi, matn bo'lsa name'ga tenglaydi
-      const isNum = !isNaN(Number(newTableIdentifier));
+      // 🛠 Toza son ko'rinishida yuboriladi
       await tableService.create({
-        number: isNum ? Number(newTableIdentifier) : Math.floor(Math.random() * 10000), 
-        name: newTableIdentifier.trim(),
-        capacity: Number(newTableCapacity),
+        number: Number(tableIdentifier),
+        name: tableIdentifier.trim(), 
+        capacity: Number(tableCapacity),
       });
-      setNewTableIdentifier("");
+      setTableIdentifier("");
       setIsCreateModalOpen(false);
-      fetchTables(); 
+      fetchTables();
     } catch (err: any) {
       setModalError(err.response?.data?.message || "Stol qo'shib bo'lmadi.");
     } finally {
@@ -81,196 +82,197 @@ export default function TablesPage() {
   // ✏️ Tahrirlash modalini ochish
   const openUpdateModal = (table: Table) => {
     setSelectedTable(table);
-    setUpdateTableIdentifier(table.name || table.number.toString()); 
-    setUpdateTableCapacity(table.capacity.toString()); 
+    // Name yoki Number'dan faqat toza sonni ajratib olib inputga qo'yamiz
+    const numericOnly = table.name ? table.name.replace(/\D/g, "") : table.number.toString();
+    setTableIdentifier(numericOnly || table.number.toString());
+    setTableCapacity(table.capacity.toString());
     setIsUpdateModalOpen(true);
   };
 
-  // ✏️ Tahrirlashni saqlash
+  // ✏️ Tahrirlashni saqlash (To'liq Fix qilindi 🚀)
   const handleUpdateTable = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedTable) return;
     setModalLoading(true);
     setModalError(null);
     try {
-      const isNum = !isNaN(Number(updateTableIdentifier));
-      await tableService.update(selectedTable.id, { 
-        name: updateTableIdentifier.trim(),
-        capacity: Number(updateTableCapacity) 
+      // 🛠 CHALCOSHLIKNING ASOSIY YECHIMI:
+      // Name va Number maydonlariga foydalanuvchi kiritgan toza sonni bir xil qilib yuboramiz.
+      // Shunda backend interfeysi qanday bo'lishidan qat'iy nazar 100% qabul qiladi.
+      await tableService.update(selectedTable.id, {
+        number: Number(tableIdentifier),
+        name: tableIdentifier.trim(), 
+        capacity: Number(tableCapacity)
       });
+      
       setIsUpdateModalOpen(false);
       setSelectedTable(null);
-      fetchTables(); 
+      setTableIdentifier("");
+      fetchTables(); // Ekranni srazu yangilash
     } catch (err: any) {
-      setModalError(err.response?.data?.message || "Tahrirlashda xatolik yuz berdi.");
+      setModalError(err.response?.data?.message || "Tahrirlashda backend rad etdi.");
     } finally {
       setModalLoading(false);
     }
   };
 
   // ❌ O'chirish
-  const handleDeleteTable = async (id: string, identifier: string | number) => {
-    if (!window.confirm(`Rostdan ham "${identifier}" stolni o'chirmoqchimisiz?`)) return;
+  const handleDeleteTable = async (id: string, currentNum: number) => {
+    if (!window.confirm(`Rostdan ham shu stolni o'chirmoqchimisiz?`)) return;
     try {
       await tableService.delete(id);
       fetchTables();
     } catch (err: any) {
-      alert(err.response?.data?.message || "Stolni o'chirib bo'lmadi.");
+      alert(err.response?.data?.message || "Stol o'chirilmadi.");
     }
   };
 
   return (
-    <div className="p-3 sm:p-6 max-w-7xl mx-auto bg-gray-50/50 min-h-screen rounded-2xl sm:rounded-3xl">
-      {/* 🚀 Header (Responsive flex-col va sm:flex-row) */}
-      <div className="bg-white border border-gray-100 p-4 sm:p-6 rounded-2xl shadow-sm mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
-            <Layers className="text-blue-600 w-5 sm:w-6 h-5 sm:h-6" /> Stollar Boshqaruvi
-          </h1>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1 font-medium">
-            Jami: <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md font-bold text-xs">{meta.total} ta stol</span>
-          </p>
+    <div className="w-full min-h-screen bg-[#faf9f6] p-4 sm:p-6 font-sans">
+      
+      {/* 🚀 Rasmdagi Oq Chiroyli Konteyner */}
+      <div className="bg-white rounded-3xl border border-stone-100 p-6 shadow-sm max-w-7xl mx-auto">
+        
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-xl sm:text-2xl font-bold text-stone-900">Stollar</h1>
+          <button
+            onClick={() => {
+              setTableIdentifier("");
+              setTableCapacity("2");
+              setIsCreateModalOpen(true);
+            }}
+            className="px-5 py-2.5 bg-[#e31221] hover:bg-[#c90f1b] text-white rounded-2xl transition active:scale-95 flex items-center gap-2 font-semibold text-sm shadow-sm"
+          >
+            <Plus className="w-4 h-4" /> Qo'shish
+          </button>
         </div>
-        <button
-          onClick={() => setIsCreateModalOpen(true)}
-          className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition active:scale-95 flex items-center justify-center gap-2 font-semibold shadow-md shadow-blue-600/10 text-sm sm:text-base"
-        >
-          <Plus className="w-4 sm:w-5 h-4 sm:h-5" /> Yangi Stol Qo'shish
-        </button>
-      </div>
 
-      {/* 🔍 Filtrlar (Mobil versiyada chiroyli joylashadi) */}
-      <div className="mb-6 flex justify-between items-center gap-2">
-        <select
-          value={statusFilter}
-          onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
-          className="w-full sm:w-auto p-2.5 border border-gray-200 rounded-xl bg-white shadow-sm font-medium text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition cursor-pointer"
-        >
-          <option value="">Barcha stollar</option>
-          <option value="AVAILABLE">🟢 Bo'sh stollar</option>
-          <option value="OCCUPIED">🟡 Band stollar</option>
-          <option value="DISABLED">🔴 Ishlamayotganlar</option>
-        </select>
-        <button onClick={fetchTables} className="p-2.5 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 active:scale-95 text-gray-500 transition shadow-sm shrink-0">
-          <RefreshCw className="w-4 h-4" />
-        </button>
-      </div>
+        {error && <div className="p-4 mb-6 text-sm font-medium text-red-700 bg-red-50 rounded-2xl">{error}</div>}
 
-      {error && <div className="p-4 mb-6 text-sm font-medium text-red-700 bg-red-50 border border-red-100 rounded-xl">{error}</div>}
+        {/* 🗂 Grid Kontent */}
+        {tables.length === 0 ? (
+          <div className="text-center py-16 text-stone-400 font-medium text-sm">Hozircha stollar yo'q.</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {tables.map((table) => {
+              // Agar name son bo'lsa "Table 5" qilib chiroyli ko'rsatish, matn bo'lsa o'zini chiqarish
+              const isOnlyNum = /^\d+$/.test(table.name || "");
+              const displayName = isOnlyNum ? `Table ${table.name}` : (table.name || `Table ${table.number}`);
+              const displayStatus = table.status === "OCCUPIED" ? "Busy" : "Empty";
 
-      {/* 🗂 Stollar Grid (Responsiveness: 1 col, 2 col, 3 col, 4 col) */}
-      {tables.length === 0 ? (
-        <div className="text-center py-20 text-gray-400 border border-dashed border-gray-200 rounded-2xl bg-white font-medium text-sm">
-          Hozircha stol topilmadi.
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-          {tables.map((table) => {
-            const currentIdentifier = table.name || `Stol #${table.number}`;
-            return (
-              <div key={table.id} className="bg-white border border-gray-100 rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
-                <div>
-                  <div className="flex justify-between items-start gap-2 mb-3">
-                    {/* Yagona Stol Nomi / Raqami */}
-                    <span className="font-extrabold text-base sm:text-lg text-gray-900 tracking-tight break-all line-clamp-2">
-                      {currentIdentifier}
-                    </span>
-                    <span className={`px-2 py-0.5 text-[9px] font-black rounded-lg uppercase tracking-wider shadow-sm shrink-0 ${
-                      table.status === 'AVAILABLE' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
-                      table.status === 'OCCUPIED' ? 'bg-amber-50 text-amber-700 border border-amber-100' : 'bg-rose-50 text-rose-700 border border-rose-100'
-                    }`}>
-                      {table.status === 'AVAILABLE' ? "Bo'sh" : table.status === 'OCCUPIED' ? 'Band' : 'Yopiq'}
-                    </span>
+              return (
+                <div 
+                  key={table.id} 
+                  className="bg-white border border-stone-200/70 rounded-3xl p-5 flex flex-col justify-between transition-shadow hover:shadow-md"
+                >
+                  {/* Info */}
+                  <div className="flex items-center gap-4 mb-5">
+                    <div className="w-12 h-12 rounded-2xl bg-[#faf9f6] flex items-center justify-center shrink-0 border border-stone-100">
+                      <Grid className="w-5 h-5 text-stone-800" />
+                    </div>
+                    <div className="overflow-hidden">
+                      <h3 className="font-bold text-stone-900 text-base truncate">{displayName}</h3>
+                      <p className="text-xs font-medium text-stone-400 mt-0.5">{displayStatus}</p>
+                    </div>
                   </div>
-                  
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-medium mt-1">
-                    <Users className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-gray-400" />
-                    <span>Sig'imi: <b className="text-gray-900">{table.capacity} kishi</b></span>
+
+                  {/* 🛠 Pastki Tugmalar */}
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => openUpdateModal(table)}
+                      className="flex-1 py-2.5 px-4 border border-stone-200 hover:bg-stone-50 text-stone-800 font-semibold rounded-2xl text-xs transition flex items-center justify-center gap-2 bg-white"
+                    >
+                      <Edit2 className="w-3.5 h-3.5 text-stone-700" /> Tahrirlash
+                    </button>
+                    
+                    <button 
+                      onClick={() => handleDeleteTable(table.id, table.number)}
+                      className="w-10 h-10 bg-[#e31221] hover:bg-[#c90f1b] text-white rounded-2xl transition flex items-center justify-center shrink-0 shadow-sm"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
 
-                {/* 🛠 Ikonkali tugmalar */}
-                <div className="flex gap-2 border-t border-gray-50 pt-3 sm:pt-4 mt-4 sm:mt-5">
-                  <button onClick={() => openUpdateModal(table)} className="flex-1 py-2 text-xs font-bold text-blue-600 bg-blue-50/60 hover:bg-blue-100 rounded-xl transition flex items-center justify-center gap-1.5">
-                    <Edit2 className="w-3.5 h-3.5" /> Tahrirlash
-                  </button>
-                  <button onClick={() => handleDeleteTable(table.id, currentIdentifier)} className="px-3 py-2 text-rose-600 bg-rose-50/60 hover:bg-rose-100 rounded-xl transition flex items-center justify-center">
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Pagination */}
-      {meta.totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 sm:gap-3 mt-10">
-          <button disabled={currentPage === 1} onClick={() => setCurrentPage(prev => prev - 1)} className="px-3 sm:px-4 py-2 border border-gray-200 text-xs sm:text-sm font-semibold rounded-xl bg-white hover:bg-gray-50 disabled:opacity-40 transition shadow-sm">Orqaga</button>
-          <span className="text-xs sm:text-sm font-bold text-gray-500 bg-white px-2.5 sm:px-3 py-2 border border-gray-100 rounded-xl shadow-sm">Sahifa {currentPage} / {meta.totalPages}</span>
-          <button disabled={currentPage === meta.totalPages} onClick={() => setCurrentPage(prev => prev + 1)} className="px-3 sm:px-4 py-2 border border-gray-200 text-xs sm:text-sm font-semibold rounded-xl bg-white hover:bg-gray-50 disabled:opacity-40 transition shadow-sm">Oldinga</button>
-        </div>
-      )}
-
-      {/* Modal: Create */}
+      {/* 📋 Modal: Yaratish */}
       {isCreateModalOpen && (
-        <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-5 sm:p-6 border border-gray-100 mx-2">
-            <h2 className="text-lg sm:text-xl font-black text-gray-900 mb-4 flex items-center gap-2"><Plus className="text-blue-600" /> Yangi Stol Qo'shish</h2>
+        <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-3xl shadow-xl max-w-md w-full p-6 border border-stone-100">
+            <h2 className="text-lg font-bold text-stone-900 mb-4">Yangi stol qo'shish</h2>
             <form onSubmit={handleCreateTable} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Stol Nomi / Raqami</label>
-                <input type="text" value={newTableIdentifier} onChange={(e) => setNewTableIdentifier(e.target.value)} placeholder="Masalan: VIP Xona yoki 5" className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm font-medium" required />
+                <label className="block text-xs font-bold text-stone-500 uppercase mb-1">Stol raqami (Faqat son)</label>
+                <input 
+                  type="text" 
+                  inputMode="numeric"
+                  value={tableIdentifier} 
+                  onChange={(e) => handleNumberChange(e.target.value)} 
+                  placeholder="Masalan: 5" 
+                  className="w-full p-3 border border-stone-200 rounded-2xl focus:ring-2 focus:ring-[#e31221] focus:outline-none text-sm font-medium" 
+                  required 
+                />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Sig'imi</label>
-                <select value={newTableCapacity} onChange={(e) => setNewTableCapacity(e.target.value)} className="w-full p-2.5 border border-gray-200 rounded-xl bg-white text-sm font-medium text-gray-700 cursor-pointer">
+                <label className="block text-xs font-bold text-stone-500 uppercase mb-1">Sig'imi</label>
+                <select value={tableCapacity} onChange={(e) => setTableCapacity(e.target.value)} className="w-full p-3 border border-stone-200 rounded-2xl bg-white text-sm font-medium text-stone-800 focus:outline-none">
                   <option value="2">2 kishilik</option>
                   <option value="4">4 kishilik</option>
                   <option value="6">6 kishilik</option>
                   <option value="8">8 kishilik</option>
                 </select>
               </div>
-              <div className="flex justify-end gap-2 pt-3 border-t">
-                <button type="button" onClick={() => setIsCreateModalOpen(false)} className="px-4 py-2 border rounded-xl text-xs sm:text-sm font-bold text-gray-600 hover:bg-gray-50">Bekor qilish</button>
-                <button type="submit" disabled={modalLoading} className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-blue-700">Yaratish</button>
+              {modalError && <p className="text-xs font-semibold text-red-600">{modalError}</p>}
+              <div className="flex justify-end gap-2 pt-2">
+                <button type="button" onClick={() => setIsCreateModalOpen(false)} className="px-4 py-2 text-stone-500 font-semibold text-sm hover:bg-stone-50 rounded-xl transition">Bekor qilish</button>
+                <button type="submit" disabled={modalLoading} className="px-5 py-2 bg-[#e31221] text-white font-semibold text-sm rounded-xl hover:bg-[#c90f1b] transition">Yaratish</button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* Modal: Update */}
+      {/* 📋 Modal: Tahrirlash */}
       {isUpdateModalOpen && selectedTable && (
-        <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-5 sm:p-6 border border-gray-100 mx-2">
-            <h2 className="text-lg sm:text-xl font-black text-gray-900 mb-1 flex items-center gap-2"><Edit2 className="text-blue-600 w-4 sm:w-5 h-4 sm:h-5" /> Stolni Tahrirlash</h2>
-            <p className="text-xs text-gray-400 font-semibold mb-4">Stol ma'lumotlarini o'zgartirish</p>
-            {modalError && <div className="p-3 mb-4 text-xs font-semibold text-red-700 bg-red-50 rounded-xl">{modalError}</div>}
-            
+        <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-3xl shadow-xl max-w-md w-full p-6 border border-stone-100">
+            <h2 className="text-lg font-bold text-stone-900 mb-4">Stolni tahrirlash</h2>
             <form onSubmit={handleUpdateTable} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Stol Nomi / Raqami</label>
-                <input type="text" value={updateTableIdentifier} onChange={(e) => setUpdateTableIdentifier(e.target.value)} placeholder="Masalan: VIP xona 1" className="w-full p-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm font-medium" required />
+                <label className="block text-xs font-bold text-stone-500 uppercase mb-1">Stol raqami (Faqat son)</label>
+                <input 
+                  type="text" 
+                  inputMode="numeric"
+                  value={tableIdentifier} 
+                  onChange={(e) => handleNumberChange(e.target.value)} 
+                  className="w-full p-3 border border-stone-200 rounded-2xl focus:ring-2 focus:ring-[#e31221] focus:outline-none text-sm font-medium" 
+                  required 
+                />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Sig'imi</label>
-                <select value={updateTableCapacity} onChange={(e) => setUpdateTableCapacity(e.target.value)} className="w-full p-2.5 border border-gray-200 rounded-xl bg-white focus:outline-none text-sm font-medium text-gray-700 cursor-pointer">
+                <label className="block text-xs font-bold text-stone-500 uppercase mb-1">Sig'imi</label>
+                <select value={tableCapacity} onChange={(e) => setTableCapacity(e.target.value)} className="w-full p-3 border border-stone-200 rounded-2xl bg-white text-sm font-medium text-stone-800 focus:outline-none">
                   <option value="2">2 kishilik</option>
                   <option value="4">4 kishilik</option>
                   <option value="6">6 kishilik</option>
                   <option value="8">8 kishilik</option>
                 </select>
               </div>
-              <div className="flex justify-end gap-2 pt-3 border-t border-gray-50">
-                <button type="button" onClick={() => { setIsUpdateModalOpen(false); setSelectedTable(null); }} className="px-4 py-2 border rounded-xl text-xs sm:text-sm font-bold text-gray-600 hover:bg-gray-50">Bekor qilish</button>
-                <button type="submit" disabled={modalLoading} className="px-4 py-2 bg-emerald-600 text-white rounded-xl text-xs sm:text-sm font-bold hover:bg-emerald-700">Saqlash</button>
+              {modalError && <p className="text-xs font-semibold text-red-600">{modalError}</p>}
+              <div className="flex justify-end gap-2 pt-2">
+                <button type="button" onClick={() => { setIsUpdateModalOpen(false); setSelectedTable(null); }} className="px-4 py-2 text-stone-500 font-semibold text-sm hover:bg-stone-50 rounded-xl transition">Bekor qilish</button>
+                <button type="submit" disabled={modalLoading} className="px-5 py-2 bg-[#e31221] text-white font-semibold text-sm rounded-xl hover:bg-[#c90f1b] transition">Saqlash</button>
               </div>
             </form>
           </div>
         </div>
       )}
+
     </div>
   );
 }
