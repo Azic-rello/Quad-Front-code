@@ -1,3 +1,4 @@
+import type { RefreshResponse } from "@/modules/auth/authTypes";
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
 
@@ -24,10 +25,6 @@ interface BackendError {
   message: string;
 }
 
-interface RefreshResponse {
-  accessToken: string;
-  refreshToken: string;
-}
 
 let isRefreshing = false;
 let failedRequestsQueue: FailedRequest[] = [];
@@ -42,15 +39,14 @@ const processQueue = (error: unknown, token: string | null = null) => {
 
 export const refreshAuthTokens = async (): Promise<RefreshResponse> => {
   const refreshToken = Cookies.get("refreshToken");
-  if (!refreshToken) {
-    throw new Error("Refresh token topilmadi");
-  }
 
   const response = await axios.post<RefreshResponse>(
     "http://localhost:3000/auth/refresh",
     { refreshToken },
     { headers: { Authorization: `Bearer ${refreshToken}` } }
   );
+
+
 
   return response.data;
 };

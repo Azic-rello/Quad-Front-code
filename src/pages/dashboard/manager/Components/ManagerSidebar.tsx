@@ -1,16 +1,17 @@
 import { useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
-  ShoppingBag,
   Menu,
   X,
   UserCheck,
   Home,
   LogOut,
   UtensilsCrossed,
+  Users,
+  Table2,
+  ShoppingBag,
   Layers,
-  Users, // 👈 Ofitsiantlar uchun ikonka qo'shildi
 } from "lucide-react";
 import { useAuthStore } from "../../../../modules/auth/authStore";
 
@@ -18,9 +19,19 @@ const ManagerSidebar: React.FC = () => {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Mobil menyu holati uchun state
   const [isOpen, setIsOpen] = useState(false);
+
+  // Hozirgi sahifa nomini aniqlash (Logotip tagida ko'rinishi uchun)
+  const getSubTitle = () => {
+    if (location.pathname === "/manager") return "Overview";
+    if (location.pathname.includes("create-menu")) return "Menu";
+    if (location.pathname.includes("waiters")) return "Waiters";
+    if (location.pathname.includes("tables")) return "Tables";
+    return "Management";
+  };
 
   return (
     <div className="flex h-screen bg-[#faf9f6] text-stone-800 font-sans antialiased overflow-hidden">
@@ -35,38 +46,43 @@ const ManagerSidebar: React.FC = () => {
       {/* ================= Sidebar ================= */}
       <aside
         className={`
-        fixed left-0 top-0 z-50 h-screen w-64 bg-[#140b0b] text-stone-300
-        flex flex-col justify-between transform transition-transform duration-300 ease-out
+        fixed left-0 top-0 z-50 h-screen w-64 bg-[#1a0f0f] text-stone-300
+        flex flex-col justify-between transform transition-transform duration-300 ease-out border-r border-stone-900
         lg:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full"}
       `}
       >
         <div className="p-4 space-y-6 overflow-y-auto custom-scrollbar flex-1">
-          {/* Logo */}
-          <div className="flex items-center space-x-3 px-2 py-3">
+          {/* Logo - Rasmdagi kabi tepada brend va tagida sahifa nomi */}
+          <div className="flex items-center space-x-3 px-2 py-2">
             <div className="w-9 h-9 bg-[#e31221] rounded-full flex items-center justify-center font-black text-white shadow-md">
-              🍔
+              <UtensilsCrossed className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-white tracking-wide text-sm uppercase">
-              Quad Pizza
-            </span>
+            <div className="flex flex-col">
+              <span className="font-bold text-white text-base leading-none tracking-wide">
+                Quad <span className="text-[#E31221]">pizza</span>
+              </span>
+              <span className="text-xs text-stone-500 font-medium mt-0.5">
+                {getSubTitle()}
+              </span>
+            </div>
           </div>
 
-          {/* Navigatsiya Menyusi (To'g'ri NavLink routerlari bilan) */}
-          <nav className="space-y-1">
-            {/* 1. Dashboard */}
+          {/* Navigatsiya Menyusi */}
+          <nav className="space-y-1.5 pt-2">
+            {/* 1. Dashboard / Overview */}
             <NavLink
               to="/manager"
               end
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-[#e31221] text-white"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
+                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
                 }`
               }
             >
               <LayoutDashboard className="w-5 h-5 opacity-90" />
-              <span>Dashboard</span>
+              <span>Overview</span>
             </NavLink>
 
             {/* 2. Buyurtmalar */}
@@ -111,39 +127,61 @@ const ManagerSidebar: React.FC = () => {
             </NavLink>
 
             {/* 5. Ofitsiantlar (Yangi qo'shilgan qism) */}
+            {/* 2. Waiters / Ofitsiantlar */}
             <NavLink
               to="/manager/waiters"
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-[#e31221] text-white"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
+                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
                 }`
               }
             >
               <Users className="w-5 h-5 opacity-80" />
-              <span>Ofitsiantlar</span>
+              <span>Waiters</span>
             </NavLink>
+
+            {/* 3. Tables / Stollar */}
+            <NavLink
+              to="/manager/tables"
+              className={({ isActive }) =>
+                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
+                }`
+              }
+            >
+              <Table2 className="w-5 h-5 opacity-80" />
+              <span>Tables</span>
+            </NavLink>
+
           </nav>
         </div>
-        {/* Pastki tugmalar qismi (Bosh sahifa va Chiqish) */}
-        <div className="p-4 border-t border-stone-800/60 bg-[#0d0707] space-y-1">
+
+        {/* Pastki qism - Rasmdagi kabi kichik rol yozuvi va tugmalar */}
+        <div className="p-4 border-t border-stone-900 bg-[#120a0a] space-y-2">
+          <div className="px-4 py-1 text-[11px] text-stone-500 font-medium tracking-wider uppercase">
+            Manager • {user?.username || "manager"}
+          </div>
+
           {/* Bosh sahifa tugmasi */}
           <button
             onClick={() => navigate("/")}
-            className="w-full py-2.5 flex items-center space-x-3 px-4 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800/40 font-medium transition-all duration-200"
+            className="w-full py-2 flex items-center space-x-3 px-4 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800/30 text-sm font-medium transition-all duration-200"
           >
-            <Home className="w-4 h-4 opacity-80" />
-            <span>Bosh sahifa</span>
+            <Home className="w-4 h-4 opacity-70" />
+            <span>Home</span>
           </button>
 
           {/* Chiqish tugmasi */}
           <button
             onClick={logout}
-            className="w-full py-2.5 flex items-center space-x-3 px-4 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800/40 font-medium transition-all duration-200"
+            className="w-full py-2 flex items-center space-x-3 px-4 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800/30 text-sm font-medium transition-all duration-200"
           >
-            <LogOut className="w-4 h-4" />
-            <span>Chiqish</span>
+            <LogOut className="w-4 h-4 opacity-70" />
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
@@ -165,8 +203,8 @@ const ManagerSidebar: React.FC = () => {
               )}
             </button>
 
-            <h1 className="text-stone-900 text-base sm:text-lg font-bold tracking-tight">
-              Manager Dashboard
+            <h1 className="text-stone-900 text-base sm:text-lg font-bold tracking-tight uppercase">
+              {getSubTitle()}
             </h1>
           </div>
 

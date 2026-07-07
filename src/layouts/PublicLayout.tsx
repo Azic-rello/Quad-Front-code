@@ -10,7 +10,7 @@ const PublicLayout: React.FC = () => {
       <Navbar />
 
       {/* Sahifalar yuklanadigan asosiy oyna */}
-      <main className="flex-grow">
+      <main className="grow">
         <Outlet />
       </main>
 

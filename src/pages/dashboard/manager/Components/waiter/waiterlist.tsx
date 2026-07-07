@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, Calendar, Loader2, Pencil, Trash2 } from "lucide-react";
+import { Loader2, Pencil, Trash2 } from "lucide-react";
 import { type UserResponseDto } from "./service";
 
 interface WaitersListProps {
@@ -17,12 +17,14 @@ export const WaitersList: React.FC<WaitersListProps> = ({
   onEdit,
   onDelete,
 }) => {
-  // 1. Umumiy ma'lumot yuklanayotgan holat (Skeleton o'rnida spinner)
+  // 1. Umumiy ma'lumot yuklanayotgan holat
   if (isLoading) {
     return (
-      <div className="p-16 flex flex-col items-center justify-center text-stone-500 space-y-2">
-        <Loader2 className="w-8 h-8 animate-spin text-[#e31221]" />
-        <span className="text-xs font-medium">Bazadan ma{"'"}lumotlar yuklanmoqda...</span>
+      <div className="p-16 flex flex-col items-center justify-center text-stone-500 space-y-2 bg-white">
+        <Loader2 className="w-8 h-8 animate-spin text-red-600" />
+        <span className="text-xs font-medium text-stone-400">
+          Loading data...
+        </span>
       </div>
     );
   }
@@ -30,93 +32,84 @@ export const WaitersList: React.FC<WaitersListProps> = ({
   // 2. Bazada umuman waiter bo'lmagan holat
   if (waiters.length === 0) {
     return (
-      <div className="p-12 text-center flex flex-col justify-center items-center">
-        <div className="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-xl mb-3">
+      <div className="p-12 text-center flex flex-col justify-center items-center bg-white">
+        <div className="w-12 h-12 bg-stone-50 rounded-full flex items-center justify-center text-xl mb-3">
           👥
         </div>
-        <h3 className="text-base font-bold text-stone-800">Ofitsiantlar topilmadi</h3>
-        <p className="text-xs text-stone-400 max-w-sm mt-1">
-          Bazada hozircha hech qanday waiter xodim mavjud emas.
-        </p>
+        <h3 className="text-sm font-semibold text-stone-800">
+          No waiters found
+        </h3>
       </div>
     );
   }
 
-  // 3. To'liq ma'lumotlar jadvali
+  // 3. To'liq ma'lumotlar jadvali (image_d1cdea.png rasmidagi dizayn asosida)
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto bg-white p-4">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="bg-stone-50 border-b border-stone-200 text-stone-600 text-xs font-semibold uppercase tracking-wider select-none">
-            <th className="px-6 py-4">Ism va Familiya</th>
-            <th className="px-6 py-4">Username</th>
-            <th className="px-6 py-4">Rol</th>
-            <th className="px-6 py-4">Qo{"'"}shilgan Sana</th>
-            <th className="px-6 py-4 text-right">Amallar</th>
+          {/* Rasmda jadval tepasi oq fonda va matn rangi och kulrang */}
+          <tr className="bg-white border-b border-stone-100 text-stone-400 text-sm font-normal select-none">
+            <th className="px-6 py-4 font-normal">Name</th>
+            <th className="px-6 py-4 font-normal">Email</th>
+            <th className="px-6 py-4 font-normal">Password</th>
+            <th className="px-6 py-4 text-right font-normal">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-stone-100 text-sm">
+        <tbody className="text-sm text-stone-900">
           {waiters.map((waiter) => (
-            <tr key={waiter.id} className="hover:bg-stone-50/60 transition-colors duration-150">
+            <tr key={waiter.id} className="transition-colors duration-150">
               {/* Ism va Familiya */}
-              <td className="px-6 py-4 font-medium text-stone-900 flex items-center space-x-3">
-                <div className="w-8 h-8 bg-stone-100 text-stone-600 rounded-full flex items-center justify-center font-bold text-xs uppercase select-none">
-                  {waiter.fullName ? waiter.fullName.charAt(0) : "W"}
-                </div>
-                <span>{waiter.fullName}</span>
+              <td className="px-6 py-5 font-medium text-stone-900">
+                {waiter.fullName || waiter.username}
               </td>
 
-              {/* Username */}
-              <td className="px-6 py-4 text-stone-500 font-mono text-xs">
-                @{waiter.username}
+              {/* Username / Email joyi */}
+              <td className="px-6 py-5 text-stone-800">
+                {waiter.username.includes("@")
+                  ? waiter.username
+                  : `${waiter.username}`}
               </td>
 
-              {/* Rol nishoni */}
-              <td className="px-6 py-4">
-                <span className="inline-flex items-center space-x-1 bg-amber-50 border border-amber-200 text-amber-700 px-2.5 py-1 rounded-full text-xs font-medium">
-                  <Users className="w-3 h-3" />
-                  <span>{waiter.role}</span>
+              {/* Parol qismi (Rasmdagi kabi kichik kulrang badge ichida) */}
+              <td className="px-6 py-5">
+                <span className="bg-stone-100 text-stone-600 px-2 py-0.5 rounded-md text-xs font-mono">
+                  123
                 </span>
               </td>
 
-              {/* Qo'shilgan sana */}
-              <td className="px-6 py-4 text-stone-500 text-xs">
-                <div className="flex items-center space-x-1.5 py-1">
-                  <Calendar className="w-3.5 h-3.5 text-stone-400" />
-                  <span>
-                    {waiter.createdAt ? new Date(waiter.createdAt).toLocaleDateString("uz-UZ") : "Noma'lum"}
-                  </span>
-                </div>
-              </td>
-
-              {/* ⚡️ AMALLAR TUGMALARI PANELi */}
-              <td className="px-6 py-4 text-right whitespace-nowrap">
-                <div className="inline-flex items-center space-x-1">
-                  {/* Tahrirlash tugmasi */}
+              {/* ⚡️ AMALLAR TUGMALARI PANELi (Aynan rasmdagidek) */}
+              <td className="px-6 py-5 text-right whitespace-nowrap">
+                <div className="inline-flex items-center space-x-2">
+                  {/* Tahrirlash tugmasi - Oq fon, kulrang aylanma chiziq */}
                   <button
                     onClick={() => onEdit(waiter)}
                     disabled={isActionLoading !== null}
-                    className="p-2 text-stone-400 hover:text-stone-900 hover:bg-stone-100 rounded-xl transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none"
-                    title="Tahrirlash"
+                    className="p-2 text-stone-700 bg-white border border-stone-200 hover:bg-stone-50 rounded-xl transition-all duration-150 disabled:opacity-40 shadow-sm"
+                    title="Edit"
                   >
-                    <Pencil className="w-4 h-4" />
+                    <Pencil className="w-3.5 h-3.5" />
                   </button>
 
-                  {/* O'chirish tugmasi */}
+                  {/* O'chirish tugmasi - To'liq yorqin qizil fon, oq ikonka */}
                   <button
                     onClick={async () => {
-                      if (window.confirm(`${waiter.fullName} xodimini tizimdan o'chirishni tasdiqlaysizmi?`)) {
+                      if (
+                        window.confirm(
+                          `Delete ${waiter.fullName || waiter.username}?`,
+                        )
+                      ) {
                         await onDelete(waiter.id);
                       }
                     }}
                     disabled={isActionLoading !== null}
-                    className="p-2 text-stone-400 hover:text-[#e31221] hover:bg-red-50 rounded-xl transition-all duration-150 flex items-center justify-center disabled:opacity-40 disabled:pointer-events-none"
-                    title="O'chirish"
+                    className="p-2 text-white bg-red-600 hover:bg-red-700 rounded-xl transition-all duration-150 flex items-center justify-center disabled:opacity-40 shadow-sm shadow-red-900/10"
+                    title="Delete"
                   >
                     {isActionLoading === waiter.id ? (
-                      <Loader2 className="w-4 h-4 animate-spin text-[#e31221]" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
                     ) : (
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3.5 h-3.5" />
                     )}
                   </button>
                 </div>

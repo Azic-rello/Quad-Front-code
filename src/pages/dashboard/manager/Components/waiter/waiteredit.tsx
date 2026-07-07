@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Save, Loader2, AlertCircle } from "lucide-react";
-import { waiterService, type UserResponseDto, type BackendErrorResponse } from "./service";
+import { waiterService, type UserResponseDto } from "./service";
 
 interface EditWaiterFormProps {
   waiter: UserResponseDto;
@@ -9,10 +9,12 @@ interface EditWaiterFormProps {
   onCancel: () => void;
 }
 
-export const EditWaiterForm: React.FC<EditWaiterFormProps> = ({ waiter, onSuccess, onCancel }) => {
+export const EditWaiterForm: React.FC<EditWaiterFormProps> = ({
+  waiter,
+  onSuccess,
+  onCancel,
+}) => {
   const [fullName, setFullName] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>(""); // Parolni yangilash ixtiyoriy
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,47 +23,43 @@ export const EditWaiterForm: React.FC<EditWaiterFormProps> = ({ waiter, onSucces
   useEffect(() => {
     if (waiter) {
       setFullName(waiter.fullName || "");
-      setUsername(waiter.username || "");
-      setPassword(""); // Parol xavfsizlik uchun yashirin turadi
     }
   }, [waiter]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
-    if (!fullName || !username) {
-      setError("Ism va Username maydonlari to'ldirilishi shart.");
-      return;
-    }
 
     try {
       setIsSubmitting(true);
       setError(null);
 
-      // Backend update API'siga yuboriladigan toza obyekt
-      const updateData: { fullName: string; username: string; password?: string } = {
-        fullName,
-        username,
+      const updateData = {
+        fullName: fullName.trim(),
       };
 
-      // Agar muallif yangi parol yozgan bo'lsa, uni ham qo'shib yuboramiz
-      if (password.trim().length > 0) {
-        updateData.password = password;
-      }
+      console.log("Waiter:", waiter);
+      console.log("ID:", waiter.id);
+      console.log("DATA:", updateData);
 
-      // Servis orqali yangilash so'rovi (ID bilan birga)
-      await waiterService.updateWaiter(waiter.id, updateData);
+      const res = await waiterService.updateWaiter(waiter.id, updateData);
+
+      console.log("SUCCESS:", res);
 
       onSuccess();
-    } catch (err: unknown) {
-      if (axios.isAxiosError<BackendErrorResponse>(err) && err.response) {
-        const backendMessage = err.response.data.message;
-        if (Array.isArray(backendMessage)) {
-          setError(backendMessage.join(", "));
-        } else {
-          setError(backendMessage || "Ma'lumotlarni yangilashda xatolik yuz berdi.");
-        }
+    } catch (err) {
+      console.error(err);
+
+      if (axios.isAxiosError(err)) {
+        console.log(err.response?.status);
+        console.log(err.response?.data);
+
+        setError(
+          err.response?.data?.message ?? "Yangilashda xatolik yuz berdi.",
+        );
       } else {
-        setError("Tarmoq xatoligi yuz berdi. Qayta urinib ko'ring.");
+        setError("Noma'lum xatolik.");
       }
     } finally {
       setIsSubmitting(false);
@@ -97,39 +95,10 @@ export const EditWaiterForm: React.FC<EditWaiterFormProps> = ({ waiter, onSucces
           <input
             type="text"
             value={fullName}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFullName(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setFullName(e.target.value)
+            }
             placeholder="Masalan: Ali Valiyev"
-            disabled={isSubmitting}
-            className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 focus:outline-none focus:border-[#e31221] focus:ring-4 focus:ring-[#e31221]/5 disabled:opacity-60 transition-all"
-          />
-        </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
-            Username
-          </label>
-          <div className="relative">
-            <span className="absolute left-4 top-2.5 text-stone-400 text-sm select-none">@</span>
-            <input
-              type="text"
-              value={username}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
-              placeholder="ali_waiter"
-              disabled={isSubmitting}
-              className="w-full bg-stone-50 border border-stone-200 rounded-xl pl-8 pr-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 focus:outline-none focus:border-[#e31221] focus:ring-4 focus:ring-[#e31221]/5 disabled:opacity-60 transition-all"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
-            Yangi Parol <span className="text-stone-400 font-normal lowercase">(ixtiyoriy)</span>
-          </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-            placeholder="O'zgarishsiz qoldirish uchun bo'sh qo'ying"
             disabled={isSubmitting}
             className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-2.5 text-sm text-stone-900 placeholder-stone-400 focus:outline-none focus:border-[#e31221] focus:ring-4 focus:ring-[#e31221]/5 disabled:opacity-60 transition-all"
           />

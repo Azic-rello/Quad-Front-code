@@ -38,6 +38,25 @@ const Navbar: React.FC = () => {
     setIsOpen(false);
     setIsMobLangOpen(false);
   };
+  const handleDashboard = () => {
+    if (!user) return;
+
+    switch (user.role) {
+      case "MANAGER":
+        navigate("/manager");
+        break;
+
+      case "WAITER":
+        navigate("/waiter");
+        break;
+
+      default:
+        navigate("/");
+        break;
+    }
+
+    closeMenu();
+  };
 
   // Kompyuter til menyusidan tashqariga bosganda yopish
   useEffect(() => {
@@ -162,10 +181,7 @@ const Navbar: React.FC = () => {
             <div className="hidden md:flex items-center space-x-3">
               {/* Dashboard Tugmasi - image_b0e1be.png dagi oq borderli tugma */}
               <button
-                onClick={() => {
-                  navigate("/manager"); // Yoki manager yo'lagi
-                  closeMenu();
-                }}
+                onClick={handleDashboard}
                 className="flex items-center space-x-1.5 bg-white border border-gray-200 px-4 py-2 rounded-xl shadow-sm text-xs font-bold text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
               >
                 <LayoutDashboard className="w-3.5 h-3.5 text-gray-500" />
