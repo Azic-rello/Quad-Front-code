@@ -22,6 +22,7 @@ import AuthGuard from "../components/guards/AuthGuard";
 import CreatCategory from "../pages/dashboard/manager/Components/Category/creatcategory";
 import WaitersPage from "../pages/dashboard/manager/Components/waiter/WaitersPage";
 import WaiterSidebar from "../pages/dashboard/waiter/components/WaiterSidebar";
+import { ProductList } from "@/pages/dashboard/manager/Components/products/components/ProductList";
 
 // 👥 Ofitsiantlar paneli sahifasi
 
@@ -50,25 +51,19 @@ function App() {
       {/* 🏢 Manager Dashboard */}
       <Route element={<AuthGuard roles={["MANAGER"]} />}>
         <Route path="manager" element={<ManagerSidebar />}>
+          
           {/* 1. Dashboard Asosiy Sahifa */}
-          <Route
-            index
-            element={<div className="text-slate-400 font-medium">Dashboard sahifasi</div>}
-          />
+          <Route index element={<div className="text-slate-400 font-medium">Dashboard sahifasi</div>} />
 
-          {/* 3. Menyu (Menu) bo'limi */}
+          {/* ✅ 2. Menyu (Products) - To'g'rilandi */}
+          <Route path="menu" element={<ProductList />} />
 
-          <Route path="menu" element={<div className="text-stone-800 font-medium">Menyu ro'yxati sahifasi</div>} />
-          <Route path="create-menu" element={ <div>menu</div>} />
-
-          {/* 4. Category (Kategoriya) bo'limi */}
+          {/* 3. Category (Kategoriya) bo'limi */}
           <Route path="category" element={<CreatCategory />} />
 
-          {/* 5. Ofitsiantlar (Waiters) boshqaruv sahifasi */}
+          {/* 4. Ofitsiantlar (Waiters) boshqaruv sahifasi */}
           <Route path="waiters" element={<WaitersPage />} />
 
-          {/* Eski keraksiz route */}
-          <Route path="create-user" element={<div>Create User</div>} />
         </Route>
       </Route>
 

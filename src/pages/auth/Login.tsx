@@ -14,8 +14,8 @@ const Login: React.FC = () => {
   const login = useAuthStore((state) => state.login);
 
   // Inputlar va funksional holatlar (Aniq tiplangan)
-  const [email, setEmail] = useState<string>("admin"); // UI bo'yicha email, backendga username sifatida yuboriladi
-  const [password, setPassword] = useState<string>("Admin@123");
+  const [email, setEmail] = useState<string>("mustafo-arch"); // UI bo'yicha email, backendga username sifatida yuboriladi
+  const [password, setPassword] = useState<string>("123456");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
