@@ -41,50 +41,54 @@ export default function WaiterTables() {
     fetchTables();
   }, [fetchTables]);
 
-  // 🪑 Stolni band qilish (`OCCUPIED` holatiga o'tkazish)
-  const handleOccupyTable = async (id: string) => {
+  // Stolni band qilish (`OCCUPIED`)
+  const handleOccupyTable = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation(); 
     try {
       await tableService.occupy(id);
-      fetchTables(); // Ekrandagi holatni yangilash
+      fetchTables();
     } catch (err: any) {
       alert(err.response?.data?.message || "Stolni band qilib bo'lmadi.");
     }
   };
 
-  // 🔓 Stolni bo'shatish (`AVAILABLE` holatiga o'tkazish)
-  const handleReleaseTable = async (id: string) => {
+  // Stolni bo'shatish (`AVAILABLE`)
+  const handleReleaseTable = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation(); 
     try {
       await tableService.release(id);
-      fetchTables(); // Ekrandagi holatni yangilash
+      fetchTables();
     } catch (err: any) {
       alert(err.response?.data?.message || "Stolni bo'shatib bo'lmadi.");
     }
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto bg-gray-50 min-h-screen">
+    <div className="p-6 max-w-7xl mx-auto bg-red-50/20 min-h-screen">
       {/* Sarlavha qismi */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Zal stollari</h1>
-        <p className="text-sm text-gray-500">
-          Ofitsiant: <span className="font-semibold text-green-600">{user?.fullName || "Tizim a'zosi"}</span>
-        </p>
-      </div>
+      <div className="mb-6 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-950">Zal stollari</h1>
+          <p className="text-sm text-gray-500">
+            Ofitsiant: <span className="font-semibold text-red-600">{user?.fullName || "Tizim a'zosi"}</span>
+          </p>
+        </div>
 
-      {/* Filtr bo'limi */}
-      <div className="mb-6">
-        <select
-          value={statusFilter}
-          onChange={(e) => {
-            setStatusFilter(e.target.value);
-            setCurrentPage(1); 
-          }}
-          className="p-2 border rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
-        >
-          <option value="">Barcha stollar</option>
-          <option value="AVAILABLE">Faqat bo'sh stollar</option>
-          <option value="OCCUPIED">Faqat band stollar</option>
-        </select>
+        {/* Filtr bo'limi */}
+        <div>
+          <select
+            value={statusFilter}
+            onChange={(e) => {
+              setStatusFilter(e.target.value);
+              setCurrentPage(1); 
+            }}
+            className="p-2.5 border border-gray-200 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+          >
+            <option value="">Barcha stollar</option>
+            <option value="AVAILABLE">Faqat bo'sh stollar</option>
+            <option value="OCCUPIED">Faqat band stollar</option>
+          </select>
+        </div>
       </div>
 
       {/* Xatolik chiqsa */}
@@ -102,64 +106,76 @@ export default function WaiterTables() {
           Xizmat ko'rsatish uchun stollar topilmadi.
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {tables.map((table) => (
-            <div 
-              key={table.id} 
-              className={`p-5 border rounded-2xl shadow-sm bg-white flex flex-col justify-between transition-all duration-200 ${
-                table.status === 'OCCUPIED' ? 'ring-2 ring-amber-500/20 border-amber-200' : 'hover:shadow-md'
+            <div
+              key={table.id}
+              className={`p-4 bg-white border rounded-2xl shadow-sm flex flex-col justify-between transition-all duration-200 w-full hover:shadow-md ${
+                table.status === 'OCCUPIED' 
+                  ? 'border-red-200 bg-red-50/5 ring-1 ring-red-500/10' 
+                  : 'border-gray-100'
               }`}
             >
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="font-bold text-xl text-gray-800">Stol #{table.number}</span>
-                  <span className={`px-2.5 py-0.5 text-xs font-bold rounded-full ${
-                    table.status === 'AVAILABLE' ? 'bg-green-100 text-green-800' :
-                    table.status === 'OCCUPIED' ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'
+              {/* Yuqori qism (Ikonka, Matn va Strelka) */}
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-4">
+                  {/* Stol ikonasi - Qizil ohanglarda */}
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
+                    table.status === 'OCCUPIED' ? 'bg-red-200 text-red-700' : 'bg-red-50 text-red-600'
                   }`}>
-                    {table.status === 'AVAILABLE' ? "Bo'sh" : table.status === 'OCCUPIED' ? 'Band' : 'Yopiq'}
-                  </span>
-                </div>
-                
-                {/* 📍 Stol nomi */}
-                {table.name && (
-                  <p className="text-xs text-gray-500 font-medium italic mb-2">📍 {table.name}</p>
-                )}
-                
-                <p className="text-sm text-gray-600 mb-3">
-                  Mijoz sig'imi: <span className="font-semibold text-gray-900">{table.capacity} kishi</span>
-                </p>
-
-                {/* 🤵 Stol band bo'lsa, kim xizmat ko'rsatayotganini ko'rsatadi */}
-                {table.status === 'OCCUPIED' && table.occupiedBy && (
-                  <div className="text-xs text-amber-800 bg-amber-50/70 p-2 rounded-xl border border-amber-100/50 mt-2">
-                    Xizmatda: <span className="font-bold">{table.occupiedBy.fullName}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                    </svg>
                   </div>
-                )}
+
+                  {/* Stol Nomi va holat yozuvlari */}
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-bold text-gray-900 text-base">Table {table.number}</h3>
+                      <span className={`text-[10px] px-1.5 py-0.5 font-bold rounded-md ${
+                        table.status === 'AVAILABLE' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+                      }`}>
+                        {table.status === 'AVAILABLE' ? "Bo'sh" : "Band"}
+                      </span>
+                    </div>
+                    
+                    <p className="text-xs text-gray-400 font-medium mt-0.5">
+                      {table.status === 'AVAILABLE' && "Hali buyurtma yo'q"}
+                      {table.status === 'OCCUPIED' && `Xizmatda: ${table.occupiedBy?.fullName || 'Ofitsiant'}`}
+                      {table.status !== 'AVAILABLE' && table.status !== 'OCCUPIED' && "Yopiq"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* O'ng tarafdagi strelka `>` */}
+                <div className="text-gray-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </div>
               </div>
 
-              {/* ⚡️ Harakat tugmalari */}
-              <div className="mt-5 pt-3 border-t border-gray-100">
+              {/* ⚡️ Pastki qism: Band qilish / Bo'shatish tugmalari */}
+              <div className="mt-4 pt-3 border-t border-gray-100 flex justify-end">
                 {table.status === 'AVAILABLE' ? (
                   <button
-                    onClick={() => handleOccupyTable(table.id)}
-                    className="w-full py-2 text-xs font-bold text-white bg-green-600 hover:bg-green-700 active:bg-green-800 rounded-xl transition shadow-sm"
+                    onClick={(e) => handleOccupyTable(table.id, e)}
+                    className="px-4 py-1.5 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 active:scale-95 rounded-xl transition shadow-sm"
                   >
-                    Stolni Band Qilish
+                    Band qilish
                   </button>
                 ) : table.status === 'OCCUPIED' ? (
                   <button
-                    onClick={() => handleReleaseTable(table.id)}
-                    className="w-full py-2 text-xs font-bold text-white bg-amber-500 hover:bg-amber-600 active:bg-amber-700 rounded-xl transition shadow-sm"
+                    onClick={(e) => handleReleaseTable(table.id, e)}
+                    className="px-4 py-1.5 text-xs font-semibold text-white bg-gray-500 hover:bg-gray-600 active:scale-95 rounded-xl transition shadow-sm"
                   >
-                    Stolni Bo'shatish
+                    Bo'shatish
                   </button>
                 ) : (
-                  <div className="text-center py-2 text-xs font-medium text-gray-400 bg-gray-100 rounded-xl">
-                    Vaqtincha yopiq
-                  </div>
+                  <span className="text-xs text-gray-400 italic">Xizmat ko'rsatib bo'lmaydi</span>
                 )}
               </div>
+
             </div>
           ))}
         </div>
