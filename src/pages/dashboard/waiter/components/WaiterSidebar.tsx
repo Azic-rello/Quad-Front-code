@@ -50,7 +50,7 @@ const WaiterSidebar: React.FC = () => {
           {/* Menu */}
    <nav className="space-y-2">
   <NavLink
-    to="/waiter/tables" // Routeringdagi aniq yo'l
+    to="/waiter" // Routeringdagi aniq yo'l
     className={({ isActive }) =>
       `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
         isActive

@@ -10,8 +10,8 @@ import {
   UtensilsCrossed,
   Users,
   Table2,
-  ShoppingBag,
-  Layers,
+  ClipboardList,
+  Newspaper,
 } from "lucide-react";
 import { useAuthStore } from "../../../../modules/auth/authStore";
 
@@ -27,9 +27,11 @@ const ManagerSidebar: React.FC = () => {
   // Hozirgi sahifa nomini aniqlash (Logotip tagida ko'rinishi uchun)
   const getSubTitle = () => {
     if (location.pathname === "/manager") return "Overview";
-    if (location.pathname.includes("create-menu")) return "Menu";
+    if (location.pathname.includes("menu")) return "Menu";
     if (location.pathname.includes("waiters")) return "Waiters";
     if (location.pathname.includes("tables")) return "Tables";
+    if (location.pathname.includes("liveOrder")) return "Live order";
+    if (location.pathname.includes("news")) return "News";
     return "Management";
   };
 
@@ -84,22 +86,6 @@ const ManagerSidebar: React.FC = () => {
               <LayoutDashboard className="w-5 h-5 opacity-90" />
               <span>Overview</span>
             </NavLink>
-
-            {/* 2. Buyurtmalar */}
-            <NavLink
-              to="/manager/buyurtmalar"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
-                }`
-              }
-            >
-              <ShoppingBag className="w-5 h-5 opacity-80" />
-              <span>Buyurtmalar</span>
-            </NavLink>
-
             {/* 3. Menyu */}
             <NavLink
               to="/manager/menu"
@@ -110,24 +96,6 @@ const ManagerSidebar: React.FC = () => {
               <UtensilsCrossed className="w-5 h-5 opacity-80" />
               <span>Menyu</span>
             </NavLink>
-
-            {/* 4. Kategoriyalar */}
-            <NavLink
-              to="/manager/category"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
-                }`
-              }
-            >
-              <Layers className="w-5 h-5 opacity-80" />
-              <span>Kategoriyalar</span>
-            </NavLink>
-
-            {/* 5. Ofitsiantlar (Yangi qo'shilgan qism) */}
-            {/* 2. Waiters / Ofitsiantlar */}
             <NavLink
               to="/manager/waiters"
               className={({ isActive }) =>
@@ -156,7 +124,32 @@ const ManagerSidebar: React.FC = () => {
               <Table2 className="w-5 h-5 opacity-80" />
               <span>Tables</span>
             </NavLink>
-
+            <NavLink
+              to="/manager/liveOrder"
+              className={({ isActive }) =>
+                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
+                }`
+              }
+            >
+              <ClipboardList className="w-5 h-5 opacity-80" />
+              <span>Live Orders</span>
+            </NavLink>
+            <NavLink
+              to="/manager/news"
+              className={({ isActive }) =>
+                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
+                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
+                }`
+              }
+            >
+              <Newspaper className="w-5 h-5 opacity-80" />
+              <span>News</span>
+            </NavLink>
           </nav>
         </div>
 

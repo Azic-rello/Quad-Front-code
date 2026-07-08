@@ -6,7 +6,6 @@ export default function CategoriesManagementPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const listRef = useRef<{ fetchCategories: () => void }>(null);
 
-  // Yangi kategoriya muvaffaqiyatli qo'shilganda ro'yxatni yangilash
   const handleSuccess = () => {
     if (listRef.current) {
       listRef.current.fetchCategories(); // Ro'yxatni qayta chizish funksiyasi

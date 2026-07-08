@@ -21,6 +21,8 @@ import { ProductList } from "@/pages/dashboard/manager/Components/products/compo
 import CategoriesManagementPage from "@/pages/dashboard/manager/Components/Category/CategoriesPage";
 import TablesPage from "@/pages/dashboard/manager/Components/Tables/TablesPage";
 import WaiterTables from "@/pages/dashboard/waiter/components/WaiterTables";
+import LiveOrder from "@/pages/dashboard/manager/Components/liveorder/LiveOrder";
+import News from "@/pages/dashboard/manager/Components/News/News";
 
 function App() {
   return (
@@ -44,7 +46,6 @@ function App() {
 
       <Route element={<AuthGuard roles={["MANAGER"]} />}>
         <Route path="manager" element={<ManagerSidebar />}>
-          
           {/* 1. Dashboard Asosiy Sahifa */}
 
           <Route
@@ -56,19 +57,17 @@ function App() {
             }
           />
 
-          <Route path="menu" element={<ProductList/>} />
-          <Route path="category" element={<CategoriesManagementPage />} />
+          <Route path="menu" element={<ProductList />} />
           <Route path="waiters" element={<WaitersPage />} />
           <Route path="tables" element={<TablesPage />} />
-          <Route path="katagory" element={<CategoriesManagementPage />} />
-
-          <Route path="create-user" element={<div>Create User</div>} />
+          <Route path="liveOrder" element={<LiveOrder />} />
+          <Route path="news" element={<News />} />
         </Route>
       </Route>
 
       <Route element={<AuthGuard roles={["WAITER"]} />}>
-        <Route path="waiter/tables" element={<WaiterSidebar />}>
-          <Route index path="tables" element={<WaiterTables />} />
+        <Route path="waiter" element={<WaiterSidebar />}>
+          <Route index element={<WaiterTables />} />
         </Route>
       </Route>
 

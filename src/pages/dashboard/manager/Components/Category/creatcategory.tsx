@@ -151,7 +151,7 @@ export default function CreateCategory({ onSuccess, onClose }: CreateCategoryPro
           <button 
             type="submit" 
             disabled={loading} 
-            className="px-6 py-3 bg-[#e31221] text-white font-bold text-sm rounded-2xl hover:bg-[#c90f1b] hover:shadow-lg hover:shadow-red-500/20 transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center min-w-[110px]"
+            className="px-6 py-3 bg-[#e31221] text-white font-bold text-sm rounded-2xl hover:bg-[#c90f1b] hover:shadow-lg hover:shadow-red-500/20 transition-all active:scale-95 disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center min-w-27.5"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
