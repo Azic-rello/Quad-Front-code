@@ -1,45 +1,41 @@
-// Backenddan keladigan kategoriya turi
-export interface Category {
+export interface ProductVariant {
   id: string;
+  productId: string;
   name: string;
-  slug: string;
-  isActive: boolean;
-}
-
-
-// Backend pagination javobi uchun wrapper
-export interface PaginatedResponse<T> {
-  items: T[];
-  meta: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
-
-
-// Mahsulot turi
-export interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  description?: string | null;
   price: number;
-  imageUrl?: string | null;
+  sku: string | null;
+  isDefault: boolean;
   isAvailable: boolean;
-  categoryId: string;
-  category: Category;
   createdAt: string;
   updatedAt: string;
 }
 
-// DTO lar (Backend validatsiyasiga mos)
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  imageUrl: string | null;
+  isActive: boolean;
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  imageUrl: string | null;
+  isAvailable: boolean;
+  categoryId: string;
+  category: Category;
+  variants?: ProductVariant[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface CreateProductDto {
   name: string;
   slug: string;
   description?: string;
-  price: number;
   imageUrl?: string;
   categoryId: string;
 }
@@ -48,7 +44,6 @@ export interface UpdateProductDto {
   name?: string;
   slug?: string;
   description?: string;
-  price?: number;
   imageUrl?: string;
   categoryId?: string;
 }
@@ -62,22 +57,15 @@ export interface QueryProductDto {
   limit?: number;
   search?: string;
   categoryId?: string;
+  isAvailable?: boolean;
 }
 
-// Pagination javobi
 export interface ProductsResponse {
   items: Product[];
   meta: {
+    total: number;
     page: number;
     limit: number;
-    total: number;
     totalPages: number;
   };
-}
-
-// Xatolik turi
-export interface ApiErrorResponse {
-  message: string;
-  error?: string;
-  statusCode?: number;
 }
