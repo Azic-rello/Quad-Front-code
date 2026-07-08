@@ -15,7 +15,7 @@ const Login: React.FC = () => {
 
   // Inputlar va funksional holatlar (Aniq tiplangan)
   const [email, setEmail] = useState<string>("vali"); // UI bo'yicha email, backendga username sifatida yuboriladi
-  const [password, setPassword] = useState<string>("123456");
+  const [password, setPassword] = useState<string>("123");
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

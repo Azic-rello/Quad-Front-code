@@ -18,11 +18,11 @@ import WaitersPage from "../pages/dashboard/manager/Components/waiter/WaitersPag
 import WaiterSidebar from "../pages/dashboard/waiter/components/WaiterSidebar";
 
 import { ProductList } from "@/pages/dashboard/manager/Components/products/components/ProductList";
-import CategoriesManagementPage from "@/pages/dashboard/manager/Components/Category/CategoriesPage";
 import TablesPage from "@/pages/dashboard/manager/Components/Tables/TablesPage";
 import WaiterTables from "@/pages/dashboard/waiter/components/WaiterTables";
 import LiveOrder from "@/pages/dashboard/manager/Components/liveorder/LiveOrder";
 import News from "@/pages/dashboard/manager/Components/News/News";
+import Dashboard from "@/pages/dashboard/manager/Components/dashboard/Dashboard";
 
 function App() {
   return (
@@ -51,9 +51,7 @@ function App() {
           <Route
             index
             element={
-              <div className="text-slate-400 font-medium">
-                Dashboard sahifasi
-              </div>
+              <Dashboard/>
             }
           />
 

@@ -1,12 +1,10 @@
-import axios from 'axios';
-import { useAuthStore } from '../../../../../modules/auth/authStore';
+import { $api } from "../../../../../services/api"; // Loyihangdagi global api.ts yo'liga qarab to'g'rilab olasan
 
 export interface Table {
-  name: import("react/jsx-runtime").JSX.Element;
   id: string;
   number: number;
   capacity: number;
-  status: 'AVAILABLE' | 'OCCUPIED' | 'DISABLED';
+  status: "AVAILABLE" | "OCCUPIED" | "DISABLED";
   occupiedBy?: {
     fullName: string;
   };
@@ -23,46 +21,43 @@ export interface TablesResponse {
   };
 }
 
-const API = axios.create({
-  baseURL: 'http://localhost:3000/tables',
-});
-
-// Request Interceptor: Tokenni tekshirish va har bir so'rovga qo'shish
-API.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().accessToken || useAuthStore.getState().token;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
 export const tableService = {
   /**
-   * 📊 Barcha stollarni sahifalab olish (Backend qulamasligi uchun optimizatsiya qilindi)
+   * 📊 Barcha stollarni olish (Limitni oshirdik, hammasi kelishi uchun)
    */
-  getAll: async (page = 1, limit = 8, status = ''): Promise<TablesResponse> => {
-    // ⚡️ Backend "take: '8'" deb qulamasligi uchun params ichidan limitni olib tashladik.
-    // NestJS o'zining ichki default limitini (qiymatini) ishlatib xatosiz ma'lumot qaytaradi.
+  getAll: async (
+    page = 1,
+    limit = 100,
+    status = "",
+  ): Promise<TablesResponse> => {
     const params: any = {
       page: Number(page),
     };
 
-    // Status rostdan ham bor bo'lsagina params'ga qo'shamiz
-    if (status && status.trim() !== '') {
+    if (status && status.trim() !== "") {
       params.status = status;
     }
 
-    const response = await API.get('', { params });
-    return response.data;
+    // Umumiy xavfsiz $api orqali /tables'ga so'rov yuboriladi
+    const response = await $api.get<unknown>("/tables", { params });
+
+    // Response formati o'ralgan bo'lishi ehtimoli uchun xavfsiz qaytarish
+    if (response && typeof response === "object" && "data" in response) {
+      return (response as { data: TablesResponse }).data;
+    }
+    return response as unknown as TablesResponse;
   },
 
   /**
    * ➕ Yangi stol yaratish
    */
-  create: async (data: { number: number; capacity: number }): Promise<Table> => {
-    const response = await API.post('', {
+  create: async (data: {
+    number: number;
+    capacity: number;
+  }): Promise<Table> => {
+    const response = await $api.post<Table>("/tables", {
       number: Number(data.number),
-      capacity: Number(data.capacity)
+      capacity: Number(data.capacity),
     });
     return response.data;
   },
@@ -71,8 +66,8 @@ export const tableService = {
    * ✏️ Stolni tahrirlash
    */
   update: async (id: string, data: { capacity: number }): Promise<Table> => {
-    const response = await API.patch(`/${id}`, {
-      capacity: Number(data.capacity)
+    const response = await $api.patch<Table>(`/tables/${id}`, {
+      capacity: Number(data.capacity),
     });
     return response.data;
   },
@@ -81,7 +76,7 @@ export const tableService = {
    * 🪑 Stolni band qilish
    */
   occupy: async (id: string): Promise<Table> => {
-    const response = await API.patch(`/${id}/occupy`);
+    const response = await $api.patch<Table>(`/tables/${id}/occupy`);
     return response.data;
   },
 
@@ -89,7 +84,7 @@ export const tableService = {
    * 🔓 Stolni bo'shatish
    */
   release: async (id: string): Promise<Table> => {
-    const response = await API.patch(`/${id}/release`);
+    const response = await $api.patch<Table>(`/tables/${id}/release`);
     return response.data;
   },
 
@@ -97,7 +92,9 @@ export const tableService = {
    * ⚙️ Statusni o'zgartirish (AVAILABLE, OCCUPIED, DISABLED)
    */
   changeStatus: async (id: string, status: string): Promise<Table> => {
-    const response = await API.patch(`/${id}/status`, { status });
+    const response = await $api.patch<Table>(`/tables/${id}/status`, {
+      status,
+    });
     return response.data;
   },
 
@@ -105,7 +102,7 @@ export const tableService = {
    * ❌ Stolni o'chirish
    */
   delete: async (id: string): Promise<void> => {
-    const response = await API.delete(`/${id}`);
+    const response = await $api.delete<void>(`/tables/${id}`);
     return response.data;
-  }
+  },
 };
