@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Grid, RefreshCw, DollarSign } from "lucide-react";
+import { Grid, DollarSign } from "lucide-react";
 import { tableService } from "../Tables/service"; // Sening asl servising
 
 // 1. Tip nomini o'zgartiramiz, toki sening ichki Table'ing bilan to'qnashmasin

@@ -84,7 +84,6 @@ export const WaitersList: React.FC<WaitersListProps> = ({
                   </div>
                 </td>
 
-                {/* Username / Email joyi */}
                 <td className="px-8 py-5 text-stone-500 font-semibold text-base whitespace-nowrap">
                   {waiter.username}
                 </td>

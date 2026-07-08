@@ -27,6 +27,7 @@ import Dashboard from "@/pages/dashboard/manager/Components/dashboard/Dashboard"
 function App() {
   return (
     <Routes>
+      {/* Public Routes */}
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<HomeLayout />} />
         <Route path="menu" element={<MenuLayout />} />
@@ -35,6 +36,7 @@ function App() {
         <Route path="basket" element={<BasketLayout />} />
       </Route>
 
+      {/* Auth Routes */}
       <Route path="/auth">
         <Route index element={<Navigate to="/auth/login" replace />} />
         <Route path="login" element={<Login />} />
@@ -42,12 +44,12 @@ function App() {
 
       <Route path="/login" element={<Navigate to="/auth/login" replace />} />
 
+      {/* SuperAdmin */}
       <Route path="/admin" element={<SuperAdmin />} />
 
+      {/* Manager Routes */}
       <Route element={<AuthGuard roles={["MANAGER"]} />}>
         <Route path="manager" element={<ManagerSidebar />}>
-          {/* 1. Dashboard Asosiy Sahifa */}
-
           <Route
             index
             element={
@@ -55,7 +57,9 @@ function App() {
             }
           />
 
+          {/* Menyu - Product va Variantlar shu yerda */}
           <Route path="menu" element={<ProductList />} />
+          
           <Route path="waiters" element={<WaitersPage />} />
           <Route path="tables" element={<TablesPage />} />
           <Route path="liveOrder" element={<LiveOrder />} />
@@ -63,12 +67,14 @@ function App() {
         </Route>
       </Route>
 
+      {/* Waiter Routes */}
       <Route element={<AuthGuard roles={["WAITER"]} />}>
         <Route path="waiter" element={<WaiterSidebar />}>
           <Route index element={<WaiterTables />} />
         </Route>
       </Route>
 
+      {/* 404 */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

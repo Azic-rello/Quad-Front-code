@@ -1,12 +1,21 @@
-import React from 'react';
-import type { Product } from '../types/productTypes';
-import { useAuthStore } from '@/modules/auth/authStore';
+import React, { useState, useMemo } from "react";
+import type { Product } from "../types/productTypes";
+import { useAuthStore } from "@/modules/auth/authStore";
+import {
+  Pencil,
+  SlidersHorizontal,
+  Eye,
+  EyeOff,
+  Trash2,
+  ImageIcon,
+} from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
   onEdit: (product: Product) => void;
   onDelete: (id: string) => void;
   onToggleStatus: (id: string, isAvailable: boolean) => void;
+  onManageVariants: (product: Product) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -14,62 +23,252 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onEdit,
   onDelete,
   onToggleStatus,
+  onManageVariants,
 }) => {
   const { user } = useAuthStore();
-  // Role type bo'lgani uchun string bilan solishtiramiz
-  const canManage = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+  const canManage = user?.role === "ADMIN" || user?.role === "MANAGER";
+
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
+    null,
+  );
+
+  const availableVariants = useMemo(() => {
+    return product.variants?.filter((v) => v.isAvailable) || [];
+  }, [product.variants]);
+
+  const selectedVariant = useMemo(() => {
+    if (selectedVariantId) {
+      return availableVariants.find((v) => v.id === selectedVariantId);
+    }
+    return availableVariants.find((v) => v.isDefault) || availableVariants[0];
+  }, [selectedVariantId, availableVariants]);
+
+  const formatPrice = (price: number) => {
+    return price.toLocaleString("uz-UZ");
+  };
+
+  const getVariantColor = (variantName: string) => {
+    const name = variantName.toLowerCase();
+    if (
+      name.includes("kichik") ||
+      name.includes("small") ||
+      name.includes("s")
+    ) {
+      return "bg-blue-50 text-blue-700 border-blue-200 ring-blue-300";
+    }
+    if (
+      name.includes("o'rta") ||
+      name.includes("orta") ||
+      name.includes("medium") ||
+      name.includes("m")
+    ) {
+      return "bg-emerald-50 text-emerald-700 border-emerald-200 ring-emerald-300";
+    }
+    if (
+      name.includes("katta") ||
+      name.includes("large") ||
+      name.includes("l")
+    ) {
+      return "bg-purple-50 text-purple-700 border-purple-200 ring-purple-300";
+    }
+    return "bg-amber-50 text-amber-800 border-amber-200 ring-amber-300";
+  };
+
+  const categoryName = product.category?.name || "Kategoriya yo'q";
+  const variantsCount = product.variants?.length || 0;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 border border-stone-200 group">
-      <div className="relative h-48 bg-stone-100">
+    <div className="bg-white rounded-[28px] border border-stone-100 shadow-xs overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full animate-in fade-in duration-300">
+      {/* ─── RASM QISMI ─── */}
+      <div className="relative h-56 bg-stone-50 overflow-hidden select-none">
         {product.imageUrl ? (
-          <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-stone-400">
-            <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = "none";
+              const placeholder = e.currentTarget
+                .nextElementSibling as HTMLElement;
+              if (placeholder) placeholder.style.display = "flex";
+            }}
+          />
+        ) : null}
+
+        {/* Rasm bo'lmaganda chiqadigan placeholder */}
+        {!product.imageUrl && (
+          <div className="w-full h-full flex flex-col items-center justify-center text-stone-300 gap-2">
+            <ImageIcon className="w-12 h-12 stroke-[1.5]" />
+            <span className="text-xs font-semibold text-stone-400">
+              Rasm yuklanmagan
+            </span>
           </div>
         )}
-        <div className="absolute top-2 right-2">
-          <span className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${
-            product.isAvailable ? 'bg-green-100/90 text-green-800' : 'bg-red-100/90 text-red-800'
-          }`}>
-            {product.isAvailable ? 'Faol' : "Nofaol"}
+
+        {/* Status Badge */}
+        <div className="absolute top-4 right-4 z-10">
+          <span
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide shadow-2xs backdrop-blur-md ${
+              product.isAvailable
+                ? "bg-emerald-500 text-white"
+                : "bg-stone-800 text-white"
+            }`}
+          >
+            {product.isAvailable ? "Faol" : "Nofaol"}
           </span>
         </div>
+
+        {/* Variantlar Soni Badge */}
+        {variantsCount > 0 && (
+          <div className="absolute top-4 left-4 z-10">
+            <span className="px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide bg-white/90 text-stone-900 border border-stone-200/40 shadow-2xs backdrop-blur-sm">
+              {variantsCount} variant
+            </span>
+          </div>
+        )}
       </div>
 
-      <div className="p-4">
-        <h3 className="text-lg font-bold text-stone-900 mb-1 truncate">{product.name}</h3>
-        <p className="text-xs text-stone-500 mb-3 font-medium uppercase tracking-wider">{product.category.name}</p>
-        
-        {product.description && (
-          <p className="text-sm text-stone-600 mb-4 line-clamp-2 min-h-10">{product.description}</p>
-        )}
-
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-xl font-black text-[#e31221]">
-            {product.price.toLocaleString('uz-UZ')} so'm
+      {/* ─── KARTA MATNI VA MA'LUMOTLARI ─── */}
+      <div className="p-6 flex flex-col flex-1 justify-between space-y-4">
+        <div>
+          <span className="text-[11px] font-black tracking-wider text-red-600 uppercase bg-red-50 px-2.5 py-1 rounded-lg inline-block mb-2">
+            {categoryName}
           </span>
+          <h3
+            className="text-xl font-bold text-stone-950 truncate line-clamp-1 mb-1"
+            title={product.name}
+          >
+            {product.name}
+          </h3>
+
+          {product.description && (
+            <p className="text-sm text-stone-500 font-medium line-clamp-2 min-h-[40px] leading-relaxed">
+              {product.description}
+            </p>
+          )}
         </div>
 
+        {/* ─── VARIANTLAR PANELi ─── */}
+        <div>
+          {availableVariants.length > 0 ? (
+            <div className="space-y-3">
+              {/* Variant tugmalari */}
+              <div className="flex flex-wrap gap-2">
+                {availableVariants.map((variant) => (
+                  <button
+                    key={variant.id}
+                    onClick={() => setSelectedVariantId(variant.id)}
+                    className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-all duration-200 cursor-pointer active:scale-95 ${
+                      selectedVariant?.id === variant.id
+                        ? getVariantColor(variant.name) +
+                          " border-2 ring-2 ring-offset-1 font-extrabold"
+                        : "bg-stone-50 text-stone-600 border-stone-200 hover:bg-stone-100 hover:text-stone-900"
+                    }`}
+                  >
+                    <span className="flex items-center gap-1">
+                      {variant.name}
+                      {variant.isDefault && (
+                        <span className="text-[9px] opacity-60 font-normal">
+                          (Asosiy)
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Tanlangan Variant Narxi */}
+              {selectedVariant && (
+                <div className="flex items-center justify-between p-4 bg-stone-50 border border-stone-100 rounded-2xl">
+                  <div className="space-y-0.5">
+                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider">
+                      Narxi
+                    </p>
+                    {selectedVariant.sku && (
+                      <p className="text-[10px] text-stone-400 font-mono">
+                        SKU: {selectedVariant.sku}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-black text-stone-950 tracking-tight">
+                      {formatPrice(Number(selectedVariant.price))}
+                    </span>
+                    <span className="text-xs font-bold text-stone-500">
+                      so'm
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="p-4 bg-stone-50 border border-dashed border-stone-200 rounded-2xl text-center">
+              <p className="text-xs font-semibold text-stone-400">
+                Hozircha faol variantlar yo'q
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* ─── SITESIMIZGA MOS ASSORTIMENT BOSHQARUV TUGMALARI ─── */}
         {canManage && (
-          <div className="flex gap-2 pt-3 border-t border-stone-100">
-            <button onClick={() => onEdit(product)} className="flex-1 px-3 py-2 bg-stone-100 text-stone-700 rounded-lg hover:bg-stone-200 transition-colors text-sm font-medium">
-              Tahrirlash
+          <div className="pt-4 border-t border-stone-100 space-y-2.5">
+            {/* Variantlarni Boshqarish */}
+            <button
+              onClick={() => onManageVariants(product)}
+              className="w-full px-4 py-3 bg-[#ffdd00] hover:bg-[#ebd000] text-stone-950 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-2xs transition-all duration-200 cursor-pointer active:scale-[0.99]"
+            >
+              <SlidersHorizontal className="w-4 h-4 text-stone-950 stroke-[2.5]" />
+              Variantlarni boshqarish ({variantsCount})
             </button>
-            <button onClick={() => onToggleStatus(product.id, !product.isAvailable)} 
-              className={`flex-1 px-3 py-2 rounded-lg transition-colors text-sm font-medium ${
-                product.isAvailable ? 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100' : 'bg-green-50 text-green-700 hover:bg-green-100'
-              }`}>
-              {product.isAvailable ? "Muzlatish" : 'Yoqish'}
-            </button>
-            <button onClick={() => onDelete(product.id)} className="px-3 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-            </button>
+
+            {/* Tahrirlash, Muzlatish va O'chirish qatori */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => onEdit(product)}
+                className="flex-1 px-3 py-2.5 bg-stone-100 hover:bg-stone-200/80 text-stone-800 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1"
+              >
+                <Pencil className="w-3.5 h-3.5" />
+                Tahrirlash
+              </button>
+
+              <button
+                onClick={() => onToggleStatus(product.id, !product.isAvailable)}
+                className={`flex-1 px-3 py-2.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1 ${
+                  product.isAvailable
+                    ? "bg-amber-50 text-amber-700 hover:bg-amber-100"
+                    : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                }`}
+              >
+                {product.isAvailable ? (
+                  <>
+                    <EyeOff className="w-3.5 h-3.5" />
+                    Muzlatish
+                  </>
+                ) : (
+                  <>
+                    <Eye className="w-3.5 h-3.5" />
+                    Yoqish
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      "Rostdan ham bu mahsulotni o'chirmoqchimisiz?",
+                    )
+                  ) {
+                    onDelete(product.id);
+                  }
+                }}
+                className="px-3.5 py-2.5 bg-red-50 text-[#e31221] hover:bg-red-100 rounded-xl font-bold transition-colors cursor-pointer flex items-center justify-center shadow-2xs"
+                title="O'chirish"
+              >
+                <Trash2 className="w-4 h-4 stroke-[2.5]" />
+              </button>
+            </div>
           </div>
         )}
       </div>

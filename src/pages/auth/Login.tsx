@@ -17,6 +17,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("vali"); // UI bo'yicha email, backendga username sifatida yuboriladi
   const [password, setPassword] = useState<string>("123");
 
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
