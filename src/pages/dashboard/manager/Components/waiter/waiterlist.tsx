@@ -52,7 +52,6 @@ export const WaitersList: React.FC<WaitersListProps> = ({
           <tr className="bg-white border-b border-stone-100 text-stone-400 text-sm font-normal select-none">
             <th className="px-6 py-4 font-normal">Name</th>
             <th className="px-6 py-4 font-normal">Email</th>
-            <th className="px-6 py-4 font-normal">Password</th>
             <th className="px-6 py-4 text-right font-normal">Actions</th>
           </tr>
         </thead>
@@ -71,12 +70,6 @@ export const WaitersList: React.FC<WaitersListProps> = ({
                   : `${waiter.username}`}
               </td>
 
-              {/* Parol qismi (Rasmdagi kabi kichik kulrang badge ichida) */}
-              <td className="px-6 py-5">
-                <span className="bg-stone-100 text-stone-600 px-2 py-0.5 rounded-md text-xs font-mono">
-                  123
-                </span>
-              </td>
 
               {/* ⚡️ AMALLAR TUGMALARI PANELi (Aynan rasmdagidek) */}
               <td className="px-6 py-5 text-right whitespace-nowrap">
