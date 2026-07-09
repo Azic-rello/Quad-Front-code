@@ -1,28 +1,5 @@
-<<<<<<< HEAD
-=======
-import AuthGuard from "@/components/guards/AuthGuard";
+import AuthGuard from "../components/guards/AuthGuard";
 import { useLoader } from "@/components/shared/Loader";
-import PublicLayout from "@/layouts/PublicLayout";
-import Login from "@/pages/auth/Login";
-import Dashboard from "@/pages/dashboard/manager/Components/dashboard/Dashboard";
-import LiveOrder from "@/pages/dashboard/manager/Components/liveorder/LiveOrder";
-import ManagerSidebar from "@/pages/dashboard/manager/Components/ManagerSidebar";
-import News from "@/pages/dashboard/manager/Components/News/News";
-import { CreateOrder } from "@/pages/dashboard/manager/Components/orderj/CreateOrder";
-import { OrderDetails } from "@/pages/dashboard/manager/Components/orderj/OrderDetails";
-import WaiterOrderPage from "@/pages/dashboard/manager/Components/orderj/WaiterOrderPage";
-import { ProductList } from "@/pages/dashboard/manager/Components/products/components/ProductList";
-import TablesPage from "@/pages/dashboard/manager/Components/Tables/TablesPage";
-import WaitersPage from "@/pages/dashboard/manager/Components/waiter/WaitersPage";
-import SuperAdmin from "@/pages/dashboard/SuperAdmin/SuperAdmin";
-import WaiterSidebar from "@/pages/dashboard/waiter/components/WaiterSidebar";
-import WaiterTables from "@/pages/dashboard/waiter/components/WaiterTables";
-import AboutLayout from "@/pages/public/About/AboutLayout";
-import BasketLayout from "@/pages/public/Basket/BasketLayout";
-import HomeLayout from "@/pages/public/Home/HomeLayout";
-import MenuLayout from "@/pages/public/Menu/MenuLayout";
-import NewsLayout from "@/pages/public/News/NewsLayout";
->>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
 import { useEffect, useRef } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
@@ -50,7 +27,6 @@ import LiveOrder from "@/pages/dashboard/manager/Components/liveorder/LiveOrder"
 import News from "@/pages/dashboard/manager/Components/News/News";
 
 // Order Module (Manager)
-import { OrdersList } from "@/pages/dashboard/manager/Components/orderj/OrdersList";
 import { OrderDetails } from "@/pages/dashboard/manager/Components/orderj/OrderDetails";
 import { CreateOrder } from "@/pages/dashboard/manager/Components/orderj/CreateOrder";
 
@@ -59,8 +35,6 @@ import WaiterSidebar from "@/pages/dashboard/waiter/components/WaiterSidebar";
 import WaiterTables from "@/pages/dashboard/waiter/components/WaiterTables";
 
 // Guards & Hooks
-import AuthGuard from "@/components/guards/AuthGuard";
-import { useLoader } from "@/components/shared/Loader";
 import WaiterOrderPage from "@/pages/dashboard/manager/Components/orderj/WaiterOrderPage";
 
 function App() {

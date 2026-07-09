@@ -204,7 +204,7 @@ export default function WaiterTables() {
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="font-bold text-gray-900 text-base">
-                          Table {table.number}
+                          Stol {table.number}
                         </h3>
                         <span className={`text-[10px] px-1.5 py-0.5 font-bold rounded-md ${
                           table.status === "AVAILABLE" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
@@ -225,30 +225,6 @@ export default function WaiterTables() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
                   </div>
-<<<<<<< HEAD
-=======
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-gray-900 text-base">
-                        Stol {table.number}
-                      </h3>
-                      <span
-                        className={`text-[10px] px-1.5 py-0.5 font-bold rounded-md ${
-                          table.status === "AVAILABLE"
-                            ? "bg-green-50 text-green-700"
-                            : "bg-red-50 text-red-700"
-                        }`}
-                      >
-                        {table.status === "AVAILABLE" ? "Bo'sh" : "Band"}
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-400 font-medium mt-0.5 truncate max-w-[180px]">
-                      {table.status === "AVAILABLE" && "Hali buyurtma yo'q"}
-                      {table.status === "OCCUPIED" &&
-                        `Xizmatda: ${table.occupiedBy?.fullName || "Ofitsiant"}`}
-                    </p>
-                  </div>
->>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
                 </div>
 
                 {/* ✅ Tugmalar qismi - Faqat bo'sh stolda "Band qilish" */}
