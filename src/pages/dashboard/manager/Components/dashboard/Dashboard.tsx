@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Users,
-  Grid,
-  Utensils,
-  Newspaper,
-  ClipboardList,
-  TrendingUp,
-  Loader2,
-} from "lucide-react";
+import { Users, Grid, Utensils, ClipboardList, Loader2 } from "lucide-react";
 
 import { waiterService } from "../../Components/waiter/service";
 import { tableService } from "../../Components/Tables/service";
@@ -18,15 +10,11 @@ interface DashboardProps {
   activeRevenue?: number;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({
-  newsCount = 2,
-  activeRevenue = 195000,
-}) => {
+const Dashboard: React.FC<DashboardProps> = ({}) => {
   const [waitersCount, setWaitersCount] = useState<number>(0);
   const [isLoadingWaiters, setIsLoadingWaiters] = useState<boolean>(true);
 
   const [tablesCount, setTablesCount] = useState<number>(0);
-  // 1. BU YERDA BOOLEAN BO'LIB QOLGAN EDI, NUMBER QILINDI:
   const [activeTablesCount, setActiveTablesCount] = useState<number>(0);
   const [isLoadingTables, setIsLoadingTables] = useState<boolean>(true);
 
@@ -73,7 +61,6 @@ const Dashboard: React.FC<DashboardProps> = ({
           limit: 1000,
           search: "",
         });
-        // 2. BU YERDAN RESPONSE.DATA OLIB TASHLANDI, FAQAT ITEMS TEKSHIRILADI:
         const foodsList = response.items || [];
         setFoodsCount(foodsList.length);
       } catch (err: unknown) {
@@ -91,15 +78,15 @@ const Dashboard: React.FC<DashboardProps> = ({
   return (
     <div className="w-full min-h-screen bg-[#FAF9F5] p-6 sm:p-8 font-sans antialiased selection:bg-red-500 selection:text-white">
       <div className="w-full space-y-8 max-w-[1600px] mx-auto animate-in fade-in duration-500">
-        {/* ─── TEPASI: Sarlavha va Til Tanlash ─── */}
+        {/* ─── TEPASI: Sarlavha ─── */}
         <div className="flex justify-between items-center select-none">
           <h1 className="text-2xl font-bold text-stone-900 tracking-tight">
             Umumiy ma'lumot
           </h1>
         </div>
 
-        {/* ─── STATISTIKA KARTALARI (Kattalashtirilgan va Responsive) ─── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* ─── STATISTIKA KARTALARI (4 talik Grid Tizim) ─── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* 1. Waiters */}
           <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-75 animate-in fade-in slide-in-from-bottom-4">
             <div className="space-y-3">
@@ -163,22 +150,7 @@ const Dashboard: React.FC<DashboardProps> = ({
             </div>
           </div>
 
-          {/* 4. News */}
-          <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all delay-200 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="space-y-3">
-              <span className="text-sm font-medium text-stone-400 tracking-wide block">
-                Yangiliklar
-              </span>
-              <h2 className="text-4xl font-bold text-stone-950 tracking-tight">
-                {newsCount}
-              </h2>
-            </div>
-            <div className="w-14 h-14 rounded-2xl bg-stone-100 flex items-center justify-center text-stone-900">
-              <Newspaper className="w-6 h-6" />
-            </div>
-          </div>
-
-          {/* 5. Active Tables */}
+          {/* 4. Active Tables */}
           <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all delay-250 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
@@ -198,21 +170,6 @@ const Dashboard: React.FC<DashboardProps> = ({
               <ClipboardList className="w-6 h-6" />
             </div>
           </div>
-
-          {/* 6. Active Revenue */}
-          <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all delay-300 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="space-y-3">
-              <span className="text-sm font-medium text-stone-400 tracking-wide block">
-                Bugungi Daromad
-              </span>
-              <h2 className="text-3xl font-bold text-stone-950 tracking-tight">
-                {activeRevenue.toLocaleString()} so'm
-              </h2>
-            </div>
-            <div className="w-14 h-14 rounded-2xl bg-yellow-400 flex items-center justify-center text-stone-950">
-              <TrendingUp className="w-6 h-6" />
-            </div>
-          </div>
         </div>
 
         {/* ─── PASTI: QUICK TIPS ─── */}
@@ -225,7 +182,7 @@ const Dashboard: React.FC<DashboardProps> = ({
             <li className="flex items-center gap-2">
               <span className="text-stone-300 text-lg leading-none">•</span>
               <span>
-                Ofitsiantlar uchun hisob yarating, shunda ular stol
+                Ofitsantlar uchun hisob yarating, shunda ular stol
                 buyurtmalarini qabul qila oladi.
               </span>
             </li>

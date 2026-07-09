@@ -60,7 +60,7 @@ export default function HomeLayout() {
   return (
     <div className="w-full bg-gray-50 font-sans scroll-smooth">
       {/* 1. HERO SECTION (GRADIENT YUKORI QISM) */}
-      <div className="w-full bg-gradient-to-r from-orange-500 via-orange-600 to-yellow-500 shadow-xl relative overflow-hidden">
+      <div className="w-full bg-linear-to-r from-orange-500 via-orange-600 to-yellow-500 shadow-xl relative overflow-hidden">
         <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-yellow-400/20 rounded-full blur-3xl pointer-events-none z-0" />
         <div className="absolute -top-20 -right-20 w-96 h-96 bg-red-600/20 rounded-full blur-3xl pointer-events-none z-0" />
 
@@ -105,7 +105,7 @@ export default function HomeLayout() {
               className="w-full flex justify-center md:justify-end order-1 md:order-2"
               data-aos="fade-left"
             >
-              <div className="relative w-full max-w-[260px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[440px] aspect-square rounded-3xl overflow-hidden shadow-2xl md:rotate-3 transition-all duration-300 hover:rotate-0 hover:scale-105">
+              <div className="relative w-full max-w-65 sm:max-w-85 md:max-w-95 lg:max-w-110 aspect-square rounded-3xl overflow-hidden shadow-2xl md:rotate-3 transition-all duration-300 hover:rotate-0 hover:scale-105">
                 <img
                   src={burgerImg}
                   alt="Special Burger"
