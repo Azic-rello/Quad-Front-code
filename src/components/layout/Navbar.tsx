@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
   const logout = useAuthStore((state) => state.logout);
 
   // 🌐 Til tanlash shtatlari
-  const [currentLang, setCurrentLang] = useState("EN");
+  const [currentLang, setCurrentLang] = useState("UZ");
   const [isLangOpen, setIsLangOpen] = useState(false); // Kompyuter til menyusi
   const [isMobLangOpen, setIsMobLangOpen] = useState(false); // Mobil til menyusi
 
