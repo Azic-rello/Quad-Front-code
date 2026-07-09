@@ -79,7 +79,8 @@ export default function HomeLayout() {
                 Mazzali, <br /> Issiq Va Tez
               </h1>
               <p className="mt-4 md:mt-6 text-orange-50 leading-relaxed max-w-xl text-sm sm:text-base lg:text-lg">
-                Buyurtma qilingan Taomingniz Juda Tez Va ehtiyotkorlik Bilan yetkaziladi
+                Buyurtma qilingan Taomingniz Juda Tez Va ehtiyotkorlik Bilan
+                yetkaziladi
               </p>
 
               {/* O'TISH TUGMALARI */}
@@ -95,7 +96,7 @@ export default function HomeLayout() {
                   to="/about"
                   className="w-full sm:w-auto border border-white/60 hover:border-white hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-xl flex items-center justify-center transition-all text-sm sm:text-base shrink-0 active:scale-95"
                 >
-                  Biz Haqimizda 
+                  Biz Haqimizda
                 </Link>
               </div>
             </div>
@@ -130,11 +131,9 @@ export default function HomeLayout() {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 text-sm sm:text-base">
-                Bepul yetkazib berish
+                yetkazib berish
               </h3>
-              <p className="text-xs text-gray-500 mt-0.5">
-                100 000 soʻmdan ortiq buyurtmalar uchun
-              </p>
+              <p className="text-xs text-gray-500 mt-0.5">10 000 soʻm</p>
             </div>
           </div>
 
@@ -184,7 +183,7 @@ export default function HomeLayout() {
         >
           <div>
             <span className="text-orange-600 font-bold text-xs sm:text-sm uppercase tracking-wider">
-              Bizning maxsus  
+              Bizning maxsus
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mt-1">
               Menyular

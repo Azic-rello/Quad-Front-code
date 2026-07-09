@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Clock } from "lucide-react";
 
 const Footer: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
             <p className="text-xs md:text-sm text-zinc-400 max-w-sm leading-relaxed mx-auto sm:mx-0">
               Uyingizga yetkazib beriladigan eng mazali tezkor taomlar. Yangi
               masalliqlar, unutilmas ta'm va shahar bo'ylab chaqmoq tezligidagi
-              yetkazib berish. Premium burger ta'mini bugunoq his qiling!
+              yetkazib berish. Premium pizza ta'mini bugunoq his qiling!
             </p>
           </div>
 
@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
             <div className="flex items-center space-x-3">
               {/* Instagram */}
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/quad_pizzaa?igsh=MWZkZGV6bnJsM2R5ZA=="
                 target="_blank"
                 rel="noreferrer"
                 className="w-9 h-9 bg-zinc-900/80 border border-zinc-800/40 rounded-xl flex items-center justify-center text-zinc-400 hover:bg-[#E1306C] hover:text-white hover:scale-105 transition-all duration-200"
@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
 
               {/* Telegram */}
               <a
-                href="https://t.me"
+                href="https://t.me/Quad_pizzaa"
                 target="_blank"
                 rel="noreferrer"
                 className="w-9 h-9 bg-zinc-900/80 border border-zinc-800/40 rounded-xl flex items-center justify-center text-zinc-400 hover:bg-[#0088cc] hover:text-white hover:scale-105 transition-all duration-200"
@@ -119,23 +119,17 @@ const Footer: React.FC = () => {
           <ul className="space-y-3.5 text-xs md:text-sm font-medium flex flex-col items-center sm:items-start">
             <li className="flex items-center space-x-3">
               <MapPin className="w-4 h-4 text-zinc-500 shrink-0" />
-              <span>Toshkent, O'zbekiston</span>
+              <span>Zarbdor Tumani Markazi</span>
             </li>
             <li className="flex items-center space-x-3">
               <Phone className="w-4 h-4 text-zinc-500 shrink-0" />
               <span className="text-white font-semibold tracking-wide">
-                +998 71 200 00 00
-              </span>
-            </li>
-            <li className="flex items-center space-x-3">
-              <Mail className="w-4 h-4 text-zinc-500 shrink-0" />
-              <span className="text-zinc-400 hover:text-white transition-colors break-all">
-                support@burgeruz.com
+                +998 94 320 00 21
               </span>
             </li>
             <li className="flex items-center space-x-2 text-[11px] text-zinc-500 pt-1">
               <Clock className="w-3.5 h-3.5" />
-              <span>Ish vaqti: 09:00 - 03:00</span>
+              <span>Ish vaqti: 09:00 - 00:00</span>
             </li>
           </ul>
         </div>
@@ -143,7 +137,7 @@ const Footer: React.FC = () => {
 
       {/* Pastki mualliflik huquqi qismi */}
       <div className="max-w-7xl mx-auto border-t border-zinc-900/60 pt-6 text-center text-[11px] text-zinc-600 font-medium tracking-wide">
-        © 2026 BurgerUz. Barcha huquqlar himoyalangan.
+        © 2026 Quad Pizza. Barcha huquqlar himoyalangan.
       </div>
     </footer>
   );

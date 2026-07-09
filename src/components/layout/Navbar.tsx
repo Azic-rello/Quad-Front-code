@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 // Auth store olib kiriladi, tokenni tekshirish va logout qilish uchun
 import { useAuthStore } from "../../modules/auth/authStore";
+import logo from "../../assets/logo.png";
 
 // Tillari ro'yxati
 const LANGUAGES = [
@@ -83,11 +84,11 @@ const Navbar: React.FC = () => {
           }}
           className="flex items-center space-x-2.5 cursor-pointer group z-50"
         >
-          <div className="w-9 h-9 bg-[#E30A17] rounded-full flex items-center justify-center text-white font-black text-lg shadow-md shadow-red-600/10 transition-transform group-hover:scale-105">
-            🍔
+          <div className="w-11 h-11 bg-[#E30A17] rounded-[10px] flex items-center justify-center text-white font-black text-lg shadow-md shadow-red-600/10 transition-transform group-hover:scale-105">
+            <img src={logo} alt="logo" />
           </div>
           <h1 className="font-black text-xl tracking-tight text-gray-950">
-            Quad<span className="text-[#E30A17]">Uz</span>
+            Quad<span className="text-[#E30A17]">Pizza</span>
           </h1>
         </div>
 

@@ -19,9 +19,9 @@ export default function AboutLayout() {
 
   // Asosiy blok ostidagi 3 ta kichik statistika (Xuddi skrinshotingizdagidek)
   const stats = [
-    { id: 1, value: "10+", label: "Yillik tajriba" },
+    { id: 1, value: "5+", label: "Yillik tajriba" },
     { id: 2, value: "50k+", label: "Xursand MijoZlar" },
-    { id: 3, value: "100+", label: "Noyob retseptlar" },
+    { id: 3, value: "20+", label: "Noyob retseptlar" },
   ];
 
   // PASTKI QISM UCHUN MUTLAQO YANGI 4 TA FOYDALI BLOK (Gap qaytarilmagan)
@@ -62,7 +62,7 @@ export default function AboutLayout() {
           {/* CHAP TOMON: MATNLAR VA STATISTIKA */}
           <div className="w-full lg:col-span-5 text-center lg:text-left flex flex-col items-center lg:items-start" data-aos="fade-right">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-950 tracking-tight leading-tight">
-              Burger Uz Haqida
+              Quad Pizza Haqida
             </h1>
             <p className="mt-4 text-gray-600 leading-relaxed text-sm sm:text-base max-w-xl">
               Bizning Quad ochilganidan beri hechqande Ortiqcha nizolarsz shikoyatlarsiz mukamal bo'lib o'sib kelmoqda hamma qulay shart-sharoitlar bizda
