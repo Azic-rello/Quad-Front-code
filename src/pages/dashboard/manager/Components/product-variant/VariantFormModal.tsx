@@ -4,9 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import type { ProductVariant } from "./types";
 import { useProductVariantsStore } from "./useProductVariantsStore";
+import toast from "react-hot-toast";
 
-
-// ✅ variantSchema ni yaratish
+// ✅ To'g'ri schema - price uchun coerce
 const variantSchema = z.object({
   name: z.string().min(2, "Nom kamida 2 ta belgi bo'lishi kerak").max(30),
   price: z.coerce.number().min(0, "Narx manfiy bo'lishi mumkin emas"),
@@ -14,6 +14,7 @@ const variantSchema = z.object({
   isDefault: z.boolean().default(false),
 });
 
+// ✅ Type'ni schema'dan olish
 type VariantFormData = z.infer<typeof variantSchema>;
 
 interface Props {
@@ -31,7 +32,6 @@ export const VariantFormModal: React.FC<Props> = ({
 }) => {
   const { addVariant, editVariant } = useProductVariantsStore();
 
-  // ✅ handleSubmit va onSubmit nomlarini ajratish
   const {
     register,
     handleSubmit,
@@ -64,17 +64,27 @@ export const VariantFormModal: React.FC<Props> = ({
     }
   }, [editingVariant, setValue, reset]);
 
-  // ✅ Submit funksiyasi uchun alohida nom
+  // ✅ To'g'ri type bilan onSubmit
   const onSubmitForm = async (data: VariantFormData) => {
     try {
       if (editingVariant) {
         await editVariant(editingVariant.id, data);
+        toast.success("Variant muvaffaqiyatli yangilandi");
       } else {
         await addVariant({ ...data, productId });
+        toast.success("Variant muvaffaqiyatli qo'shildi");
       }
       onClose();
-    } catch (error) {
-      console.error("Xatolik:", error);
+    } catch (error: any) {
+      console.error("Variant saqlashda xatolik:", error);
+
+      if (error.response?.status === 409) {
+        toast.error(
+          "Bu variant allaqachon mavjud! Boshqa nom yoki SKU kiriting.",
+        );
+      } else {
+        toast.error(error.response?.data?.message || "Xatolik yuz berdi");
+      }
     }
   };
 
@@ -87,7 +97,6 @@ export const VariantFormModal: React.FC<Props> = ({
           {editingVariant ? "Variantni tahrirlash" : "Yangi variant qo'shish"}
         </h2>
 
-        {/* ✅ handleSubmit(onSubmitForm) - to'g'ri */}
         <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
           {/* Name */}
           <div>
@@ -111,11 +120,14 @@ export const VariantFormModal: React.FC<Props> = ({
             </label>
             <input
               type="number"
+              step="0.01"
               {...register("price")}
               className="mt-1 block w-full border border-gray-300 rounded-md p-2"
             />
             {errors.price && (
-              <p className="text-red-500 text-xs mt-1">{errors.price.message}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.price.message}
+              </p>
             )}
           </div>
 

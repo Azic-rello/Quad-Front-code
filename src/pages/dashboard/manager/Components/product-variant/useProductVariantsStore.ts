@@ -1,7 +1,11 @@
 import { create } from "zustand";
 import { productVariantsApi } from "./api";
-import type { ProductVariant, CreateVariantDto, UpdateVariantDto } from "./types";
-import toast from "react-hot-toast"; // Agar ishlatmasangiz, console.log qoldiring
+import type {
+  ProductVariant,
+  CreateVariantDto,
+  UpdateVariantDto,
+} from "./types";
+import toast from "react-hot-toast";
 
 interface VariantsState {
   variants: ProductVariant[];
@@ -42,7 +46,17 @@ export const useProductVariantsStore = create<VariantsState>((set, get) => ({
       }));
       toast.success("Variant muvaffaqiyatli qo'shildi");
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Xatolik yuz berdi");
+      // 409 Conflict - duplicate variant
+      if (error.response?.status === 409) {
+        const message =
+          error.response?.data?.message || "Bu variant allaqachon mavjud";
+        toast.error(message);
+        throw new Error(message);
+      }
+
+      const errorMessage =
+        error.response?.data?.message || "Variant qo'shishda xatolik";
+      toast.error(errorMessage);
       throw error;
     }
   },
@@ -55,14 +69,26 @@ export const useProductVariantsStore = create<VariantsState>((set, get) => ({
       }));
       toast.success("Variant yangilandi");
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Yangilashda xatolik");
+      // 409 Conflict - duplicate variant
+      if (error.response?.status === 409) {
+        const message =
+          error.response?.data?.message || "Bu variant nomi allaqachon mavjud";
+        toast.error(message);
+        throw new Error(message);
+      }
+
+      const errorMessage =
+        error.response?.data?.message || "Yangilashda xatolik";
+      toast.error(errorMessage);
       throw error;
     }
   },
 
   toggleStatus: async (id: string, isAvailable: boolean) => {
     try {
-      const updatedVariant = await productVariantsApi.changeStatus(id, { isAvailable });
+      const updatedVariant = await productVariantsApi.changeStatus(id, {
+        isAvailable,
+      });
       set((state) => ({
         variants: state.variants.map((v) => (v.id === id ? updatedVariant : v)),
       }));

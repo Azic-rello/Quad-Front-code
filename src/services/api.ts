@@ -8,9 +8,22 @@ export const setApiAccessToken = (token: string | null) => {
   accessTokenMemory = token;
 };
 
+// 🌟 ASOSIY BASE URL (Ertaga serverga chiqayotganda faqat shu yerni o'zgartirasiz yoki env qilasiz)
+const BASE_URL = "http://localhost:3000";
+
+// 🔒 Himoyalangan API instance (Manager va Waiterlar uchun - eski holatida qoldi)
 export const $api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: BASE_URL,
   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// 🌐 PUBLIC API INSTANCE (Hamma uchun ochiq menu va yangiliklar uchun)
+// 🛑 Bunga hech qanday interceptor ulanmaydi, 401 bo'lsa login sahifasiga otib yubormaydi!
+export const $publicApi = axios.create({
+  baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -24,7 +37,6 @@ interface FailedRequest {
 interface BackendError {
   message: string;
 }
-
 
 let isRefreshing = false;
 let failedRequestsQueue: FailedRequest[] = [];
@@ -41,17 +53,15 @@ export const refreshAuthTokens = async (): Promise<RefreshResponse> => {
   const refreshToken = Cookies.get("refreshToken");
 
   const response = await axios.post<RefreshResponse>(
-    "http://localhost:3000/auth/refresh",
+    `${BASE_URL}/auth/refresh`, // 👈 Localhost yozuvi BASE_URL ga almashtirildi
     { refreshToken },
-    { headers: { Authorization: `Bearer ${refreshToken}` } }
+    { headers: { Authorization: `Bearer ${refreshToken}` } },
   );
-
-
 
   return response.data;
 };
 
-// Request Interceptor
+// Request Interceptor ($api uchun)
 $api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (accessTokenMemory && config.headers) {
@@ -59,14 +69,16 @@ $api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
-// Response Interceptor
+// Response Interceptor ($api uchun)
 $api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError<BackendError>) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
     if (!originalRequest) return Promise.reject(error);
 
@@ -100,7 +112,6 @@ $api.interceptors.response.use(
         const data = await refreshAuthTokens();
         accessTokenMemory = data.accessToken;
 
-        // Zustand store dynamic import orqali yangilanadi
         try {
           const storeModule = await import("../modules/auth/authStore");
           storeModule.useAuthStore.getState().setAccessToken(data.accessToken);
@@ -133,5 +144,5 @@ $api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );

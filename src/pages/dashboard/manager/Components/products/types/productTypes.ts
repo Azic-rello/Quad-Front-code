@@ -19,6 +19,7 @@ export interface Category {
 }
 
 export interface Product {
+  price: any;
   id: string;
   name: string;
   slug: string;

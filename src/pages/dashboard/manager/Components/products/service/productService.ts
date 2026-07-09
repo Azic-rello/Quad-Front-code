@@ -1,4 +1,6 @@
-import { $api } from '../../../../../../services/api'; // Loyihangizdagi api manziliga qarab to'g'rilang
+// 📁 productService.ts ni quyidagicha yangila:
+
+import { $api } from "../../../../../../services/api"; // 👈 Faqat himoyalangan $api ni olamiz
 import type {
   Product,
   CreateProductDto,
@@ -7,11 +9,14 @@ import type {
   QueryProductDto,
   ProductsResponse,
   Category,
-} from '../types/productTypes';
+} from "../types/productTypes";
 
 export const productService = {
+  // ✅ Manager panelida majburiy token bilan so'rov yuborish uchun $api qilamiz
   getAll: async (query: QueryProductDto): Promise<ProductsResponse> => {
-    const response = await $api.get<ProductsResponse>('/products', { params: query });
+    const response = await $api.get<ProductsResponse>("/products", {
+      params: query,
+    });
     return response.data;
   },
 
@@ -21,7 +26,7 @@ export const productService = {
   },
 
   create: async (data: CreateProductDto): Promise<Product> => {
-    const response = await $api.post<Product>('/products', data);
+    const response = await $api.post<Product>("/products", data);
     return response.data;
   },
 
@@ -30,7 +35,10 @@ export const productService = {
     return response.data;
   },
 
-  changeStatus: async (id: string, data: ChangeProductStatusDto): Promise<Product> => {
+  changeStatus: async (
+    id: string,
+    data: ChangeProductStatusDto,
+  ): Promise<Product> => {
     const response = await $api.patch<Product>(`/products/${id}/status`, data);
     return response.data;
   },
@@ -41,10 +49,10 @@ export const productService = {
   },
 };
 
-// Kategoriyalar uchun alohida service
 export const categoryService = {
+  // ✅ Kategoriyalarni ham token bilan himoyalangan holda olamiz
   getAll: async (): Promise<Category[]> => {
-    const response = await $api.get<Category[]>('/categories');
+    const response = await $api.get<Category[]>("/categories");
     return response.data;
   },
 };
