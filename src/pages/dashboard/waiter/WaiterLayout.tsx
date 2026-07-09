@@ -28,7 +28,7 @@ const WaiterLayout: React.FC = () => {
             <span className="w-2 h-2 rounded-full bg-[#e31221] animate-pulse" />
 
             <h1 className="font-bold text-stone-800 tracking-wide">
-              Waiter Dashboard
+              Ofitsant boshqaruv paneli
             </h1>
           </div>
 

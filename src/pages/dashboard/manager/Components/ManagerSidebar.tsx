@@ -77,7 +77,7 @@ const ManagerSidebar: React.FC = () => {
               }
             >
               <LayoutDashboard className="w-5 h-5 opacity-90" />
-              <span>Overview</span>
+              <span>Umumiy ma'lumot</span>
             </NavLink>
 
             <NavLink
@@ -105,7 +105,7 @@ const ManagerSidebar: React.FC = () => {
               }
             >
               <Users className="w-5 h-5 opacity-80" />
-              <span>Waiters</span>
+              <span>Ofitsantlar</span>
             </NavLink>
 
             <NavLink
@@ -119,7 +119,7 @@ const ManagerSidebar: React.FC = () => {
               }
             >
               <Table2 className="w-5 h-5 opacity-80" />
-              <span>Tables</span>
+              <span>Stollar</span>
             </NavLink>
 
             <NavLink
@@ -133,7 +133,7 @@ const ManagerSidebar: React.FC = () => {
               }
             >
               <ClipboardList className="w-5 h-5 opacity-80" />
-              <span>Live Orders</span>
+              <span>Faol Stollar</span>
             </NavLink>
 
             <NavLink
@@ -147,7 +147,7 @@ const ManagerSidebar: React.FC = () => {
               }
             >
               <Newspaper className="w-5 h-5 opacity-80" />
-              <span>News</span>
+              <span>Yangiliklar</span>
             </NavLink>
           </nav>
         </div>
@@ -162,7 +162,7 @@ const ManagerSidebar: React.FC = () => {
             className="w-full py-2 flex items-center space-x-3 px-4 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800/30 text-sm font-medium transition-all duration-200"
           >
             <Home className="w-4 h-4 opacity-70" />
-            <span>Home</span>
+            <span>Bosh Sahifa</span>
           </button>
 
           <button
@@ -170,7 +170,7 @@ const ManagerSidebar: React.FC = () => {
             className="w-full py-2 flex items-center space-x-3 px-4 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800/30 text-sm font-medium transition-all duration-200"
           >
             <LogOut className="w-4 h-4 opacity-70" />
-            <span>Sign Out</span>
+            <span>Chiqish</span>
           </button>
         </div>
       </aside>

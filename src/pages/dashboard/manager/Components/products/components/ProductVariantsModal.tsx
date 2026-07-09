@@ -149,7 +149,7 @@ export const ProductVariantsModal: React.FC<ProductVariantsModalProps> = ({
                             </span>
                             {variant.isDefault && (
                               <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                Default
+                                Standart
                               </span>
                             )}
                           </div>

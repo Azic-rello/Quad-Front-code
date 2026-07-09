@@ -175,7 +175,7 @@ export default function WaiterTables() {
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-gray-900 text-base">
-                        Table {table.number}
+                        Stol {table.number}
                       </h3>
                       <span
                         className={`text-[10px] px-1.5 py-0.5 font-bold rounded-md ${

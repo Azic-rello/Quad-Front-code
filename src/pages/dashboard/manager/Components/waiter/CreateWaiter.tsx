@@ -93,7 +93,7 @@ export const CreateWaiterForm: React.FC<CreateWaiterFormProps> = ({ onSuccess })
 
         <div>
           <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
-            Username
+            Foydalanuvchi nomi
           </label>
           <div className="relative">
             <span className="absolute left-4 top-2.5 text-stone-400 text-sm select-none">@</span>

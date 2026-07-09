@@ -66,11 +66,11 @@ const LiveOrder: React.FC = () => {
   ) => {
     if (
       window.confirm(
-        `Table ${tableNumber} uchun ${total.toLocaleString()} so'm hisobni yopmoqchimisiz?`,
+        `Stol ${tableNumber} uchun ${total.toLocaleString()} so'm hisobni yopmoqchimisiz?`,
       )
     ) {
       try {
-        alert(`Table ${tableNumber} hisobi muvaffaqiyatli yopildi!`);
+        alert(`Stol ${tableNumber} hisobi muvaffaqiyatli yopildi!`);
         fetchLiveOrders();
       } catch (err: any) {
         alert(err.response?.data?.message || "Hisobni yopishda xatolik.");
@@ -85,7 +85,7 @@ const LiveOrder: React.FC = () => {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-black text-stone-900 tracking-tight">
-              Live Orders
+              Faol buyurtmalar
             </h1>
             <p className="text-xs text-stone-400 font-medium mt-0.5">
               Real vaqtdagi faol stollar va buyurtmalar ro'yxati
@@ -120,7 +120,7 @@ const LiveOrder: React.FC = () => {
               const waiter =
                 table.currentOrder?.waiterName ||
                 table.occupiedBy?.fullName ||
-                "Aziz";
+                "Sardor";
               const items = table.currentOrder?.items || [];
               const totalAmount = table.currentOrder?.totalAmount || 0;
 
@@ -147,7 +147,7 @@ const LiveOrder: React.FC = () => {
                         </div>
                         <div>
                           <h3 className="font-black text-stone-900 text-base">
-                            Table {table.number}
+                            Stol {table.number}
                           </h3>
                           <p className="text-xs text-stone-400 font-semibold">
                             {isOccupied ? `Waiter: ${waiter}` : "Empty"}
@@ -157,7 +157,7 @@ const LiveOrder: React.FC = () => {
 
                       {isOccupied && (
                         <span className="bg-[#e31221] text-white font-black text-[10px] tracking-wider px-2 py-0.5 rounded-md animate-pulse">
-                          LIVE
+                          Jonli
                         </span>
                       )}
                     </div>
@@ -186,7 +186,7 @@ const LiveOrder: React.FC = () => {
                         </div>
                       ) : (
                         <p className="text-xs font-bold text-stone-400/80 py-4 tracking-wide">
-                          No orders yet
+                          Hozircha buyurtmalar yo‘q
                         </p>
                       )}
                     </div>
@@ -196,7 +196,7 @@ const LiveOrder: React.FC = () => {
                     <div className="mt-6 pt-4 border-t border-dashed border-stone-200 flex items-center justify-between">
                       <div className="space-y-0.5">
                         <span className="block text-[10px] uppercase font-black text-stone-400 tracking-wider">
-                          Total
+                          Umumiy
                         </span>
                         <span className="text-xl font-black text-[#e31221] tracking-tight">
                           {totalAmount.toLocaleString()} so'm
@@ -210,7 +210,7 @@ const LiveOrder: React.FC = () => {
                         className="bg-[#e31221] hover:bg-red-700 text-white font-black text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-sm shadow-red-500/20 transition-all active:scale-[0.97]"
                       >
                         <DollarSign className="w-3.5 h-3.5" />
-                        Close Bill
+                        Hisobni yopish
                       </button>
                     </div>
                   )}

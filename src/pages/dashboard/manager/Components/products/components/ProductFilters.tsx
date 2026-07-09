@@ -39,7 +39,7 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
               id="search"
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Mahsulot nami..."
+              placeholder="Mahsulot nomi..."
               className="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-[#e31221] outline-none transition-all"
             />
           </div>

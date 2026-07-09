@@ -23,7 +23,7 @@ export const WaitersList: React.FC<WaitersListProps> = ({
       <div className="p-24 flex flex-col items-center justify-center text-stone-500 space-y-4 bg-white rounded-[32px] shadow-xs animate-in fade-in duration-300">
         <Loader2 className="w-10 h-10 animate-spin text-red-600" />
         <span className="text-sm font-semibold text-stone-400 tracking-wide">
-          Loading waiters data...
+          Ofitsiantlar ma'lumotlari yuklanmoqda...
         </span>
       </div>
     );
@@ -37,10 +37,10 @@ export const WaitersList: React.FC<WaitersListProps> = ({
           👥
         </div>
         <h3 className="text-lg font-bold text-stone-900 tracking-tight">
-          No waiters found
+          Ofitsiantlar topilmadi
         </h3>
         <p className="text-sm text-stone-400 mt-2 font-medium">
-          Add a new waiter to get started.
+          Boshlash uchun yangi ofitsiant qo‘shing.
         </p>
       </div>
     );
@@ -52,12 +52,12 @@ export const WaitersList: React.FC<WaitersListProps> = ({
       <table className="w-full text-left border-collapse min-w-[700px]">
         <thead>
           <tr className="bg-white border-b border-stone-100 text-stone-400 text-sm font-bold tracking-wider select-none">
-            <th className="px-8 py-5 font-semibold uppercase">Name</th>
+            <th className="px-8 py-5 font-semibold uppercase">Ism</th>
             <th className="px-8 py-5 font-semibold uppercase">
-              Username / Email
+              Foydalanuvchi ism / Email
             </th>
             <th className="px-8 py-5 text-right font-semibold uppercase">
-              Actions
+              Amallar
             </th>
           </tr>
         </thead>

@@ -129,7 +129,7 @@ const SuperAdmin = () => {
       <div className="flex flex-col items-center justify-center space-y-4 z-10 w-full mt-12 sm:mt-8">
         <div className="flex items-center space-x-2 bg-slate-900/60 border border-slate-800 px-3 py-1 rounded-full text-[10px] font-semibold text-purple-400 tracking-widest uppercase shadow-inner">
           <Shield className="w-3 h-3 text-purple-400 animate-pulse" />
-          <span>Secure Root Terminal</span>
+          <span>Xavfsiz Root terminali</span>
         </div>
 
         <div className="text-center tracking-widest space-y-1">
@@ -137,7 +137,7 @@ const SuperAdmin = () => {
             Super Admin
           </h1>
           <p className="text-[9px] sm:text-[10px] text-slate-500 font-mono tracking-[0.3em]">
-            INTERCEPTOR SECURE CONNECT // CONTROL PANEL
+            INTERCEPTOR XAVFSIZ ULANISH // BOSHQARUV PANELI
           </p>
         </div>
 

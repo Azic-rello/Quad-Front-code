@@ -35,7 +35,7 @@ const ManagerLayout: React.FC = () => {
               {user.username} {/* 👈 any kastingi olib tashlandi va tiplar tozalandi */}
             </p>
             <p className="text-[10px] text-teal-400/60 font-mono">
-              Status: Active
+              Holati: Faol
             </p>
           </div>
         </header>

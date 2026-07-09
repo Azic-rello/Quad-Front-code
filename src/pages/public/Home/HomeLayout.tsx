@@ -29,7 +29,7 @@ export default function HomeLayout() {
   const menuItems = [
     {
       id: 1,
-      name: "Classic Burger",
+      name: "Klassik Burger",
       price: "35,000 so'm",
       image: classicBurgerImg,
       desc: "Sershira go'sht, yangi sabzavotlar va maxsus sous.",
@@ -76,11 +76,10 @@ export default function HomeLayout() {
                 <span>Toshkentda 1-raqamli fastfud</span>
               </div>
               <h1 className="mt-4 md:mt-6 text-white font-black leading-[1.05] tracking-tight text-[clamp(2rem,5vw,4.5rem)]">
-                Delicious, <br /> fast and hot
+                Mazzali, <br /> Issiq Va Tez
               </h1>
               <p className="mt-4 md:mt-6 text-orange-50 leading-relaxed max-w-xl text-sm sm:text-base lg:text-lg">
-                Best fast food delivered straight to your door. Fresh, hot and
-                full of flavor.
+                Buyurtma qilingan Taomingniz Juda Tez Va ehtiyotkorlik Bilan yetkaziladi
               </p>
 
               {/* O'TISH TUGMALARI */}
@@ -89,14 +88,14 @@ export default function HomeLayout() {
                   to="/menu"
                   className="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all text-sm sm:text-base shrink-0 active:scale-95"
                 >
-                  <span>View Menu</span>
+                  <span>Menu Ko'rsh </span>
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   to="/about"
                   className="w-full sm:w-auto border border-white/60 hover:border-white hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-xl flex items-center justify-center transition-all text-sm sm:text-base shrink-0 active:scale-95"
                 >
-                  About Us
+                  Biz Haqimizda 
                 </Link>
               </div>
             </div>
@@ -131,10 +130,10 @@ export default function HomeLayout() {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 text-sm sm:text-base">
-                Free Delivery
+                Bepul yetkazib berish
               </h3>
               <p className="text-xs text-gray-500 mt-0.5">
-                For orders over 100k UZS
+                100 000 soʻmdan ortiq buyurtmalar uchun
               </p>
             </div>
           </div>
@@ -149,10 +148,10 @@ export default function HomeLayout() {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 text-sm sm:text-base">
-                30 Mins Delivery
+                30 daqiqada yetkazib berish
               </h3>
               <p className="text-xs text-gray-500 mt-0.5">
-                Average delivery time
+                O‘rtacha yetkazib berish vaqti
               </p>
             </div>
           </div>
@@ -167,10 +166,10 @@ export default function HomeLayout() {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 text-sm sm:text-base">
-                Hot & Fresh
+                Issiq va yangi
               </h3>
               <p className="text-xs text-gray-500 mt-0.5">
-                Made with whole wheat
+                Butun donli bug‘doy unidan tayyorlangan
               </p>
             </div>
           </div>
@@ -185,10 +184,10 @@ export default function HomeLayout() {
         >
           <div>
             <span className="text-orange-600 font-bold text-xs sm:text-sm uppercase tracking-wider">
-              Our Specials
+              Bizning maxsus  
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mt-1">
-              Menu
+              Menyular
             </h2>
           </div>
           {/* O'ng tarafdagi View More tugmasi ham Link qilib o'zgartirildi */}
@@ -196,7 +195,7 @@ export default function HomeLayout() {
             to="/menu"
             className="text-orange-600 font-bold text-sm hover:text-orange-700 flex items-center gap-1 transition-all"
           >
-            <span>View More</span>
+            <span>Ko`proq ko`rish</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -230,7 +229,7 @@ export default function HomeLayout() {
                   </p>
                 </div>
                 <button className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2.5 rounded-xl text-sm transition-all shadow-md active:scale-95">
-                  Add to Cart
+                  Savatga qo‘shish
                 </button>
               </div>
             </div>
