@@ -196,14 +196,6 @@ const LiveOrder: React.FC = () => {
               Real vaqtdagi faol buyurtmalar ro'yxati
             </p>
           </div>
-          <button
-            onClick={fetchLiveOrders}
-            disabled={isLoading}
-            className="px-4 py-2 text-xs font-bold text-stone-600 bg-white border border-stone-200 rounded-xl hover:bg-stone-50 transition flex items-center gap-2 disabled:opacity-50"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-            Yangilash
-          </button>
         </div>
 
         {error && (
