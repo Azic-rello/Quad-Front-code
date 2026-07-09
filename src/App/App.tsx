@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 import AuthGuard from "@/components/guards/AuthGuard";
 import { useLoader } from "@/components/shared/Loader";
 import PublicLayout from "@/layouts/PublicLayout";
@@ -20,18 +22,51 @@ import BasketLayout from "@/pages/public/Basket/BasketLayout";
 import HomeLayout from "@/pages/public/Home/HomeLayout";
 import MenuLayout from "@/pages/public/Menu/MenuLayout";
 import NewsLayout from "@/pages/public/News/NewsLayout";
+>>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
 import { useEffect, useRef } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
+// Layouts
+import PublicLayout from "@/layouts/PublicLayout";
 
+// Public Pages
+import HomeLayout from "@/pages/public/Home/HomeLayout";
+import MenuLayout from "@/pages/public/Menu/MenuLayout";
+import NewsLayout from "@/pages/public/News/NewsLayout";
+import AboutLayout from "@/pages/public/About/AboutLayout";
+import BasketLayout from "@/pages/public/Basket/BasketLayout";
 
+// Auth & Admin
+import Login from "@/pages/auth/Login";
+import SuperAdmin from "@/pages/dashboard/SuperAdmin/SuperAdmin";
 
+// Manager Components
+import ManagerSidebar from "@/pages/dashboard/manager/Components/ManagerSidebar";
+import Dashboard from "@/pages/dashboard/manager/Components/dashboard/Dashboard";
+import { ProductList } from "@/pages/dashboard/manager/Components/products/components/ProductList";
+import WaitersPage from "@/pages/dashboard/manager/Components/waiter/WaitersPage";
+import TablesPage from "@/pages/dashboard/manager/Components/Tables/TablesPage";
+import LiveOrder from "@/pages/dashboard/manager/Components/liveorder/LiveOrder";
+import News from "@/pages/dashboard/manager/Components/News/News";
+
+// Order Module (Manager)
+import { OrdersList } from "@/pages/dashboard/manager/Components/orderj/OrdersList";
+import { OrderDetails } from "@/pages/dashboard/manager/Components/orderj/OrderDetails";
+import { CreateOrder } from "@/pages/dashboard/manager/Components/orderj/CreateOrder";
+
+// Waiter Components
+import WaiterSidebar from "@/pages/dashboard/waiter/components/WaiterSidebar";
+import WaiterTables from "@/pages/dashboard/waiter/components/WaiterTables";
+
+// Guards & Hooks
+import AuthGuard from "@/components/guards/AuthGuard";
+import { useLoader } from "@/components/shared/Loader";
+import WaiterOrderPage from "@/pages/dashboard/manager/Components/orderj/WaiterOrderPage";
 
 function App() {
   const location = useLocation();
   const { showLoader, hideLoader } = useLoader();
 
-  // Loader loopini oldini olish uchun ref
   const prevPathname = useRef(location.pathname);
 
   useEffect(() => {
@@ -49,7 +84,7 @@ function App() {
 
   return (
     <Routes>
-      {/* ✅ Public Routes - PublicLayout ichida */}
+      {/* Public Routes */}
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<HomeLayout />} />
         <Route path="menu" element={<MenuLayout />} />
@@ -68,30 +103,29 @@ function App() {
       {/* SuperAdmin Route */}
       <Route path="/admin" element={<SuperAdmin />} />
 
-      {/* Manager Routes (ManagerSidebar ichida) */}
+      {/* Manager Routes */}
       <Route element={<AuthGuard roles={["MANAGER"]} />}>
         <Route path="manager" element={<ManagerSidebar />}>
           <Route index element={<Dashboard />} />
-
-          {/* Mavjud Manager Sahifalari */}
+          
           <Route path="menu" element={<ProductList />} />
           <Route path="waiters" element={<WaitersPage />} />
           <Route path="tables" element={<TablesPage />} />
           <Route path="liveOrder" element={<LiveOrder />} />
           <Route path="news" element={<News />} />
-
+          
           {/* Order Module Routes */}
           <Route path="orders/create" element={<CreateOrder />} />
           <Route path="orders/:id" element={<OrderDetails />} />
         </Route>
       </Route>
 
-      {/* Waiter Routes (WaiterSidebar ichida) */}
+      {/* Waiter Routes */}
       <Route element={<AuthGuard roles={["WAITER"]} />}>
         <Route path="waiter" element={<WaiterSidebar />}>
           <Route index element={<WaiterTables />} />
-          {/* Yangi: Ofitsiant buyurtma olish sahifasi */}
-          <Route path="order/:tableId" element={<WaiterOrderPage />} />
+          {/* ✅ orderId optional parametir sifatida qo'shildi */}
+          <Route path="order/:tableId/:orderId?" element={<WaiterOrderPage />} />
         </Route>
       </Route>
 

@@ -1,18 +1,16 @@
-// src/pages/dashboard/manager/Components/orderj/orderApi.ts
-
-import { $api } from "@/services/api"; // Sizning global api instansiyangiz
-import type {
-  Order,
-  CreateOrderDto,
-  AddOrderItemDto,
-  UpdateOrderStatusDto,
+import { $api } from '@/services/api';
+import type { 
+  Order, 
+  CreateOrderDto, 
+  AddOrderItemDto, 
+  UpdateOrderStatusDto, 
   OrdersResponse,
-  QueryOrderDto,
-} from "./orderTypes";
+  QueryOrderDto 
+} from './orderTypes';
 
 export const orderApi = {
   getAll: async (params?: QueryOrderDto): Promise<OrdersResponse> => {
-    const { data } = await $api.get<OrdersResponse>("/orders", { params });
+    const { data } = await $api.get<OrdersResponse>('/orders', { params });
     return data;
   },
 
@@ -22,7 +20,7 @@ export const orderApi = {
   },
 
   create: async (dto: CreateOrderDto): Promise<Order> => {
-    const { data } = await $api.post<Order>("/orders", dto);
+    const { data } = await $api.post<Order>('/orders', dto);
     return data;
   },
 
@@ -31,15 +29,19 @@ export const orderApi = {
     return data;
   },
 
-  updateStatus: async (
-    orderId: string,
-    dto: UpdateOrderStatusDto,
-  ): Promise<Order> => {
+  updateStatus: async (orderId: string, dto: UpdateOrderStatusDto): Promise<Order> => {
     const { data } = await $api.patch<Order>(`/orders/${orderId}/status`, dto);
     return data;
   },
 
   delete: async (orderId: string): Promise<void> => {
     await $api.delete(`/orders/${orderId}`);
+  },
+
+  getOpenOrders: async (): Promise<Order[]> => {
+    const { data } = await $api.get<OrdersResponse>('/orders', { 
+      params: { limit: 1000 } 
+    });
+    return data.items.filter((order: Order) => order.status === 'OPEN');
   },
 };
