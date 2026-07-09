@@ -20,7 +20,7 @@ interface VariantsState {
   reset: () => void;
 }
 
-export const useProductVariantsStore = create<VariantsState>((set, get) => ({
+export const useProductVariantsStore = create<VariantsState>((set) => ({
   variants: [],
   isLoading: false,
   currentProductId: null,

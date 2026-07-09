@@ -110,9 +110,9 @@ const SuperAdmin = () => {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-start items-center p-4 sm:p-8 gap-y-8 relative overflow-hidden select-none font-sans antialiased">
       {/* 🌀 ORQA FON EFFEKTLARI (CYBERPUNK NEON STYLE) */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] animate-[spin_40s_linear_infinite]" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[150px] animate-[spin_30s_linear_infinite_reverse]" />
-      <div className="absolute top-1/3 left-1/3 w-[350px] h-[350px] bg-teal-500/5 rounded-full blur-[100px] animate-pulse" />
+      <div className="absolute top-[-10%] left-[-10%] w-125 h-125 bg-purple-600/10 rounded-full blur-[120px] animate-[spin_40s_linear_infinite]" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-150 h-150 bg-blue-600/10 rounded-full blur-[150px] animate-[spin_30s_linear_infinite_reverse]" />
+      <div className="absolute top-1/3 left-1/3 w-87.5 h-87.5 bg-teal-500/5 rounded-full blur-[100px] animate-pulse" />
 
       {/* 🚪 LOGOUT TUGMASI */}
       <div className="absolute top-4 right-4 sm:top-8 sm:right-8 z-30">
@@ -133,7 +133,7 @@ const SuperAdmin = () => {
         </div>
 
         <div className="text-center tracking-widest space-y-1">
-          <h1 className="text-3xl sm:text-5xl font-black uppercase bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-300 to-slate-500 tracking-[0.12em]">
+          <h1 className="text-3xl sm:text-5xl font-black uppercase bg-clip-text text-transparent bg-linear-to-r from-white via-slate-300 to-slate-500 tracking-[0.12em]">
             Super Admin
           </h1>
           <p className="text-[9px] sm:text-[10px] text-slate-500 font-mono tracking-[0.3em]">
@@ -164,7 +164,7 @@ const SuperAdmin = () => {
         ) : (
           <button
             onClick={() => setIsCreating(true)}
-            className="flex items-center space-x-2 px-6 py-3.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-lg shadow-purple-950/40 border border-purple-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer group"
+            className="flex items-center space-x-2 px-6 py-3.5 bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-lg shadow-purple-950/40 border border-purple-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer group"
           >
             <UserPlus className="w-4 h-4 group-hover:rotate-12 transition-transform" />
             <span>Yangi Manager Yaratish</span>

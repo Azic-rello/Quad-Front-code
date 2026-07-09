@@ -50,7 +50,7 @@ const VariantSelectorModal: React.FC<Props> = ({
   );
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-fade-in-up">
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b bg-gray-50">

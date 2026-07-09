@@ -70,7 +70,7 @@ export const CreateWaiterForm: React.FC<CreateWaiterFormProps> = ({ onSuccess })
       {/* ================= Xatolik oynasi ================= */}
       {error && (
         <div className="mb-5 flex items-start space-x-2 bg-red-50 border border-red-200 text-red-700 p-3.5 rounded-xl text-xs">
-          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <span>{error}</span>
         </div>
       )}

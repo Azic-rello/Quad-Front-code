@@ -101,7 +101,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         {/* ─── STATISTIKA KARTALARI (Kattalashtirilgan va Responsive) ─── */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* 1. Waiters */}
-          <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-75 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-75 animate-in fade-in slide-in-from-bottom-4">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
                 Ofitsantlar
@@ -122,7 +122,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
 
           {/* 2. Tables */}
-          <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-100 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-100 animate-in fade-in slide-in-from-bottom-4">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
                 Stollar
@@ -143,7 +143,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
 
           {/* 3. Foods */}
-          <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-150 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-150 animate-in fade-in slide-in-from-bottom-4">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
                 Ovqatlar
@@ -164,7 +164,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
 
           {/* 4. News */}
-          <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-200 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all delay-200 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
                 Yangiliklar
@@ -179,7 +179,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
 
           {/* 5. Active Tables */}
-          <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-250 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all delay-250 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
                 Faol stollar
@@ -200,7 +200,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
 
           {/* 6. Active Revenue */}
-          <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-300 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-white border border-stone-200/60 rounded-3xl p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all delay-300 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
                 Bugungi Daromad
@@ -216,7 +216,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         </div>
 
         {/* ─── PASTI: QUICK TIPS ─── */}
-        <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 space-y-4 shadow-xs animate-in fade-in slide-in-from-bottom-4 duration-500 delay-350">
+        <div className="bg-white border border-stone-200/60 rounded-3xl p-8 space-y-4 shadow-xs animate-in fade-in slide-in-from-bottom-4 duration-500 delay-350">
           <h3 className="text-xl font-bold text-stone-950 tracking-tight">
             Foydali maslahatlar
           </h3>

@@ -20,7 +20,7 @@ export const WaitersList: React.FC<WaitersListProps> = ({
   // 1. Umumiy ma'lumot yuklanayotgan holat + Silliq animatsiya
   if (isLoading) {
     return (
-      <div className="p-24 flex flex-col items-center justify-center text-stone-500 space-y-4 bg-white rounded-[32px] shadow-xs animate-in fade-in duration-300">
+      <div className="p-24 flex flex-col items-center justify-center text-stone-500 space-y-4 bg-white rounded-4xl shadow-xs animate-in fade-in duration-300">
         <Loader2 className="w-10 h-10 animate-spin text-red-600" />
         <span className="text-sm font-semibold text-stone-400 tracking-wide">
           Ofitsiantlar ma'lumotlari yuklanmoqda...
@@ -32,7 +32,7 @@ export const WaitersList: React.FC<WaitersListProps> = ({
   // 2. Bazada umuman waiter bo'lmagan holat + Silliq animatsiya
   if (waiters.length === 0) {
     return (
-      <div className="p-24 text-center flex flex-col justify-center items-center bg-white rounded-[32px] shadow-xs select-none animate-in fade-in duration-300">
+      <div className="p-24 text-center flex flex-col justify-center items-center bg-white rounded-4xl shadow-xs select-none animate-in fade-in duration-300">
         <div className="w-20 h-20 bg-stone-50 border border-stone-100 rounded-3xl flex items-center justify-center text-4xl mb-5 shadow-sm">
           👥
         </div>
@@ -48,8 +48,8 @@ export const WaitersList: React.FC<WaitersListProps> = ({
 
   // 3. To'liq ma'lumotlar jadvali (Yiriklashtirilgan, Responsive va Animatsiyali)
   return (
-    <div className="w-full overflow-x-auto bg-white rounded-[32px] border border-stone-100/80 p-3 shadow-xs animate-in fade-in slide-in-from-bottom-4 duration-300">
-      <table className="w-full text-left border-collapse min-w-[700px]">
+    <div className="w-full overflow-x-auto bg-white rounded-4xl border border-stone-100/80 p-3 shadow-xs animate-in fade-in slide-in-from-bottom-4 duration-300">
+      <table className="w-full text-left border-collapse min-w-175">
         <thead>
           <tr className="bg-white border-b border-stone-100 text-stone-400 text-sm font-bold tracking-wider select-none">
             <th className="px-8 py-5 font-semibold uppercase">Ism</th>

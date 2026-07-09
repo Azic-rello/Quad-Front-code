@@ -184,7 +184,7 @@ export const VariantFormModal: React.FC<Props> = ({
                 className="sr-only peer" // Standart checkboxni yashirib chiroyli checkbox yasaymiz
               />
               <div className="w-5 h-5 border-2 border-stone-300 peer-checked:border-red-600 peer-checked:bg-red-600 rounded-md transition-all flex items-center justify-center text-white">
-                <Check className="w-3.5 h-3.5 stroke-[3] scale-0 peer-checked:scale-100 transition-transform" />
+                <Check className="w-3.5 h-3.5 stroke-3 scale-0 peer-checked:scale-100 transition-transform" />
               </div>
             </div>
             <span className="ml-3 text-sm font-bold text-stone-800 group-hover:text-red-600 transition-colors">

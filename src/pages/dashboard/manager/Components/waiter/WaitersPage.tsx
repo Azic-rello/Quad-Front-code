@@ -117,7 +117,7 @@ const WaitersPage: React.FC = () => {
       {/* ================= Xatolik bildirishnomasi ================= */}
       {error && (
         <div className="flex items-center space-x-2 bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl text-sm animate-in fade-in duration-200">
-          <AlertCircle className="w-5 h-5 flex-shrink-0" />
+          <AlertCircle className="w-5 h-5 shrink-0" />
           <div>
             <p className="font-semibold">Tizim ogohlantirishi:</p>
             <p className="text-xs opacity-90">{error}</p>

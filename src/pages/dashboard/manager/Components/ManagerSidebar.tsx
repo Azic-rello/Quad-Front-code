@@ -10,8 +10,7 @@ import {
   UtensilsCrossed,
   Users,
   Table2,
-  ClipboardList, // Buyurtmalar uchun ikonka
-  Newspaper,
+  ClipboardList,
 } from "lucide-react";
 import { useAuthStore } from "../../../../modules/auth/authStore";
 
@@ -34,7 +33,6 @@ const ManagerSidebar: React.FC = () => {
     return "Management";
   };
 
-  // NavLink uchun umumiy class funksiyasi (kod takrorlanishini oldini oladi)
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
       isActive
@@ -44,7 +42,6 @@ const ManagerSidebar: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-[#faf9f6] text-stone-800 font-sans antialiased overflow-hidden">
-      {/* Mobile Overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden transition-opacity duration-300"
@@ -52,7 +49,6 @@ const ManagerSidebar: React.FC = () => {
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`
         fixed left-0 top-0 z-50 h-screen w-64 bg-[#1a0f0f] text-stone-300
@@ -61,7 +57,6 @@ const ManagerSidebar: React.FC = () => {
       `}
       >
         <div className="p-4 space-y-6 overflow-y-auto custom-scrollbar flex-1">
-          {/* Logo Area */}
           <div className="flex items-center space-x-3 px-2 py-2">
             <div className="w-9 h-9 bg-[#e31221] rounded-full flex items-center justify-center font-black text-white shadow-md">
               <UtensilsCrossed className="w-5 h-5 text-white" />
@@ -76,7 +71,6 @@ const ManagerSidebar: React.FC = () => {
             </div>
           </div>
 
-          {/* Navigation Links */}
           <nav className="space-y-1.5 pt-2">
             <NavLink to="/manager" end className={navLinkClass}>
               <LayoutDashboard className="w-5 h-5 opacity-90" />
@@ -102,15 +96,9 @@ const ManagerSidebar: React.FC = () => {
               <ClipboardList className="w-5 h-5 opacity-80" />
               <span>Faol Stollar</span>
             </NavLink>
-
-            <NavLink to="/manager/news" className={navLinkClass}>
-              <Newspaper className="w-5 h-5 opacity-80" />
-              <span>Yangiliklar</span>
-            </NavLink>
           </nav>
         </div>
 
-        {/* Footer / User Profile */}
         <div className="p-4 border-t border-stone-900 bg-[#120a0a] space-y-2">
           <div className="px-4 py-1 text-[11px] text-stone-500 font-medium tracking-wider uppercase">
             Manager • {user?.username || "manager"}
@@ -134,7 +122,6 @@ const ManagerSidebar: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 lg:ml-64 transition-all duration-300">
         <header className="sticky top-0 z-30 h-16 bg-white border-b border-stone-200/80 flex items-center justify-between px-4 sm:px-6">
           <div className="flex items-center space-x-3">

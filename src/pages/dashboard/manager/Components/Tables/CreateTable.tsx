@@ -33,7 +33,7 @@ export const CreateTable: React.FC<CreateTableProps> = ({ onSuccess }) => {
 
   return (
     <form onSubmit={handleCreateTable} className="mb-8 p-5 bg-white border border-stone-200 rounded-2xl shadow-sm flex flex-wrap items-end gap-4">
-      <div className="flex-1 min-w-[150px]">
+      <div className="flex-1 min-w-37.5">
         <label className="block text-xs font-bold text-stone-700 mb-1.5">Stol raqami</label>
         <input 
           type="number" 
@@ -44,7 +44,7 @@ export const CreateTable: React.FC<CreateTableProps> = ({ onSuccess }) => {
           required
         />
       </div>
-      <div className="w-[120px]">
+      <div className="w-30">
         <label className="block text-xs font-bold text-stone-700 mb-1.5">Sig'imi</label>
         <select 
           value={newTableCapacity}
@@ -57,7 +57,7 @@ export const CreateTable: React.FC<CreateTableProps> = ({ onSuccess }) => {
           <option value="8">8 kishi</option>
         </select>
       </div>
-      <button type="submit" disabled={isCreating} className="bg-[#E30A17] text-white font-bold py-2 px-5 rounded-xl text-sm hover:bg-red-700 flex items-center space-x-1.5 h-[42px] disabled:opacity-50">
+      <button type="submit" disabled={isCreating} className="bg-[#E30A17] text-white font-bold py-2 px-5 rounded-xl text-sm hover:bg-red-700 flex items-center space-x-1.5 h-10.5 disabled:opacity-50">
         <Plus className="w-4 h-4" />
         <span>{isCreating ? 'Qo\'shilmoqda...' : 'Stol qo\'shish'}</span>
       </button>
