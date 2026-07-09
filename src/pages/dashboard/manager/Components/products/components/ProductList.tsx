@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
-import { 
-  useProducts, 
-  useCategories, 
-  useCreateProduct, 
-  useUpdateProduct, 
-  useDeleteProduct, 
-  useChangeProductStatus 
-} from '../hooks/useProducts';
-import { ProductForm } from './ProductForm';
-import { ProductFilters } from './ProductFilters';
-import type { Product, CreateProductDto, UpdateProductDto, Category } from '../types/productTypes';
-import { useAuthStore } from '@/modules/auth/authStore';
-import { ProductCard } from './ProductsCard';
+import React, { useState } from "react";
+import {
+  useProducts,
+  useCategories,
+  useCreateProduct,
+  useUpdateProduct,
+  useDeleteProduct,
+  useChangeProductStatus,
+} from "../hooks/useProducts";
+import { ProductForm } from "./ProductForm";
+import { ProductFilters } from "./ProductFilters";
+import type {
+  Product,
+  CreateProductDto,
+  UpdateProductDto,
+  Category,
+} from "../types/productTypes";
+import { useAuthStore } from "@/modules/auth/authStore";
+import { ProductCard } from "./ProductsCard";
 import CategoriesManagementPage from "@/pages/dashboard/manager/Components/Category/CategoriesPage";
-import { ProductVariantsModal } from './ProductVariantsModal';
+import { ProductVariantsModal } from "./ProductVariantsModal";
 
 interface CategoriesResponse {
   items: Category[];
@@ -21,48 +26,51 @@ interface CategoriesResponse {
 
 export const ProductList: React.FC = () => {
   const { user } = useAuthStore();
-  const canManage = user?.role === 'ADMIN' || user?.role === 'MANAGER';
+  const canManage = user?.role === "ADMIN" || user?.role === "MANAGER";
 
-  const [activeTab, setActiveTab] = useState<'foods' | 'categories'>('foods');
+  const [activeTab, setActiveTab] = useState<"foods" | "categories">("foods");
   const [page, setPage] = useState<number>(1);
-  const [search, setSearch] = useState<string>('');
-  const [categoryId, setCategoryId] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
+  const [categoryId, setCategoryId] = useState<string>("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [variantsProduct, setVariantsProduct] = useState<Product | null>(null);
-  const [isVariantsModalOpen, setIsVariantsModalOpen] = useState<boolean>(false);
+  const [isVariantsModalOpen, setIsVariantsModalOpen] =
+    useState<boolean>(false);
 
   const { data, isLoading, isError, refetch } = useProducts({
-    page, 
-    limit: 12, 
-    search: search || undefined, 
+    page,
+    limit: 12,
+    search: search || undefined,
     categoryId: categoryId || undefined,
   });
 
-  const { data: categoriesData, isLoading: isCategoriesLoading } = useCategories();
+  const { data: categoriesData, isLoading: isCategoriesLoading } =
+    useCategories();
 
-  const safeCategories = (
-    (categoriesData as unknown as CategoriesResponse)?.items 
-  ) || (categoriesData as Category[]) || [];
+  const safeCategories =
+    (categoriesData as unknown as CategoriesResponse)?.items ||
+    (categoriesData as Category[]) ||
+    [];
 
   const createMutation = useCreateProduct();
   const updateMutation = useUpdateProduct();
   const deleteMutation = useDeleteProduct();
   const statusMutation = useChangeProductStatus();
 
-  const handleCreate = () => { 
-    setSelectedProduct(null); 
-    setIsFormOpen(true); 
+  const handleCreate = () => {
+    setSelectedProduct(null);
+    setIsFormOpen(true);
   };
 
-  const handleEdit = (product: Product) => { 
-    setSelectedProduct(product); 
-    setIsFormOpen(true); 
+  const handleEdit = (product: Product) => {
+    setSelectedProduct(product);
+    setIsFormOpen(true);
   };
 
-  const handleCloseForm = () => { 
-    setIsFormOpen(false); 
-    setSelectedProduct(null); 
+  const handleCloseForm = () => {
+    setIsFormOpen(false);
+    setSelectedProduct(null);
   };
 
   const handleManageVariants = (product: Product) => {
@@ -73,13 +81,15 @@ export const ProductList: React.FC = () => {
   const handleCloseVariantsModal = () => {
     setIsVariantsModalOpen(false);
     setVariantsProduct(null);
-    // Refetch products to update variants count
     refetch();
   };
 
   const handleSubmitForm = (formData: CreateProductDto | UpdateProductDto) => {
     if (selectedProduct) {
-      updateMutation.mutate({ id: selectedProduct.id, data: formData as UpdateProductDto });
+      updateMutation.mutate({
+        id: selectedProduct.id,
+        data: formData as UpdateProductDto,
+      });
     } else {
       createMutation.mutate(formData as CreateProductDto);
     }
@@ -100,15 +110,31 @@ export const ProductList: React.FC = () => {
     return (
       <div className="min-h-100 flex flex-col items-center justify-center bg-white rounded-xl border border-dashed border-red-200 p-8">
         <div className="text-red-500 mb-4">
-          <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          <svg
+            className="w-12 h-12 mx-auto"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
           </svg>
         </div>
-        <h3 className="text-lg font-bold text-stone-900 mb-2">Server xatoligi (500)</h3>
+        <h3 className="text-lg font-bold text-stone-900 mb-2">
+          Server xatoligi (500)
+        </h3>
         <p className="text-stone-600 text-center max-w-md mb-6">
-          Backend ma'lumotlarni qaytarishda xatolik yuz berdi. Iltimos, backend server ishlab turganini va database ulanganini tekshiring.
+          Backend ma'lumotlarni qaytarishda xatolik yuz berdi. Iltimos, backend
+          server ishlab turganini va database ulanganini tekshiring.
         </p>
-        <button onClick={() => refetch()} className="px-6 py-2 bg-[#e31221] text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
+        <button
+          onClick={() => refetch()}
+          className="px-6 py-2 bg-[#e31221] text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+        >
           Qayta urinish
         </button>
       </div>
@@ -147,7 +173,9 @@ export const ProductList: React.FC = () => {
         <div className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-stone-900">Menyu Boshqaruvi</h1>
+              <h1 className="text-2xl font-bold text-stone-900">
+                Menyu Boshqaruvi
+              </h1>
               <p className="text-stone-500 text-sm mt-1">
                 Mahsulotlarni qo'shish, tahrirlash va variantlarini boshqarish
               </p>
@@ -157,8 +185,18 @@ export const ProductList: React.FC = () => {
                 onClick={handleCreate}
                 className="px-5 py-2.5 bg-[#e31221] text-white rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center gap-2 shadow-sm self-start sm:self-auto text-sm"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
                 </svg>
                 Yangi mahsulot
               </button>
@@ -175,16 +213,8 @@ export const ProductList: React.FC = () => {
             hideSearch={false}
           />
 
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, i) => (
-                <div
-                  key={i}
-                  className="bg-white rounded-xl shadow-sm h-80 animate-pulse border border-stone-100"
-                />
-              ))}
-            </div>
-          ) : (
+          {/* 🌟 GLOBAL LOADERGA HALQIT BERMASLIGI UCHUN PULSE ANIMATSIYA OLIB TASHLANDI */}
+          {isLoading ? null : (
             <>
               {data?.items && data.items.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -201,12 +231,25 @@ export const ProductList: React.FC = () => {
                 </div>
               ) : (
                 <div className="text-center py-16 bg-white rounded-xl border border-dashed border-stone-300">
-                  <svg className="mx-auto h-12 w-12 text-stone-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                  <svg
+                    className="mx-auto h-12 w-12 text-stone-400 mb-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                    />
                   </svg>
-                  <h3 className="text-lg font-medium text-stone-900">Mahsulotlar topilmadi</h3>
+                  <h3 className="text-lg font-medium text-stone-900">
+                    Mahsulotlar topilmadi
+                  </h3>
                   <p className="text-stone-500 mt-1">
-                    Qidiruv shartlarini o'zgartiring yoki yangi mahsulot qo'shing
+                    Qidiruv shartlarini o'zgartiring yoki yangi mahsulot
+                    qo'shing
                   </p>
                 </div>
               )}
