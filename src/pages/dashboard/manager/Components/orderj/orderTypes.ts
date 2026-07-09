@@ -1,43 +1,34 @@
 // src/pages/dashboard/manager/Components/orderj/orderTypes.ts
 
-import type { Role } from "@/modules/auth/authTypes"; // Sizning loyihangizdagi Role tipi joylashuvi
-
-// Enumlar
 export enum OrderStatusEnum {
-  OPEN = "OPEN",
-  PAID = "PAID",
-  CANCELLED = "CANCELLED",
+  OPEN = 'OPEN',
+  PAID = 'PAID',
+  CANCELLED = 'CANCELLED',
 }
 
 export enum TableStatusEnum {
-  AVAILABLE = "AVAILABLE",
-  OCCUPIED = "OCCUPIED",
-  RESERVED = "RESERVED",
-  DISABLED = "DISABLED",
+  AVAILABLE = 'AVAILABLE',
+  OCCUPIED = 'OCCUPIED',
+  RESERVED = 'RESERVED',
+  DISABLED = 'DISABLED',
 }
 
-// Kichik tiplar (Nested types)
 export interface Category {
   id: string;
   name: string;
   slug: string;
-  imageUrl?: string | null;
 }
 
 export interface Product {
-  variants: any;
   id: string;
   name: string;
   slug: string;
-  description?: string | null;
-  imageUrl?: string | null;
-  category: Category;
 }
 
 export interface ProductVariant {
   id: string;
   name: string;
-  price: number; // Backend Decimalni string qaytarishi mumkin, lekin UI da number qulayroq
+  price: number;
   product: Product;
 }
 
@@ -52,7 +43,7 @@ export interface OrderItem {
 export interface UserSimple {
   id: string;
   fullName: string;
-  role: Role;
+  username: string;
 }
 
 export interface TableSimple {
@@ -61,7 +52,6 @@ export interface TableSimple {
   status: TableStatusEnum;
 }
 
-// Asosiy Order interfeysi
 export interface Order {
   id: string;
   tableId: string;
@@ -72,13 +62,11 @@ export interface Order {
   total: number;
   createdAt: string;
   updatedAt: string;
-
   table: TableSimple;
   waiter: UserSimple;
   items: OrderItem[];
 }
 
-// DTOs (Request uchun)
 export interface CreateOrderDto {
   tableId: string;
 }
@@ -92,13 +80,12 @@ export interface UpdateOrderStatusDto {
   status: OrderStatusEnum;
 }
 
-// Query parametrlari
 export interface QueryOrderDto {
   page?: number;
   limit?: number;
+  status?: OrderStatusEnum;
 }
 
-// API Response
 export interface OrdersResponse {
   items: Order[];
   meta: {
