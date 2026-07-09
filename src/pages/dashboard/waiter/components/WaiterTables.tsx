@@ -1,13 +1,37 @@
 import { useState, useEffect, useCallback } from "react";
-import {
-  tableService,
-  type Table,
-} from "../../manager/Components/Tables/service";
+import { useNavigate } from "react-router-dom";
+// O'zingizning service faylingiz manziliga qarab to'g'rilang
+import { tableService } from "../../manager/Components/Tables/service";
 import { useAuthStore } from "../../../../modules/auth/authStore";
 
+// 1. Table interfeysini aniq belgilaymiz
+interface OccupiedBy {
+  id: string;
+  fullName: string;
+}
+
+interface Table {
+  id: string;
+  number: number;
+  status: "AVAILABLE" | "OCCUPIED" | "RESERVED" | "DISABLED";
+  occupiedBy?: OccupiedBy | null;
+  capacity?: number;
+}
+
+// 2. API javobi uchun tip (Pagination bo'lsa)
+interface PaginatedResponse {
+  items: Table[];
+  meta: {
+    total: number;
+    totalPages: number;
+    page: number;
+    limit: number;
+  };
+}
+
 export default function WaiterTables() {
-  // Tizimga kirgan ofitsiant ma'lumotlari
-  const user = useAuthStore((state: any) => state.user);
+  const user = useAuthStore((state) => state.user); // Tip avtomatik aniqlanadi
+  const navigate = useNavigate();
 
   const [tables, setTables] = useState<Table[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -15,28 +39,47 @@ export default function WaiterTables() {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [statusFilter, setStatusFilter] = useState<string>("");
-  const [meta, setMeta] = useState({ totalPages: 1, total: 0 });
 
-  // 🔄 Stollarni yuklash funksiyasi
+  // Meta ma'lumotlar uchun aniq tip
+  const [meta, setMeta] = useState<{ totalPages: number; total: number }>({
+    totalPages: 1,
+    total: 0,
+  });
+
+  // Stollarni yuklash funksiyasi
   const fetchTables = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await tableService.getAll(currentPage, 8, statusFilter);
+      // Service dan kelgan ma'lumotni unknown deb qabul qilamiz, chunki u Array yoki Object bo'lishi mumkin
+      const data: unknown = await tableService.getAll(
+        currentPage,
+        8,
+        statusFilter,
+      );
+
       if (Array.isArray(data)) {
-        setTables(data);
+        // Agar to'g'ridan-to'g'ri array kelsa
+        setTables(data as Table[]);
         setMeta({ totalPages: 1, total: data.length });
       } else if (data && typeof data === "object") {
-        const items = data.items || data.data || [];
-        const total = data.meta?.total || items.length;
-        const totalPages = data.meta?.totalPages || 1;
+        // Agar pagination obyekti kelsa (items, meta)
+        const response = data as PaginatedResponse;
+        const items = response.items || [];
+
         setTables(items);
-        setMeta({ totalPages, total });
+        setMeta({
+          totalPages: response.meta?.totalPages || 1,
+          total: response.meta?.total || items.length,
+        });
       }
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message || "Stollarni yuklashda xatolik yuz berdi.",
-      );
+    } catch (err: unknown) {
+      // Xatolikni xavfsiz ushlash
+      if (err instanceof Error) {
+        setError(err.message || "Stollarni yuklashda xatolik.");
+      } else {
+        setError("Noma'lum xatolik yuz berdi.");
+      }
     } finally {
       setLoading(false);
     }
@@ -46,43 +89,40 @@ export default function WaiterTables() {
     fetchTables();
   }, [fetchTables]);
 
-  // Stolni band qilish (`OCCUPIED`)
-  const handleOccupyTable = async (id: string, e: React.MouseEvent) => {
+  // Stol band qilish -> Buyurtma sahifasiga o'tish
+  const handleOccupyTable = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    try {
-      await tableService.occupy(id);
-      fetchTables();
-    } catch (err: any) {
-      alert(err.response?.data?.message || "Stolni band qilib bo'lmadi.");
-    }
+    navigate(`/waiter/order/${id}`);
   };
 
-  // Stolni bo'shatish (`AVAILABLE`)
+  // Stol bo'shatish
   const handleReleaseTable = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     try {
       await tableService.release(id);
-      fetchTables();
-    } catch (err: any) {
-      alert(err.response?.data?.message || "Stolni bo'shatib bo'lmadi.");
+      fetchTables(); // Ro'yxatni yangilash
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Stolni bo'shatib bo'lmadi.";
+      alert(message);
     }
   };
 
   return (
     <div className="p-6 max-w-7xl mx-auto bg-red-50/20 min-h-screen">
-      {/* Sarlavha qismi (Responsive layout) */}
+      {/* Header Qismi */}
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-950">Zal stollari</h1>
           <p className="text-sm text-gray-500">
             Ofitsiant:{" "}
             <span className="font-semibold text-red-600">
-              {user?.fullName || "Tizim a'zosi"}
+              {user?.fullName || user?.username || "Tizim a'zosi"}
             </span>
           </p>
         </div>
 
-        {/* 🛠 Kompakt va jiddiy Select dizayni */}
+        {/* Filter Select */}
         <div className="relative w-full sm:w-64">
           <select
             value={statusFilter}
@@ -96,7 +136,6 @@ export default function WaiterTables() {
             <option value="AVAILABLE">Bo'sh stollar</option>
             <option value="OCCUPIED">Band stollar</option>
           </select>
-          {/* Custom professional o'ng tomondagi strelka */}
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 border-l border-gray-100 my-2 pl-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -116,24 +155,23 @@ export default function WaiterTables() {
         </div>
       </div>
 
-      {/* Xatolik chiqsa */}
+      {/* Xatolik Xabari */}
       {error && (
-        <div className="p-4 mb-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-200">
+        <div className="p-4 mb-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-200 animate-fade-in">
           {error}
         </div>
       )}
 
-      {/* Stollar ro'yxati */}
+      {/* Asosiy Kontent */}
       {loading ? (
-        <div className="text-center py-10 text-gray-500 font-medium">
-          Stollar yuklanmoqda...
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
         </div>
       ) : tables.length === 0 ? (
         <div className="text-center py-14 text-gray-500 border border-dashed border-gray-300 rounded-xl bg-white">
-          Xizmat ko'rsatish uchun stollar topilmadi.
+          Tanlangan filtr bo'yicha stollar topilmadi.
         </div>
       ) : (
-        /* Asl 3 talik grid va animatsiyali chiqish */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in">
           {tables.map((table) => (
             <div
@@ -144,10 +182,9 @@ export default function WaiterTables() {
                   : "border-gray-100 hover:border-gray-200"
               }`}
             >
-              {/* Yuqori qism (Ikonka, Matn va Strelka) */}
+              {/* Card Yuqori Qismi */}
               <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-4">
-                  {/* Stol ikonasi */}
                   <div
                     className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
                       table.status === "OCCUPIED"
@@ -170,8 +207,6 @@ export default function WaiterTables() {
                       />
                     </svg>
                   </div>
-
-                  {/* Stol Nomi va holat yozuvlari (Asl kattalikda) */}
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-gray-900 text-base">
@@ -187,19 +222,15 @@ export default function WaiterTables() {
                         {table.status === "AVAILABLE" ? "Bo'sh" : "Band"}
                       </span>
                     </div>
-
-                    <p className="text-xs text-gray-400 font-medium mt-0.5">
+                    <p className="text-xs text-gray-400 font-medium mt-0.5 truncate max-w-[180px]">
                       {table.status === "AVAILABLE" && "Hali buyurtma yo'q"}
                       {table.status === "OCCUPIED" &&
                         `Xizmatda: ${table.occupiedBy?.fullName || "Ofitsiant"}`}
-                      {table.status !== "AVAILABLE" &&
-                        table.status !== "OCCUPIED" &&
-                        "Yopiq"}
                     </p>
                   </div>
                 </div>
 
-                {/* O'ng tarafdagi strelka `>` */}
+                {/* O'ng strelka */}
                 <div className="text-gray-400">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -218,7 +249,7 @@ export default function WaiterTables() {
                 </div>
               </div>
 
-              {/* ⚡️ Pastki qism: Band qilish / Bo'shatish tugmalari */}
+              {/* Tugmalar Qismi */}
               <div className="mt-4 pt-3 border-t border-gray-100 flex justify-end">
                 {table.status === "AVAILABLE" ? (
                   <button
@@ -251,7 +282,7 @@ export default function WaiterTables() {
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}
-            className="px-3 py-1.5 border rounded-lg text-sm bg-white hover:bg-gray-50 disabled:opacity-50"
+            className="px-3 py-1.5 border rounded-lg text-sm bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
             Orqaga
           </button>
@@ -259,21 +290,17 @@ export default function WaiterTables() {
             Sahifa {currentPage} / {meta.totalPages}
           </span>
           <button
-            disabled={currentPage === meta.totalPages}
+            disabled={currentPage >= meta.totalPages}
             onClick={() => setCurrentPage((prev) => prev + 1)}
-            className="px-3 py-1.5 border rounded-lg text-sm bg-white hover:bg-gray-50 disabled:opacity-50"
+            className="px-3 py-1.5 border rounded-lg text-sm bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
             Oldinga
           </button>
         </div>
       )}
 
-      {/* Yengil yuklanish animatsiyasi */}
       <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(4px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
       `}</style>
     </div>

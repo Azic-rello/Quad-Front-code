@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink, Outlet, useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
-  Menu,
+  Menu as MenuIcon,
   X,
   UserCheck,
   Home,
@@ -10,7 +10,7 @@ import {
   UtensilsCrossed,
   Users,
   Table2,
-  ClipboardList,
+  ClipboardList, // Buyurtmalar uchun ikonka
   Newspaper,
 } from "lucide-react";
 import { useAuthStore } from "../../../../modules/auth/authStore";
@@ -24,17 +24,28 @@ const ManagerSidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const getSubTitle = () => {
-    if (location.pathname === "/manager") return "Overview";
-    if (location.pathname.includes("menu")) return "Menu";
-    if (location.pathname.includes("waiters")) return "Waiters";
-    if (location.pathname.includes("tables")) return "Tables";
-    if (location.pathname.includes("liveOrder")) return "Live order";
-    if (location.pathname.includes("news")) return "News";
+    const path = location.pathname;
+    if (path === "/manager") return "Overview";
+    if (path.includes("/manager/menu")) return "Menu Management";
+    if (path.includes("/manager/orders")) return "Orders";
+    if (path.includes("/manager/waiters")) return "Staff";
+    if (path.includes("/manager/tables")) return "Tables";
+    if (path.includes("/manager/liveOrder")) return "Live Kitchen";
+    if (path.includes("/manager/news")) return "News";
     return "Management";
   };
 
+  // NavLink uchun umumiy class funksiyasi (kod takrorlanishini oldini oladi)
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+      isActive
+        ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
+        : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
+    }`;
+
   return (
     <div className="flex h-screen bg-[#faf9f6] text-stone-800 font-sans antialiased overflow-hidden">
+      {/* Mobile Overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden transition-opacity duration-300"
@@ -42,6 +53,7 @@ const ManagerSidebar: React.FC = () => {
         />
       )}
 
+      {/* Sidebar */}
       <aside
         className={`
         fixed left-0 top-0 z-50 h-screen w-64 bg-[#1a0f0f] text-stone-300
@@ -50,6 +62,7 @@ const ManagerSidebar: React.FC = () => {
       `}
       >
         <div className="p-4 space-y-6 overflow-y-auto custom-scrollbar flex-1">
+          {/* Logo Area */}
           <div className="flex items-center space-x-3 px-2 py-2">
             <div className="w-9 h-9 bg-[#e31221] rounded-full flex items-center justify-center font-black text-white shadow-md">
               <UtensilsCrossed className="w-5 h-5 text-white" />
@@ -64,94 +77,47 @@ const ManagerSidebar: React.FC = () => {
             </div>
           </div>
 
+          {/* Navigation Links */}
           <nav className="space-y-1.5 pt-2">
-            <NavLink
-              to="/manager"
-              end
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
-                }`
-              }
-            >
+            <NavLink to="/manager" end className={navLinkClass}>
               <LayoutDashboard className="w-5 h-5 opacity-90" />
               <span>Umumiy ma'lumot</span>
             </NavLink>
 
-            <NavLink
-              to="/manager/menu"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#221313]"
-                }`
-              }
-            >
+            <NavLink to="/manager/menu" className={navLinkClass}>
               <UtensilsCrossed className="w-5 h-5 opacity-80" />
               <span>Menyu</span>
             </NavLink>
 
-            <NavLink
-              to="/manager/waiters"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
-                }`
-              }
-            >
+            {/* 🆕 ORDERS LINK ADDED HERE */}
+            <NavLink to="/manager/orders" className={navLinkClass}>
+              <ClipboardList className="w-5 h-5 opacity-80" />
+              <span>Orders</span>
+            </NavLink>
+
+            <NavLink to="/manager/waiters" className={navLinkClass}>
               <Users className="w-5 h-5 opacity-80" />
               <span>Ofitsantlar</span>
             </NavLink>
 
-            <NavLink
-              to="/manager/tables"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
-                }`
-              }
-            >
+            <NavLink to="/manager/tables" className={navLinkClass}>
               <Table2 className="w-5 h-5 opacity-80" />
               <span>Stollar</span>
             </NavLink>
 
-            <NavLink
-              to="/manager/liveOrder"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
-                }`
-              }
-            >
+            <NavLink to="/manager/liveOrder" className={navLinkClass}>
               <ClipboardList className="w-5 h-5 opacity-80" />
               <span>Faol Stollar</span>
             </NavLink>
 
-            <NavLink
-              to="/manager/news"
-              className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? "bg-[#e31221] text-white shadow-lg shadow-red-900/20"
-                    : "text-stone-400 hover:text-stone-100 hover:bg-[#251616]"
-                }`
-              }
-            >
+            <NavLink to="/manager/news" className={navLinkClass}>
               <Newspaper className="w-5 h-5 opacity-80" />
               <span>Yangiliklar</span>
             </NavLink>
           </nav>
         </div>
 
+        {/* Footer / User Profile */}
         <div className="p-4 border-t border-stone-900 bg-[#120a0a] space-y-2">
           <div className="px-4 py-1 text-[11px] text-stone-500 font-medium tracking-wider uppercase">
             Manager • {user?.username || "manager"}
@@ -175,6 +141,7 @@ const ManagerSidebar: React.FC = () => {
         </div>
       </aside>
 
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 lg:ml-64 transition-all duration-300">
         <header className="sticky top-0 z-30 h-16 bg-white border-b border-stone-200/80 flex items-center justify-between px-4 sm:px-6">
           <div className="flex items-center space-x-3">
@@ -185,7 +152,7 @@ const ManagerSidebar: React.FC = () => {
               {isOpen ? (
                 <X className="w-6 h-6" />
               ) : (
-                <Menu className="w-6 h-6" />
+                <MenuIcon className="w-6 h-6" />
               )}
             </button>
 
