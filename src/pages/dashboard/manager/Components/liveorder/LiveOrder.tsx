@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Grid, DollarSign, XCircle, RefreshCw } from "lucide-react";
+import { Grid, DollarSign, XCircle } from "lucide-react";
 import { $api } from "@/services/api";
 import { orderApi } from "../orderj/orderApi";
 import type { Order, OrdersResponse } from "../orderj/orderTypes";
@@ -156,13 +156,10 @@ const LiveOrder: React.FC = () => {
   }, [fetchLiveOrders]);
 
   const handleCloseBill = async (orderId: string, tableNumber: number, tipPercent: number) => {
-    // ✅ Backendga PAID statusini yuborish
     await orderApi.updateStatus(orderId, { status: OrderStatusEnum.PAID });
     
-    // ✅ Alert ko'rsatish
     alert(`Table ${tableNumber} to'lovi qabul qilindi!\nIsh foizi: ${tipPercent}%`);
     
-    // ✅ Ro'yxatni yangilash
     await fetchLiveOrders();
   };
 
@@ -213,11 +210,11 @@ const LiveOrder: React.FC = () => {
         {isLoading && orders.length === 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="bg-white rounded-[24px] border border-stone-200/60 h-56 animate-pulse" />
+              <div key={i} className="bg-white rounded-3xl border border-stone-200/60 h-56 animate-pulse" />
             ))}
           </div>
         ) : orders.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-[32px] border border-dashed border-stone-200 text-stone-400 font-bold text-sm">
+          <div className="text-center py-20 bg-white rounded-4xl border border-dashed border-stone-200 text-stone-400 font-bold text-sm">
             Hozircha faol buyurtmalar yo'q
           </div>
         ) : (
@@ -231,7 +228,7 @@ const LiveOrder: React.FC = () => {
               return (
                 <div
                   key={order.id}
-                  className="bg-white border border-red-500 ring-4 ring-red-500/5 rounded-[24px] p-5 flex flex-col justify-between min-h-[220px] shadow-md"
+                  className="bg-white border border-red-500 ring-4 ring-red-500/5 rounded-3xl p-5 flex flex-col justify-between min-h-55 shadow-md"
                 >
                   <div>
                     <div className="flex items-start justify-between">
