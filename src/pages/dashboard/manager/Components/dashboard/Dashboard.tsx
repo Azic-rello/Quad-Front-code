@@ -94,7 +94,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         {/* ─── TEPASI: Sarlavha va Til Tanlash ─── */}
         <div className="flex justify-between items-center select-none">
           <h1 className="text-2xl font-bold text-stone-900 tracking-tight">
-            Overview
+            Umumiy ma'lumot
           </h1>
         </div>
 
@@ -224,7 +224,10 @@ const Dashboard: React.FC<DashboardProps> = ({
           <ul className="space-y-2.5 text-sm font-normal text-stone-500 pl-0 list-none">
             <li className="flex items-center gap-2">
               <span className="text-stone-300 text-lg leading-none">•</span>
-              <span>Ofitsiantlar uchun hisob yarating, shunda ular stol buyurtmalarini qabul qila oladi.</span>
+              <span>
+                Ofitsiantlar uchun hisob yarating, shunda ular stol
+                buyurtmalarini qabul qila oladi.
+              </span>
             </li>
             <li className="flex items-center gap-2">
               <span className="text-stone-300 text-lg leading-none">•</span>
@@ -237,7 +240,8 @@ const Dashboard: React.FC<DashboardProps> = ({
                 <span className="text-red-600 font-semibold cursor-pointer hover:underline transition duration-150">
                   Jonli buyurtmalarni
                 </span>{" "}
-                ofitsiantlar real vaqt rejimida qo‘shayotgan buyurtmalarni ko‘rish uchun.
+                ofitsiantlar real vaqt rejimida qo‘shayotgan buyurtmalarni
+                ko‘rish uchun.
               </span>
             </li>
           </ul>

@@ -25,13 +25,12 @@ const ManagerSidebar: React.FC = () => {
 
   const getSubTitle = () => {
     const path = location.pathname;
-    if (path === "/manager") return "Overview";
-    if (path.includes("/manager/menu")) return "Menu Management";
-    if (path.includes("/manager/orders")) return "Orders";
-    if (path.includes("/manager/waiters")) return "Staff";
-    if (path.includes("/manager/tables")) return "Tables";
-    if (path.includes("/manager/liveOrder")) return "Live Kitchen";
-    if (path.includes("/manager/news")) return "News";
+    if (path === "/manager") return "Umumiy ma'lumot";
+    if (path.includes("/manager/menu")) return "Menyu";
+    if (path.includes("/manager/waiters")) return "Ofitsantlar";
+    if (path.includes("/manager/tables")) return "Stollar";
+    if (path.includes("/manager/liveOrder")) return "Faol Stollar";
+    if (path.includes("/manager/news")) return "Yangiliklar";
     return "Management";
   };
 
@@ -87,12 +86,6 @@ const ManagerSidebar: React.FC = () => {
             <NavLink to="/manager/menu" className={navLinkClass}>
               <UtensilsCrossed className="w-5 h-5 opacity-80" />
               <span>Menyu</span>
-            </NavLink>
-
-            {/* 🆕 ORDERS LINK ADDED HERE */}
-            <NavLink to="/manager/orders" className={navLinkClass}>
-              <ClipboardList className="w-5 h-5 opacity-80" />
-              <span>Orders</span>
             </NavLink>
 
             <NavLink to="/manager/waiters" className={navLinkClass}>

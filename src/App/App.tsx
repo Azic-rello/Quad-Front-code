@@ -8,7 +8,6 @@ import ManagerSidebar from "@/pages/dashboard/manager/Components/ManagerSidebar"
 import News from "@/pages/dashboard/manager/Components/News/News";
 import { CreateOrder } from "@/pages/dashboard/manager/Components/orderj/CreateOrder";
 import { OrderDetails } from "@/pages/dashboard/manager/Components/orderj/OrderDetails";
-import { OrdersList } from "@/pages/dashboard/manager/Components/orderj/OrdersList";
 import WaiterOrderPage from "@/pages/dashboard/manager/Components/orderj/WaiterOrderPage";
 import { ProductList } from "@/pages/dashboard/manager/Components/products/components/ProductList";
 import TablesPage from "@/pages/dashboard/manager/Components/Tables/TablesPage";
@@ -82,7 +81,6 @@ function App() {
           <Route path="news" element={<News />} />
 
           {/* Order Module Routes */}
-          <Route path="orders" element={<OrdersList />} />
           <Route path="orders/create" element={<CreateOrder />} />
           <Route path="orders/:id" element={<OrderDetails />} />
         </Route>
