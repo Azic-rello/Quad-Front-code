@@ -73,7 +73,7 @@ export default function HomeLayout() {
             >
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white">
                 <Flame className="w-4 h-4 text-yellow-300 shrink-0" />
-                <span>Toshkentda 1-raqamli fastfud</span>
+                <span>Zarbdorda 1-raqamli fastfud</span>
               </div>
               <h1 className="mt-4 md:mt-6 text-white font-black leading-[1.05] tracking-tight text-[clamp(2rem,5vw,4.5rem)]">
                 Mazzali, <br /> Issiq Va Tez
