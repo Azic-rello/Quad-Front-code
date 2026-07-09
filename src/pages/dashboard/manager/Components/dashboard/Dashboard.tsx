@@ -6,21 +6,19 @@ import {
   Newspaper,
   ClipboardList,
   TrendingUp,
-  Globe,
   Loader2,
 } from "lucide-react";
 
 import { waiterService } from "../../Components/waiter/service";
 import { tableService } from "../../Components/Tables/service";
+import { productService } from "../products/service/productService";
 
 interface DashboardProps {
-  foodsCount?: number;
   newsCount?: number;
   activeRevenue?: number;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({
-  foodsCount = 6,
   newsCount = 2,
   activeRevenue = 195000,
 }) => {
@@ -28,8 +26,12 @@ const Dashboard: React.FC<DashboardProps> = ({
   const [isLoadingWaiters, setIsLoadingWaiters] = useState<boolean>(true);
 
   const [tablesCount, setTablesCount] = useState<number>(0);
+  // 1. BU YERDA BOOLEAN BO'LIB QOLGAN EDI, NUMBER QILINDI:
   const [activeTablesCount, setActiveTablesCount] = useState<number>(0);
   const [isLoadingTables, setIsLoadingTables] = useState<boolean>(true);
+
+  const [foodsCount, setFoodsCount] = useState<number>(0);
+  const [isLoadingFoods, setIsLoadingFoods] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchWaitersData = async () => {
@@ -63,8 +65,27 @@ const Dashboard: React.FC<DashboardProps> = ({
       }
     };
 
+    const fetchFoodsData = async () => {
+      try {
+        setIsLoadingFoods(true);
+        const response = await productService.getAll({
+          page: 1,
+          limit: 1000,
+          search: "",
+        });
+        // 2. BU YERDAN RESPONSE.DATA OLIB TASHLANDI, FAQAT ITEMS TEKSHIRILADI:
+        const foodsList = response.items || [];
+        setFoodsCount(foodsList.length);
+      } catch (err: unknown) {
+        console.error("Dashboard: Foods yuklashda xatolik:", err);
+      } finally {
+        setIsLoadingFoods(false);
+      }
+    };
+
     fetchWaitersData();
     fetchTablesData();
+    fetchFoodsData();
   }, []);
 
   return (
@@ -127,9 +148,15 @@ const Dashboard: React.FC<DashboardProps> = ({
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
                 Foods
               </span>
-              <h2 className="text-4xl font-bold text-stone-950 tracking-tight">
-                {foodsCount}
-              </h2>
+              {isLoadingFoods ? (
+                <div className="h-10 flex items-center">
+                  <Loader2 className="w-6 h-6 animate-spin text-stone-400" />
+                </div>
+              ) : (
+                <h2 className="text-4xl font-bold text-stone-950 tracking-tight">
+                  {foodsCount}
+                </h2>
+              )}
             </div>
             <div className="w-14 h-14 rounded-2xl bg-yellow-400 flex items-center justify-center text-stone-950">
               <Utensils className="w-6 h-6" />
@@ -188,7 +215,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
         </div>
 
-        {/* ─── PASTI: QUICK TIPS (Skrinshotdagidek toza va tekis) ─── */}
+        {/* ─── PASTI: QUICK TIPS ─── */}
         <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 space-y-4 shadow-xs animate-in fade-in slide-in-from-bottom-4 duration-500 delay-350">
           <h3 className="text-xl font-bold text-stone-950 tracking-tight">
             Quick Tips
