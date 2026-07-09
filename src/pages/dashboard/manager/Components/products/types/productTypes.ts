@@ -1,8 +1,10 @@
+// src/pages/dashboard/manager/Components/products/types/productTypes.ts
+
 export interface ProductVariant {
   id: string;
   productId: string;
   name: string;
-  price: number;
+  price: number; // Narx aniq number bo'lishi kerak
   sku: string | null;
   isDefault: boolean;
   isAvailable: boolean;
@@ -19,7 +21,7 @@ export interface Category {
 }
 
 export interface Product {
-  price: any;
+  // ❌ price: any; -> O'CHIRILDI (Narx variantda bo'ladi)
   id: string;
   name: string;
   slug: string;
@@ -28,7 +30,7 @@ export interface Product {
   isAvailable: boolean;
   categoryId: string;
   category: Category;
-  variants?: ProductVariant[];
+  variants?: ProductVariant[]; // Variantlar majburiy emas, shuning uchun ?
   createdAt: string;
   updatedAt: string;
 }
