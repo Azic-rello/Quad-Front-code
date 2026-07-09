@@ -102,7 +102,7 @@ const WaitersPage: React.FC = () => {
       {/* ================= Sarlavha va Qo'shish Tugmasi (Aralashgan) ================= */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-stone-200/80 pb-6 mb-6 select-none">
         <h2 className="text-xl font-semibold tracking-tight text-stone-950">
-          Waiters
+          Ofitsantlar
         </h2>
 
         <button
@@ -110,7 +110,7 @@ const WaitersPage: React.FC = () => {
           className="flex items-center justify-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-xl text-sm font-semibold shadow-sm active:scale-95 transition-all duration-200"
         >
           <Plus className="w-4 h-4" />
-          <span>Add</span>
+          <span>Qo`shish</span>
         </button>
       </div>
 

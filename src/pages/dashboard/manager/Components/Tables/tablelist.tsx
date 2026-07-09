@@ -32,10 +32,10 @@ export const TableList: React.FC<TableListProps> = ({ tables, user, onRefresh, o
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {tables.map((table) => {
         // Rasmdagi kabi holat yozuvlari
-        let statusText = 'Empty';
+        let statusText = 'Bo‘sh';
         if (table.status === 'OCCUPIED') statusText = `Band (${table.occupiedBy?.fullName || 'Ofitsiant'})`;
-        if (table.status === 'RESERVED') statusText = 'Reserved';
-        if (table.status === 'DISABLED') statusText = 'Ishlamas';
+        if (table.status === 'RESERVED') statusText = 'Band qilingan';
+        if (table.status === 'DISABLED') statusText = 'Faol emas';
 
         return (
           <div 
@@ -48,7 +48,7 @@ export const TableList: React.FC<TableListProps> = ({ tables, user, onRefresh, o
                 <Grid className="w-4 h-4 text-stone-800" />
               </div>
               <div>
-                <h3 className="font-bold text-sm text-stone-900">Table {table.number}</h3>
+                <h3 className="font-bold text-sm text-stone-900">Stol {table.number}</h3>
                 <p className="text-xs text-stone-400 font-medium">{statusText}</p>
               </div>
             </div>

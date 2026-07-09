@@ -154,7 +154,7 @@ export const ProductList: React.FC = () => {
                 : "text-stone-500 hover:text-stone-800"
             }`}
           >
-            Foods
+            Ovqatlar
           </button>
           <button
             onClick={() => setActiveTab("categories")}
@@ -164,7 +164,7 @@ export const ProductList: React.FC = () => {
                 : "text-stone-500 hover:text-stone-800"
             }`}
           >
-            Categories
+            Kategoriyalar
           </button>
         </div>
       </div>

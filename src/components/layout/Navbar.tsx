@@ -94,10 +94,10 @@ const Navbar: React.FC = () => {
         {/* 2. MARKAZDA: Navigatsiya Linklari */}
         <nav className="hidden md:flex items-center space-x-8">
           {[
-            { path: "/", label: "Home" },
+            { path: "/", label: "Bosh Sahifa" },
             { path: "/menu", label: "Menu" },
-            { path: "/news", label: "News" },
-            { path: "/about", label: "About Us" },
+            { path: "/news", label: "Yangiliklar " },
+            { path: "/about", label: "Biz Haqimizda" },
           ].map((item) => (
             <NavLink
               key={item.path}
@@ -197,7 +197,7 @@ const Navbar: React.FC = () => {
                 className="flex items-center space-x-1.5 text-xs font-bold text-gray-600 hover:text-gray-950 transition-colors py-2 px-1"
               >
                 <LogOut className="w-4 h-4 text-gray-400" />
-                <span>Sign Out</span>
+                <span>Chiqsh</span>
               </button>
             </div>
           ) : (
@@ -293,10 +293,10 @@ const Navbar: React.FC = () => {
           {/* Mobil Navigatsiya Linklari */}
           <nav className="flex flex-col space-y-3">
             {[
-              { path: "/", label: "Home" },
+              { path: "/", label: "Bosh Sahifa" },
               { path: "/menu", label: "Menu" },
-              { path: "/news", label: "News" },
-              { path: "/about", label: "About Us" },
+              { path: "/news", label: "Yangliklar" },
+              { path: "/about", label: "Biz Haqimda" },
             ].map((item) => (
               <NavLink
                 key={item.path}
@@ -338,7 +338,7 @@ const Navbar: React.FC = () => {
                 className="w-full bg-gray-100 text-gray-700 font-bold text-center py-3 rounded-xl hover:bg-gray-200 transition-all text-sm flex items-center justify-center space-x-2"
               >
                 <LogOut className="w-4 h-4 text-gray-500" />
-                <span>Sign Out</span>
+                <span>Chiqsh</span>
               </button>
             </>
           ) : (

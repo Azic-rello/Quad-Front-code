@@ -45,11 +45,26 @@ const LiveOrder: React.FC = () => {
     return () => clearInterval(interval);
   }, [fetchLiveOrders]);
 
+<<<<<<< HEAD
   const handleCloseBill = async (orderId: string, tableNumber: number, total: number) => {
     if (window.confirm(`Table ${tableNumber} uchun ${total.toLocaleString()} so'm hisobni yopmoqchimisiz?`)) {
       try {
         await orderApi.updateStatus(orderId, { status: OrderStatusEnum.PAID });
         alert(`Table ${tableNumber} hisobi muvaffaqiyatli yopildi!`);
+=======
+  const handleCloseBill = async (
+    tableId: string,
+    tableNumber: number,
+    total: number,
+  ) => {
+    if (
+      window.confirm(
+        `Stol ${tableNumber} uchun ${total.toLocaleString()} so'm hisobni yopmoqchimisiz?`,
+      )
+    ) {
+      try {
+        alert(`Stol ${tableNumber} hisobi muvaffaqiyatli yopildi!`);
+>>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
         fetchLiveOrders();
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Hisobni yopishda xatolik.";
@@ -77,7 +92,7 @@ const LiveOrder: React.FC = () => {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-black text-stone-900 tracking-tight">
-              Live Orders
+              Faol buyurtmalar
             </h1>
             <p className="text-xs text-stone-400 font-medium mt-0.5">
               Real vaqtdagi faol buyurtmalar ro'yxati
@@ -117,11 +132,22 @@ const LiveOrder: React.FC = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<<<<<<< HEAD
             {orders.map((order) => {
               const waiter = order.waiter.fullName;
               const items = order.items;
               const totalAmount = order.total;
               const tableNumber = order.table.number;
+=======
+            {tables.map((table) => {
+              const isOccupied = table.status === "OCCUPIED";
+              const waiter =
+                table.currentOrder?.waiterName ||
+                table.occupiedBy?.fullName ||
+                "Sardor";
+              const items = table.currentOrder?.items || [];
+              const totalAmount = table.currentOrder?.totalAmount || 0;
+>>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
 
               return (
                 <div
@@ -136,16 +162,29 @@ const LiveOrder: React.FC = () => {
                         </div>
                         <div>
                           <h3 className="font-black text-stone-900 text-base">
+<<<<<<< HEAD
                             Table {tableNumber}
+=======
+                            Stol {table.number}
+>>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
                           </h3>
                           <p className="text-xs text-stone-400 font-semibold">
                             Waiter: {waiter}
                           </p>
                         </div>
                       </div>
+<<<<<<< HEAD
                       <span className="bg-[#e31221] text-white font-black text-[10px] tracking-wider px-2 py-0.5 rounded-md animate-pulse">
                         LIVE
                       </span>
+=======
+
+                      {isOccupied && (
+                        <span className="bg-[#e31221] text-white font-black text-[10px] tracking-wider px-2 py-0.5 rounded-md animate-pulse">
+                          Jonli
+                        </span>
+                      )}
+>>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
                     </div>
 
                     <div className="mt-5 space-y-2">
@@ -163,13 +202,19 @@ const LiveOrder: React.FC = () => {
                           ))}
                         </div>
                       ) : (
+<<<<<<< HEAD
                         <p className="text-xs font-bold text-stone-400/80 py-4">
                           Hali buyurtma yo'q
+=======
+                        <p className="text-xs font-bold text-stone-400/80 py-4 tracking-wide">
+                          Hozircha buyurtmalar yo‘q
+>>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
                         </p>
                       )}
                     </div>
                   </div>
 
+<<<<<<< HEAD
                   <div className="mt-6 pt-4 border-t border-dashed border-stone-200 flex items-center justify-between">
                     <div className="space-y-0.5">
                       <span className="block text-[10px] uppercase font-black text-stone-400 tracking-wider">
@@ -179,6 +224,18 @@ const LiveOrder: React.FC = () => {
                         {totalAmount.toLocaleString()} so'm
                       </span>
                     </div>
+=======
+                  {isOccupied && (
+                    <div className="mt-6 pt-4 border-t border-dashed border-stone-200 flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <span className="block text-[10px] uppercase font-black text-stone-400 tracking-wider">
+                          Umumiy
+                        </span>
+                        <span className="text-xl font-black text-[#e31221] tracking-tight">
+                          {totalAmount.toLocaleString()} so'm
+                        </span>
+                      </div>
+>>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
 
                     <div className="flex gap-2">
                       <button
@@ -193,7 +250,11 @@ const LiveOrder: React.FC = () => {
                         className="bg-[#e31221] hover:bg-red-700 text-white font-black text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 transition"
                       >
                         <DollarSign className="w-3.5 h-3.5" />
+<<<<<<< HEAD
                         To'landi
+=======
+                        Hisobni yopish
+>>>>>>> ca6e391c65b89f96822e580d35b72de76034e91f
                       </button>
                     </div>
                   </div>

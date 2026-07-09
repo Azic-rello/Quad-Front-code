@@ -25,13 +25,12 @@ const ManagerSidebar: React.FC = () => {
 
   const getSubTitle = () => {
     const path = location.pathname;
-    if (path === "/manager") return "Overview";
-    if (path.includes("/manager/menu")) return "Menu Management";
-    if (path.includes("/manager/orders")) return "Orders";
-    if (path.includes("/manager/waiters")) return "Staff";
-    if (path.includes("/manager/tables")) return "Tables";
-    if (path.includes("/manager/liveOrder")) return "Live Kitchen";
-    if (path.includes("/manager/news")) return "News";
+    if (path === "/manager") return "Umumiy ma'lumot";
+    if (path.includes("/manager/menu")) return "Menyu";
+    if (path.includes("/manager/waiters")) return "Ofitsantlar";
+    if (path.includes("/manager/tables")) return "Stollar";
+    if (path.includes("/manager/liveOrder")) return "Faol Stollar";
+    if (path.includes("/manager/news")) return "Yangiliklar";
     return "Management";
   };
 
@@ -81,7 +80,7 @@ const ManagerSidebar: React.FC = () => {
           <nav className="space-y-1.5 pt-2">
             <NavLink to="/manager" end className={navLinkClass}>
               <LayoutDashboard className="w-5 h-5 opacity-90" />
-              <span>Overview</span>
+              <span>Umumiy ma'lumot</span>
             </NavLink>
 
             <NavLink to="/manager/menu" className={navLinkClass}>
@@ -89,30 +88,24 @@ const ManagerSidebar: React.FC = () => {
               <span>Menyu</span>
             </NavLink>
 
-            {/* 🆕 ORDERS LINK ADDED HERE */}
-            <NavLink to="/manager/orders" className={navLinkClass}>
-              <ClipboardList className="w-5 h-5 opacity-80" />
-              <span>Orders</span>
-            </NavLink>
-
             <NavLink to="/manager/waiters" className={navLinkClass}>
               <Users className="w-5 h-5 opacity-80" />
-              <span>Waiters</span>
+              <span>Ofitsantlar</span>
             </NavLink>
 
             <NavLink to="/manager/tables" className={navLinkClass}>
               <Table2 className="w-5 h-5 opacity-80" />
-              <span>Tables</span>
+              <span>Stollar</span>
             </NavLink>
 
             <NavLink to="/manager/liveOrder" className={navLinkClass}>
               <ClipboardList className="w-5 h-5 opacity-80" />
-              <span>Live Orders</span>
+              <span>Faol Stollar</span>
             </NavLink>
 
             <NavLink to="/manager/news" className={navLinkClass}>
               <Newspaper className="w-5 h-5 opacity-80" />
-              <span>News</span>
+              <span>Yangiliklar</span>
             </NavLink>
           </nav>
         </div>
@@ -128,7 +121,7 @@ const ManagerSidebar: React.FC = () => {
             className="w-full py-2 flex items-center space-x-3 px-4 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800/30 text-sm font-medium transition-all duration-200"
           >
             <Home className="w-4 h-4 opacity-70" />
-            <span>Home</span>
+            <span>Bosh Sahifa</span>
           </button>
 
           <button
@@ -136,7 +129,7 @@ const ManagerSidebar: React.FC = () => {
             className="w-full py-2 flex items-center space-x-3 px-4 rounded-xl text-stone-400 hover:text-white hover:bg-stone-800/30 text-sm font-medium transition-all duration-200"
           >
             <LogOut className="w-4 h-4 opacity-70" />
-            <span>Sign Out</span>
+            <span>Chiqish</span>
           </button>
         </div>
       </aside>

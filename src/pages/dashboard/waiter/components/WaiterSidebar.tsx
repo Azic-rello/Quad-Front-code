@@ -43,26 +43,27 @@ const WaiterSidebar: React.FC = () => {
                 Burger<span className="text-[#e31221]">Uz</span>
               </h1>
 
-              <p className="text-xs text-stone-400">Waiter Panel</p>
+              <p className="text-xs text-stone-400">Ofitsant Paneli</p>
             </div>
           </div>
 
           {/* Menu */}
-   <nav className="space-y-2">
-  <NavLink
-    to="/waiter" // Routeringdagi aniq yo'l
-    className={({ isActive }) =>
-      `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-        isActive
-          ? "bg-[#e31221] text-white"
-          : "text-stone-400 hover:bg-[#221313] hover:text-white"
-      }`
-    }
-  >
-    <Grid className="w-5 h-5" />
-    <span>Stollar</span> {/* 🛠 <a> tegi olib tashlandi, o'rniga span qo'yildi */}
-  </NavLink>
-</nav>
+          <nav className="space-y-2">
+            <NavLink
+              to="/waiter" // Routeringdagi aniq yo'l
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                  isActive
+                    ? "bg-[#e31221] text-white"
+                    : "text-stone-400 hover:bg-[#221313] hover:text-white"
+                }`
+              }
+            >
+              <Grid className="w-5 h-5" />
+              <span>Stollar</span>{" "}
+              {/* 🛠 <a> tegi olib tashlandi, o'rniga span qo'yildi */}
+            </NavLink>
+          </nav>
         </div>
 
         {/* Bottom */}
@@ -84,7 +85,7 @@ const WaiterSidebar: React.FC = () => {
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-stone-400 hover:bg-[#221313] hover:text-white transition"
           >
             <Home className="w-4 h-4" />
-            Home
+            Bosh Sahifa
           </button>
 
           <button
@@ -92,7 +93,7 @@ const WaiterSidebar: React.FC = () => {
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-stone-400 hover:bg-[#221313] hover:text-white transition"
           >
             <LogOut className="w-4 h-4" />
-            Sign Out
+            Chiqish
           </button>
         </div>
       </aside>
@@ -110,7 +111,7 @@ const WaiterSidebar: React.FC = () => {
             </button>
 
             <h1 className="font-bold text-lg text-stone-800">
-              Waiter Dashboard
+              Ofitsant boshqaruv paneli
             </h1>
           </div>
 

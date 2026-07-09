@@ -94,7 +94,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         {/* ─── TEPASI: Sarlavha va Til Tanlash ─── */}
         <div className="flex justify-between items-center select-none">
           <h1 className="text-2xl font-bold text-stone-900 tracking-tight">
-            Overview
+            Umumiy ma'lumot
           </h1>
         </div>
 
@@ -104,7 +104,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-75 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
-                Waiters
+                Ofitsantlar
               </span>
               {isLoadingWaiters ? (
                 <div className="h-10 flex items-center">
@@ -125,7 +125,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-100 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
-                Tables
+                Stollar
               </span>
               {isLoadingTables ? (
                 <div className="h-10 flex items-center">
@@ -146,7 +146,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-150 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
-                Foods
+                Ovqatlar
               </span>
               {isLoadingFoods ? (
                 <div className="h-10 flex items-center">
@@ -167,7 +167,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-200 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
-                News
+                Yangiliklar
               </span>
               <h2 className="text-4xl font-bold text-stone-950 tracking-tight">
                 {newsCount}
@@ -182,7 +182,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-250 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
-                Active Tables
+                Faol stollar
               </span>
               {isLoadingTables ? (
                 <div className="h-10 flex items-center">
@@ -203,7 +203,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 flex justify-between items-center shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 delay-300 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="space-y-3">
               <span className="text-sm font-medium text-stone-400 tracking-wide block">
-                Active Revenue
+                Bugungi Daromad
               </span>
               <h2 className="text-3xl font-bold text-stone-950 tracking-tight">
                 {activeRevenue.toLocaleString()} so'm
@@ -218,26 +218,30 @@ const Dashboard: React.FC<DashboardProps> = ({
         {/* ─── PASTI: QUICK TIPS ─── */}
         <div className="bg-white border border-stone-200/60 rounded-[24px] p-8 space-y-4 shadow-xs animate-in fade-in slide-in-from-bottom-4 duration-500 delay-350">
           <h3 className="text-xl font-bold text-stone-950 tracking-tight">
-            Quick Tips
+            Foydali maslahatlar
           </h3>
 
           <ul className="space-y-2.5 text-sm font-normal text-stone-500 pl-0 list-none">
             <li className="flex items-center gap-2">
               <span className="text-stone-300 text-lg leading-none">•</span>
-              <span>Create waiter accounts so they can take table orders.</span>
+              <span>
+                Ofitsiantlar uchun hisob yarating, shunda ular stol
+                buyurtmalarini qabul qila oladi.
+              </span>
             </li>
             <li className="flex items-center gap-2">
               <span className="text-stone-300 text-lg leading-none">•</span>
-              <span>Manage tables (Davralar) used by waiters.</span>
+              <span>Ofitsiantlar uchun stollarni boshqarish.</span>
             </li>
             <li className="flex items-center gap-2">
               <span className="text-stone-300 text-lg leading-none">•</span>
               <span>
-                Watch{" "}
+                Kuzating{" "}
                 <span className="text-red-600 font-semibold cursor-pointer hover:underline transition duration-150">
-                  Live Orders
+                  Jonli buyurtmalarni
                 </span>{" "}
-                to see what waiters add in real time.
+                ofitsiantlar real vaqt rejimida qo‘shayotgan buyurtmalarni
+                ko‘rish uchun.
               </span>
             </li>
           </ul>
