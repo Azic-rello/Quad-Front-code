@@ -67,37 +67,39 @@ export default function WaiterTables() {
   }, [fetchTables]);
 
   // ✅ Stol band qilish
-  const handleOccupyTable = async (tableId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      const order = await orderApi.create({ tableId });
+// handleOccupyTable funksiyasini yangilang
+
+const handleOccupyTable = async (tableId: string, e: React.MouseEvent) => {
+  e.stopPropagation();
+  try {
+    // ✅ Eski localStorage ma'lumotlarini tozalash
+    localStorage.removeItem(`waiter_cart_${tableId}`);
+    localStorage.removeItem(`waiter_order_${tableId}`);
+    
+    const order = await orderApi.create({ tableId });
+    localStorage.setItem(`waiter_order_${tableId}`, order.id);
+    navigate(`/waiter/order/${tableId}/${order.id}`);
+  } catch (err: unknown) {
+    if (err instanceof Error && 'response' in err) {
+      const axiosError = err as { response?: { status?: number; data?: { message?: string } } };
       
-      // Order ID ni localStorage ga saqlash
-      localStorage.setItem(`waiter_order_${tableId}`, order.id);
-      
-      navigate(`/waiter/order/${tableId}/${order.id}`);
-    } catch (err: unknown) {
-      if (err instanceof Error && 'response' in err) {
-        const axiosError = err as { response?: { status?: number; data?: { message?: string } } };
+      if (axiosError.response?.status === 409) {
+        const savedOrderId = localStorage.getItem(`waiter_order_${tableId}`);
         
-        if (axiosError.response?.status === 409) {
-          // Stol band - localStorage dan orderId ni olish
-          const savedOrderId = localStorage.getItem(`waiter_order_${tableId}`);
-          
-          if (savedOrderId) {
-            navigate(`/waiter/order/${tableId}/${savedOrderId}`);
-          } else {
-            alert("Stol band. Sahifani yangilang.");
-          }
+        if (savedOrderId) {
+          navigate(`/waiter/order/${tableId}/${savedOrderId}`);
         } else {
-          const message = axiosError.response?.data?.message || "Stolni band qilib bo'lmadi.";
-          alert(message);
+          alert("Stol band. Sahifani yangilang.");
         }
       } else {
-        alert("Stolni band qilib bo'lmadi.");
+        const message = axiosError.response?.data?.message || "Stolni band qilib bo'lmadi.";
+        alert(message);
       }
+    } else {
+      alert("Stolni band qilib bo'lmadi.");
     }
-  };
+  }
+};
 
   // ✅ Band stolga kirish (faqat o'zi band qilgan)
   const handleOpenOrder = (table: Table, e: React.MouseEvent) => {

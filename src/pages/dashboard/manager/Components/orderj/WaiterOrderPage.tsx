@@ -256,6 +256,7 @@ const WaiterOrderPage: React.FC = () => {
                 </button>
                 <div>
                   <h2 className="text-xl font-bold text-gray-800">Menyu</h2>
+                  <p className="text-xs text-gray-500">Stol #{tableId}</p>
                 </div>
              </div>
           </div>
