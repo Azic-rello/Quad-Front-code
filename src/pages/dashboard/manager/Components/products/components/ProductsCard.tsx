@@ -54,7 +54,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       name.includes("small") ||
       name.includes("s")
     ) {
-      return "bg-blue-50 text-blue-700 border-blue-200 ring-blue-300";
+      return "bg-red-50 text-red-600 border-red-200 ring-red-100";
     }
     if (
       name.includes("o'rta") ||
@@ -62,30 +62,31 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       name.includes("medium") ||
       name.includes("m")
     ) {
-      return "bg-emerald-50 text-emerald-700 border-emerald-200 ring-emerald-300";
+      return "bg-red-100 text-red-700 border-red-300 ring-red-200";
     }
     if (
       name.includes("katta") ||
       name.includes("large") ||
       name.includes("l")
     ) {
-      return "bg-purple-50 text-purple-700 border-purple-200 ring-purple-300";
+      return "bg-red-600 text-white border-red-600 ring-red-300";
     }
-    return "bg-amber-50 text-amber-800 border-amber-200 ring-amber-300";
+    return "bg-red-50 text-red-700 border-red-200 ring-red-100";
   };
 
   const categoryName = product.category?.name || "Kategoriya yo'q";
   const variantsCount = product.variants?.length || 0;
 
   return (
-    <div className="bg-white rounded-[28px] border border-stone-100 shadow-xs overflow-hidden hover:shadow-md hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full animate-in fade-in duration-300">
-      {/* ─── RASM QISMI ─── */}
-      <div className="relative h-56 bg-stone-50 overflow-hidden select-none">
+    <div className="bg-white rounded-2xl border border-red-100/50 shadow-[0_4px_20px_rgb(0,0,0,0.01)] overflow-hidden hover:shadow-[0_12px_30px_rgb(227,18,33,0.06)] hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full max-w-sm animate-in fade-in duration-300">
+      
+      {/* ─── RASM QISMI (Balandligi h-56 dan h-44 ga tushirildi - ixchamroq) ─── */}
+      <div className="relative h-44 bg-red-50/20 overflow-hidden select-none">
         {product.imageUrl ? (
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
             onError={(e) => {
               (e.target as HTMLImageElement).style.display = "none";
               const placeholder = e.currentTarget
@@ -95,23 +96,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           />
         ) : null}
 
-        {/* Rasm bo'lmaganda chiqadigan placeholder */}
         {!product.imageUrl && (
-          <div className="w-full h-full flex flex-col items-center justify-center text-stone-300 gap-2">
-            <ImageIcon className="w-12 h-12 stroke-[1.5]" />
-            <span className="text-xs font-semibold text-stone-400">
-              Rasm yuklanmagan
+          <div className="w-full h-full flex flex-col items-center justify-center text-red-200 gap-1">
+            <ImageIcon className="w-10 h-10 stroke-[1.2]" />
+            <span className="text-[11px] font-medium text-red-400">
+              Rasm yo'q
             </span>
           </div>
         )}
 
-        {/* Status Badge */}
-        <div className="absolute top-4 right-4 z-10">
+        {/* Status Badge (Yumaloqligi va paddingi kichraytirildi) */}
+        <div className="absolute top-3 right-3 z-10">
           <span
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide shadow-2xs backdrop-blur-md ${
+            className={`px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wide shadow-xs backdrop-blur-md ${
               product.isAvailable
-                ? "bg-emerald-500 text-white"
-                : "bg-stone-800 text-white"
+                ? "bg-red-600 text-white"
+                : "bg-stone-900 text-white"
             }`}
           >
             {product.isAvailable ? "Faol" : "Nofaol"}
@@ -120,134 +120,121 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Variantlar Soni Badge */}
         {variantsCount > 0 && (
-          <div className="absolute top-4 left-4 z-10">
-            <span className="px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide bg-white/90 text-stone-900 border border-stone-200/40 shadow-2xs backdrop-blur-sm">
-              {variantsCount} variant
+          <div className="absolute top-3 left-3 z-10">
+            <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-wide bg-white text-red-600 border border-red-100 shadow-xs">
+              {variantsCount} var
             </span>
           </div>
         )}
       </div>
 
-      {/* ─── KARTA MATNI VA MA'LUMOTLARI ─── */}
-      <div className="p-6 flex flex-col flex-1 justify-between space-y-4">
+      {/* ─── KARTA MATNI VA MA'LUMOTLARI (p-6 dan p-4 ga tushirildi) ─── */}
+      <div className="p-4 flex flex-col flex-1 justify-between space-y-3">
         <div>
-          <span className="text-[11px] font-black tracking-wider text-red-600 uppercase bg-red-50 px-2.5 py-1 rounded-lg inline-block mb-2">
+          <span className="text-[9px] font-black tracking-widest text-red-600 uppercase bg-red-50 border border-red-100/60 px-2 py-0.5 rounded-md inline-block mb-1.5">
             {categoryName}
           </span>
           <h3
-            className="text-xl font-bold text-stone-950 truncate line-clamp-1 mb-1"
+            className="text-lg font-extrabold text-stone-900 truncate line-clamp-1 mb-1 group-hover:text-red-600 transition-colors"
             title={product.name}
           >
             {product.name}
           </h3>
 
           {product.description && (
-            <p className="text-sm text-stone-500 font-medium line-clamp-2 min-h-[40px] leading-relaxed">
+            <p className="text-xs text-stone-500 font-normal line-clamp-2 min-h-[32px] leading-relaxed">
               {product.description}
             </p>
           )}
         </div>
 
-        {/* ─── VARIANTLAR PANELi ─── */}
-        <div>
+        {/* ─── VARIANTLAR PANELi (Ixcham tugmalar) ─── */}
+        <div className="space-y-2">
           {availableVariants.length > 0 ? (
-            <div className="space-y-3">
-              {/* Variant tugmalari */}
-              <div className="flex flex-wrap gap-2">
-                {availableVariants.map((variant) => (
-                  <button
-                    key={variant.id}
-                    onClick={() => setSelectedVariantId(variant.id)}
-                    className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-all duration-200 cursor-pointer active:scale-95 ${
-                      selectedVariant?.id === variant.id
-                        ? getVariantColor(variant.name) +
-                          " border-2 ring-2 ring-offset-1 font-extrabold"
-                        : "bg-stone-50 text-stone-600 border-stone-200 hover:bg-stone-100 hover:text-stone-900"
-                    }`}
-                  >
-                    <span className="flex items-center gap-1">
-                      {variant.name}
-                      {variant.isDefault && (
-                        <span className="text-[9px] opacity-60 font-normal">
-                          (Asosiy)
-                        </span>
-                      )}
-                    </span>
-                  </button>
-                ))}
+            <>
+              <div className="flex flex-wrap gap-1">
+                {availableVariants.map((variant) => {
+                  const isSelected = selectedVariant?.id === variant.id;
+                  return (
+                    <button
+                      key={variant.id}
+                      onClick={() => setSelectedVariantId(variant.id)}
+                      className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-all duration-150 cursor-pointer active:scale-95 ${
+                        isSelected
+                          ? getVariantColor(variant.name) + " border-transparent ring-1 ring-offset-1 font-extrabold shadow-xs"
+                          : "bg-stone-50 text-stone-600 border-stone-200/70 hover:bg-red-50 hover:text-red-600"
+                      }`}
+                    >
+                      <span>
+                        {variant.name}
+                        {variant.isDefault && <span className="text-[8px] opacity-50 ml-0.5">(A)</span>}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
 
-              {/* Tanlangan Variant Narxi */}
+              {/* Ixchamlashgan Narx paneli (p-4 dan p-2.5 gacha kichraydi) */}
               {selectedVariant && (
-                <div className="flex items-center justify-between p-4 bg-stone-50 border border-stone-100 rounded-2xl">
-                  <div className="space-y-0.5">
-                    <p className="text-xs font-bold text-stone-400 uppercase tracking-wider">
-                      Narxi
-                    </p>
-                    {selectedVariant.sku && (
-                      <p className="text-[10px] text-stone-400 font-mono">
-                        SKU: {selectedVariant.sku}
-                      </p>
-                    )}
+                <div className="flex items-center justify-between p-2.5 bg-red-50/20 border border-red-100/40 rounded-xl">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-bold text-red-500 uppercase tracking-wider">Narxi</span>
+                    {selectedVariant.sku && <span className="text-[8px] text-stone-400 font-mono">SKU: {selectedVariant.sku}</span>}
                   </div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-black text-stone-950 tracking-tight">
+                  <div className="flex items-baseline gap-0.5">
+                    <span className="text-xl font-black text-red-600 tracking-tight">
                       {formatPrice(Number(selectedVariant.price))}
                     </span>
-                    <span className="text-xs font-bold text-stone-500">
-                      so'm
-                    </span>
+                    <span className="text-[10px] font-extrabold text-red-600">so'm</span>
                   </div>
                 </div>
               )}
-            </div>
+            </>
           ) : (
-            <div className="p-4 bg-stone-50 border border-dashed border-stone-200 rounded-2xl text-center">
-              <p className="text-xs font-semibold text-stone-400">
-                Hozircha faol variantlar yo'q
-              </p>
+            <div className="p-2.5 bg-stone-50 border border-dashed border-stone-200 rounded-xl text-center">
+              <p className="text-[11px] font-semibold text-stone-400">Variantlar yo'q</p>
             </div>
           )}
         </div>
 
-        {/* ─── SITESIMIZGA MOS ASSORTIMENT BOSHQARUV TUGMALARI ─── */}
+        {/* ─── ADMIN BOSHQARUV TUGMALARI (Kichraytirilgan formatda) ─── */}
         {canManage && (
-          <div className="pt-4 border-t border-stone-100 space-y-2.5">
-            {/* Variantlarni Boshqarish */}
+          <div className="pt-2.5 border-t border-stone-100 space-y-1.5">
+            {/* Variantlarni Boshqarish (px-4 py-3 dan py-2 ga tushdi) */}
             <button
               onClick={() => onManageVariants(product)}
-              className="w-full px-4 py-3 bg-[#ffdd00] hover:bg-[#ebd000] text-stone-950 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-2xs transition-all duration-200 cursor-pointer active:scale-[0.99]"
+              className="w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all duration-200 cursor-pointer active:scale-[0.99]"
             >
-              <SlidersHorizontal className="w-4 h-4 text-stone-950 stroke-[2.5]" />
-              Variantlarni boshqarish ({variantsCount})
+              <SlidersHorizontal className="w-3.5 h-3.5 text-white stroke-[2.5]" />
+              Variantlar ({variantsCount})
             </button>
 
-            {/* Tahrirlash, Muzlatish va O'chirish qatori */}
-            <div className="flex gap-2">
+            {/* Pastki uchta kichik tugma */}
+            <div className="flex gap-1.5">
               <button
                 onClick={() => onEdit(product)}
-                className="flex-1 px-3 py-2.5 bg-stone-100 hover:bg-stone-200/80 text-stone-800 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1"
+                className="flex-1 py-2 bg-stone-50 hover:bg-red-50 hover:text-red-600 text-stone-700 border border-stone-200/60 hover:border-red-200 rounded-lg font-bold text-[11px] transition-all cursor-pointer flex items-center justify-center gap-1"
               >
-                <Pencil className="w-3.5 h-3.5" />
+                <Pencil className="w-3 h-3" />
                 Tahrirlash
               </button>
 
               <button
                 onClick={() => onToggleStatus(product.id, !product.isAvailable)}
-                className={`flex-1 px-3 py-2.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1 ${
+                className={`flex-1 py-2 rounded-lg font-bold text-[11px] transition-all border cursor-pointer flex items-center justify-center gap-1 ${
                   product.isAvailable
-                    ? "bg-amber-50 text-amber-700 hover:bg-amber-100"
-                    : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                    ? "bg-stone-950 hover:bg-stone-900 text-white border-transparent"
+                    : "bg-red-50 text-red-600 border-red-200"
                 }`}
               >
                 {product.isAvailable ? (
                   <>
-                    <EyeOff className="w-3.5 h-3.5" />
+                    <EyeOff className="w-3 h-3" />
                     Muzlatish
                   </>
                 ) : (
                   <>
-                    <Eye className="w-3.5 h-3.5" />
+                    <Eye className="w-3 h-3" />
                     Yoqish
                   </>
                 )}
@@ -255,18 +242,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
               <button
                 onClick={() => {
-                  if (
-                    window.confirm(
-                      "Rostdan ham bu mahsulotni o'chirmoqchimisiz?",
-                    )
-                  ) {
+                  if (window.confirm("Rostdan ham o'chirmoqchimisiz?")) {
                     onDelete(product.id);
                   }
                 }}
-                className="px-3.5 py-2.5 bg-red-50 text-[#e31221] hover:bg-red-100 rounded-xl font-bold transition-colors cursor-pointer flex items-center justify-center shadow-2xs"
+                className="px-2.5 py-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white border border-red-100 rounded-lg font-bold transition-all cursor-pointer flex items-center justify-center"
                 title="O'chirish"
               >
-                <Trash2 className="w-4 h-4 stroke-[2.5]" />
+                <Trash2 className="w-3.5 h-3.5 stroke-[2]" />
               </button>
             </div>
           </div>
