@@ -10,12 +10,14 @@ import type {
 } from "../../dashboard/manager/Components/products/types/productTypes";
 import { ShoppingBag, ImageIcon, Check } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface CategoriesResponse {
   items: Category[];
 }
 
 export const MenuLayout: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
   const [page] = useState<number>(1);
 
@@ -83,7 +85,9 @@ export const MenuLayout: React.FC = () => {
     }
 
     localStorage.setItem("cart", JSON.stringify(existingCart));
-    toast.success(`${product.name}${variantName} savatchaga qo'shildi!`);
+
+    // Toast xabarnomasini tarjima qilish
+    toast.success(`${product.name}${variantName} ${t("menu.addedToCart")}`);
 
     window.dispatchEvent(new Event("storage"));
   };
@@ -94,10 +98,10 @@ export const MenuLayout: React.FC = () => {
         {/* ─── HEADING ─── */}
         <div className="space-y-2 text-left animate-in fade-in duration-500">
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-stone-950">
-            Bizning Menyu
+            {t("menu.title")}
           </h1>
           <p className="text-stone-400 text-sm sm:text-base font-semibold">
-            Eng sara va mazali taomlar faqat siz uchun
+            {t("menu.subtitle")}
           </p>
         </div>
 
@@ -111,7 +115,7 @@ export const MenuLayout: React.FC = () => {
                 : "bg-white text-stone-600 hover:bg-stone-50 border border-stone-200/70"
             }`}
           >
-            Barchasi
+            {t("menu.all")}
           </button>
 
           {isCategoriesLoading ? (
@@ -187,13 +191,16 @@ export const MenuLayout: React.FC = () => {
                     ) : (
                       <div className="absolute inset-0 flex flex-col items-center justify-center text-stone-300 gap-1">
                         <ImageIcon className="w-8 h-8 stroke-[1.5]" />
-                        <span className="text-[10px] font-bold">Rasm yo'q</span>
+                        <span className="text-[10px] font-bold">
+                          {t("menu.noImage")}
+                        </span>
                       </div>
                     )}
 
                     {/* Dinamik Narx Badge */}
                     <span className="absolute bottom-3 right-3 bg-stone-950 text-white text-xs font-black px-3.5 py-1.5 rounded-xl shadow-sm tracking-tight z-10">
-                      {Number(displayPrice).toLocaleString("uz-UZ")} so'm
+                      {Number(displayPrice).toLocaleString("uz-UZ")}{" "}
+                      {t("menu.currency")}
                     </span>
                   </div>
 
@@ -204,16 +211,15 @@ export const MenuLayout: React.FC = () => {
                         {product.name}
                       </h3>
                       <p className="text-stone-400 text-xs font-medium line-clamp-2 min-h-[32px] leading-relaxed">
-                        {product.description ||
-                          "Ajoyib retsept asosida yangi va issiq tayyorlangan maxsus taom."}
+                        {product.description || t("menu.defaultDesc")}
                       </p>
                     </div>
 
-                    {/* ✅ YANGI VARIANT DIZAYNI - Minimal va Premium */}
+                    {/* ✅ YANGI VARIANT DIZAYNI */}
                     {availableVariants.length > 0 && (
                       <div className="space-y-2">
                         <p className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">
-                          O'lchamini tanlang
+                          {t("menu.selectSize")}
                         </p>
                         <div className="flex flex-wrap gap-1.5">
                           {availableVariants.map((variant: ProductVariant) => {
@@ -255,7 +261,7 @@ export const MenuLayout: React.FC = () => {
                       className="w-full bg-[#e31221] hover:bg-red-700 text-white rounded-xl py-3 text-xs font-black flex items-center justify-center gap-2 transition-all duration-200 active:scale-[0.97] cursor-pointer shadow-xs shadow-red-900/10"
                     >
                       <ShoppingBag className="w-3.5 h-3.5 stroke-[2.5]" />
-                      <span>Savatga qo'shish</span>
+                      <span>{t("menu.addToCartBtn")}</span>
                     </button>
                   </div>
                 </div>
@@ -266,11 +272,9 @@ export const MenuLayout: React.FC = () => {
           <div className="text-center py-20 bg-white rounded-[32px] border border-dashed border-stone-200 max-w-xl mx-auto shadow-2xs animate-in fade-in duration-300">
             <div className="text-3xl mb-3">🍽️</div>
             <h3 className="text-sm font-bold text-stone-800">
-              Ushbu kategoriyada hozircha taomlar mavjud emas.
+              {t("menu.emptyTitle")}
             </h3>
-            <p className="text-xs text-stone-400 mt-1">
-              Birozdan so'ng tekshirib ko'ring yoki boshqa bo'limga o'ting.
-            </p>
+            <p className="text-xs text-stone-400 mt-1">{t("menu.emptyDesc")}</p>
           </div>
         )}
       </div>

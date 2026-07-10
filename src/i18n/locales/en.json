@@ -1,0 +1,120 @@
+{
+  "navbar": {
+    "home": "Home",
+    "menu": "Menu",
+    "about": "About Us",
+    "news": "News",
+    "login": "Login",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "language": "Select Language",
+    "cart": "Cart"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "loading": "Loading...",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "footer": {
+    "description": "The most delicious fast food delivered to your home. Fresh ingredients, unforgettable taste, and lightning-fast delivery across the city. Experience the premium pizza taste today!",
+    "socials": "Social Media",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "address": "Zarbdor District Center",
+    "workingHours": "Working hours: 09:00 - 00:00",
+    "rights": "© 2026 Quad Pizza. All rights reserved."
+  },
+  "home": {
+    "heroBadge": "No.1 Fast Food in Zarbdor",
+    "heroTitle": "Delicious, Hot & Fast",
+    "heroDesc": "Your ordered food will be delivered very quickly and carefully",
+    "btnMenu": "View Menu",
+    "menuSubtitle": "Our Special",
+    "menuTitle": "Menus",
+    "viewMore": "View more",
+    "addToCart": "Add to Cart",
+    "features": {
+      "delivery": {
+        "title": "Delivery",
+        "desc": "10,000 soum"
+      },
+      "time": {
+        "title": "Delivery in 30 minutes",
+        "desc": "Average delivery time"
+      },
+      "fresh": {
+        "title": "Hot and fresh",
+        "desc": "Made from whole-grain wheat flour"
+      }
+    },
+    "menuItems": {
+      "classicBurger": {
+        "name": "Classic Burger",
+        "price": "35,000 soum",
+        "desc": "Juicy meat, fresh vegetables, and special sauce."
+      },
+      "doubleCheese": {
+        "name": "Double Cheese",
+        "price": "45,000 soum",
+        "desc": "Double cheese and double delicious meat."
+      },
+      "margherita": {
+        "name": "Margherita Pizza",
+        "price": "65,000 soum",
+        "desc": "Italian dough, tomatoes, and mozzarella cheese."
+      },
+      "pepperoni": {
+        "name": "Pepperoni Pizza",
+        "price": "75,000 soum",
+        "desc": "Spicy pepperoni and stretchy cheese."
+      }
+    }
+  },
+  "menu": {
+    "title": "Our Menu",
+    "subtitle": "The best and most delicious dishes just for you",
+    "all": "All",
+    "noImage": "No image",
+    "currency": "soum",
+    "defaultDesc": "A special dish prepared fresh and hot based on a great recipe.",
+    "selectSize": "Select size",
+    "addToCartBtn": "Add to Cart",
+    "addedToCart": "added to cart!",
+    "emptyTitle": "There are no dishes in this category yet.",
+    "emptyDesc": "Please check back in a moment or switch to another section."
+  },
+  "about": {
+    "title": "About Quad Pizza",
+    "description": "Since our Quad opened, it has been growing perfectly without any unnecessary conflicts or complaints, we have all the comfortable conditions.",
+    "featuresSubtitle": "Our Advantages",
+    "featuresTitle": "Why Do People Choose Us?",
+    "stats": {
+      "experience": "Years of experience",
+      "customers": "Happy Customers",
+      "recipes": "Unique recipes"
+    },
+    "features": {
+      "halal": {
+        "title": "100% Halal & Clean",
+        "desc": "Every product and meat item in our kitchen is fully halal certified, and hygiene rules are strictly followed."
+      },
+      "hot": {
+        "title": "Hot Delivery",
+        "desc": "With the help of our special thermal bags, dishes reach you just as hot as they were when taken out of the oven."
+      },
+      "payment": {
+        "title": "Easy Payment System",
+        "desc": "You can make your payment in the most convenient way for you via Click, Payme, cash, or terminal."
+      },
+      "promo": {
+        "title": "Regular Promotions",
+        "desc": "We organize special promo codes, cashbacks, and free delivery days every week for our loyal customers."
+      }
+    }
+  }
+}

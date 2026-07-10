@@ -94,7 +94,7 @@ const Login: React.FC = () => {
             </svg>
           </div>
           <h2 className="text-xl font-black text-gray-950 tracking-tight">
-            Burger<span className="text-[#E30A17]">Uz</span>
+            Quad<span className="text-[#E30A17]">Pizza</span>
           </h2>
           <p className="text-[11px] font-bold text-gray-400 tracking-widest uppercase">
             Sign In

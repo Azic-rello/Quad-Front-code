@@ -1,44 +1,27 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  ShoppingCart,
-  Globe,
-  Menu,
-  X,
-  ChevronDown,
-  LayoutDashboard,
-  LogOut,
-} from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { ShoppingCart, Menu, X, LayoutDashboard, LogOut } from "lucide-react";
 // Auth store olib kiriladi, tokenni tekshirish va logout qilish uchun
 import { useAuthStore } from "../../modules/auth/authStore";
 import logo from "../../assets/logo.png";
+import LanguageSwitcher from "../shared/LanguageSwitcher";
 
-// Tillari ro'yxati
-const LANGUAGES = [
-  { code: "UZ", name: "O'zbekcha" },
-  { code: "RU", name: "Русский" },
-  { code: "EN", name: "English" },
-];
+// 🌐 Alohida yozilgan komponentni import qilamiz
 
 const Navbar: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false); // Mobil menyu holati
 
-  // 🌐 Global Auth holatlarini olamiz
+  // Global Auth holatlarini olamiz
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
 
-  // 🌐 Til tanlash shtatlari
-  const [currentLang, setCurrentLang] = useState("UZ");
-  const [isLangOpen, setIsLangOpen] = useState(false); // Kompyuter til menyusi
-  const [isMobLangOpen, setIsMobLangOpen] = useState(false); // Mobil til menyusi
-
-  const langDropdownRef = useRef<HTMLDivElement>(null);
-
   const closeMenu = () => {
     setIsOpen(false);
-    setIsMobLangOpen(false);
   };
+
   const handleDashboard = () => {
     if (!user) return;
 
@@ -59,20 +42,6 @@ const Navbar: React.FC = () => {
     closeMenu();
   };
 
-  // Kompyuter til menyusidan tashqariga bosganda yopish
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        langDropdownRef.current &&
-        !langDropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsLangOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
     <>
       <header className="w-full h-20 bg-white border-b border-gray-100 sticky top-0 z-50 px-4 sm:px-6 lg:px-16 flex items-center justify-between select-none font-sans">
@@ -92,12 +61,12 @@ const Navbar: React.FC = () => {
           </h1>
         </div>
 
-        {/* 2. MARKAZDA: Navigatsiya Linklari */}
+        {/* 2. MARKAZDA: Navigatsiya Linklari (Dinamil tarjima bilan) */}
         <nav className="hidden md:flex items-center space-x-8">
           {[
-            { path: "/", label: "Bosh Sahifa" },
-            { path: "/menu", label: "Menu" },
-            { path: "/about", label: "Biz Haqimizda" },
+            { path: "/", label: t("navbar.home") },
+            { path: "/menu", label: t("navbar.menu") },
+            { path: "/about", label: t("navbar.about") },
           ].map((item) => (
             <NavLink
               key={item.path}
@@ -116,76 +85,34 @@ const Navbar: React.FC = () => {
         </nav>
 
         {/* 3. O'NG TOMON: Elementlar */}
-        <div className="flex items-center space-x-2 sm:space-x-4 z-50">
-          {/* 🌐 KOMPYUTER UCHUN TIL TANLASH (Dropdown) */}
-          <div ref={langDropdownRef} className="relative hidden md:block">
-            <div
-              onClick={() => setIsLangOpen(!isLangOpen)}
-              className="flex items-center space-x-1 bg-white border border-gray-200 px-3 py-1.5 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition-all text-sm font-medium text-gray-700 select-none active:scale-95"
-            >
-              <Globe className="w-4 h-4 text-gray-500" />
-              <span className="flex items-center space-x-1">
-                <span className="font-bold">{currentLang}</span>
-                <span
-                  className={`text-[9px] text-gray-400 transition-transform duration-200 ${isLangOpen ? "rotate-180" : ""}`}
-                >
-                  ▼
-                </span>
-              </span>
-            </div>
-
-            {/* Ochiladigan ro'yxat */}
-            <div
-              className={`absolute right-0 mt-2 w-32 bg-white border border-gray-100 rounded-xl shadow-xl py-1 transition-all duration-200 origin-top-right ${
-                isLangOpen
-                  ? "opacity-100 scale-100 translate-y-0"
-                  : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
-              }`}
-            >
-              {LANGUAGES.map((lang) => (
-                <button
-                  key={lang.code}
-                  type="button"
-                  onClick={() => {
-                    setCurrentLang(lang.code);
-                    setIsLangOpen(false);
-                  }}
-                  className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between transition-colors ${
-                    currentLang === lang.code
-                      ? "bg-red-50 text-[#E30A17]"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-950"
-                  }`}
-                >
-                  <span>{lang.name}</span>
-                  {currentLang === lang.code && (
-                    <span className="text-[10px]">●</span>
-                  )}
-                </button>
-              ))}
-            </div>
+        <div className="flex items-center space-x-2 sm:space-x-4 z-50 relative">
+          {/* 🌐 KOMPYUTER UCHUN TIL TANLASH KOMPONENTI */}
+          <div className="hidden md:block relative">
+            <LanguageSwitcher />
           </div>
 
-          {/* 🛒 Savat tugmasi (Rasmda ustida qizil bildirishnoma bor ekan, o'shani chiroyli qildim) */}
+          {/* 🛒 Savat tugmasi */}
           <button
             onClick={() => {
               navigate("/basket");
               closeMenu();
             }}
             className="relative p-2 text-gray-700 hover:text-gray-950 transition-all mr-1"
+            title={t("navbar.cart")}
           >
             <ShoppingCart className="w-5 h-5 stroke-2" />
           </button>
 
-          {/* 🔐 Dinamik Tugmalar: Token bor/yo'qligiga qarab rasmga mos dizayn */}
+          {/* 🔐 Dinamik Tugmalar */}
           {user ? (
             <div className="hidden md:flex items-center space-x-3">
-              {/* Dashboard Tugmasi - image_b0e1be.png dagi oq borderli tugma */}
+              {/* Dashboard Tugmasi */}
               <button
                 onClick={handleDashboard}
                 className="flex items-center space-x-1.5 bg-white border border-gray-200 px-4 py-2 rounded-xl shadow-sm text-xs font-bold text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
               >
                 <LayoutDashboard className="w-3.5 h-3.5 text-gray-500" />
-                <span>Dashboard</span>
+                <span>{t("navbar.dashboard")}</span>
               </button>
 
               {/* Sign Out Tugmasi */}
@@ -197,11 +124,11 @@ const Navbar: React.FC = () => {
                 className="flex items-center space-x-1.5 text-xs font-bold text-gray-600 hover:text-gray-950 transition-colors py-2 px-1"
               >
                 <LogOut className="w-4 h-4 text-gray-400" />
-                <span>Chiqsh</span>
+                <span>{t("navbar.logout")}</span>
               </button>
             </div>
           ) : (
-            /* Agar login qilmagan bo'lsa oddiy Kirish tugmasi */
+            /* Login tugmasi */
             <button
               onClick={() => {
                 navigate("/login");
@@ -209,7 +136,7 @@ const Navbar: React.FC = () => {
               }}
               className="hidden md:block bg-[#E30A17] text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-md shadow-red-600/10 hover:bg-red-700 active:scale-[0.98] transition-all"
             >
-              Kirish
+              {t("navbar.login")}
             </button>
           )}
 
@@ -244,59 +171,21 @@ const Navbar: React.FC = () => {
         }`}
       >
         <div className="space-y-6">
-          {/* 🌐 MOBIL UCHUN TIL TANLASH */}
-          <div className="border border-gray-100 bg-gray-50/50 rounded-xl overflow-hidden transition-all">
-            <button
-              type="button"
-              onClick={() => setIsMobLangOpen(!isMobLangOpen)}
-              className="w-full flex items-center justify-between bg-gray-50 px-4 py-3 text-sm font-bold text-gray-800 focus:outline-none"
-            >
-              <div className="flex items-center space-x-2">
-                <Globe className="w-4 h-4 text-gray-500" />
-                <span>Tilni tanlang</span>
-              </div>
-              <span className="flex items-center space-x-1 text-gray-500 text-xs">
-                <span className="text-[#E30A17] font-black">{currentLang}</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform duration-200 ${isMobLangOpen ? "rotate-180" : ""}`}
-                />
-              </span>
-            </button>
-
-            {/* Mobil tillar ro'yxati */}
-            <div
-              className={`transition-all duration-300 overflow-hidden ${isMobLangOpen ? "max-h-40 border-t border-gray-100 bg-white" : "max-h-0"}`}
-            >
-              {LANGUAGES.map((lang) => (
-                <button
-                  key={lang.code}
-                  type="button"
-                  onClick={() => {
-                    setCurrentLang(lang.code);
-                    setIsMobLangOpen(false);
-                  }}
-                  className={`w-full text-left px-5 py-2.5 text-xs font-bold flex items-center justify-between border-b border-gray-50/50 last:border-none ${
-                    currentLang === lang.code
-                      ? "text-[#E30A17] bg-red-50/30"
-                      : "text-gray-600"
-                  }`}
-                >
-                  <span>{lang.name}</span>
-                  {currentLang === lang.code && (
-                    <span className="w-1.5 h-1.5 bg-[#E30A17] rounded-full"></span>
-                  )}
-                </button>
-              ))}
-            </div>
+          {/* 🌐 MOBILDA TIL TANLASH KOMPONENTI */}
+          <div className="relative border-b border-gray-100 pb-2">
+            <span className="text-xs font-bold text-gray-400 block mb-2 px-1">
+              {t("navbar.language")}
+            </span>
+            <LanguageSwitcher />
           </div>
 
           {/* Mobil Navigatsiya Linklari */}
           <nav className="flex flex-col space-y-3">
             {[
-              { path: "/", label: "Bosh Sahifa" },
-              { path: "/menu", label: "Menu" },
-              { path: "/news", label: "Yangliklar" },
-              { path: "/about", label: "Biz Haqimda" },
+              { path: "/", label: t("navbar.home") },
+              { path: "/menu", label: t("navbar.menu") },
+              { path: "/news", label: t("navbar.news") },
+              { path: "/about", label: t("navbar.about") },
             ].map((item) => (
               <NavLink
                 key={item.path}
@@ -321,14 +210,11 @@ const Navbar: React.FC = () => {
           {user ? (
             <>
               <button
-                onClick={() => {
-                  navigate("/manager");
-                  closeMenu();
-                }}
+                onClick={handleDashboard}
                 className="w-full bg-white border border-gray-200 text-gray-800 font-bold text-center py-3 rounded-xl hover:bg-gray-50 transition-all text-sm flex items-center justify-center space-x-2"
               >
                 <LayoutDashboard className="w-4 h-4 text-gray-500" />
-                <span>Dashboard</span>
+                <span>{t("navbar.dashboard")}</span>
               </button>
               <button
                 onClick={() => {
@@ -338,7 +224,7 @@ const Navbar: React.FC = () => {
                 className="w-full bg-gray-100 text-gray-700 font-bold text-center py-3 rounded-xl hover:bg-gray-200 transition-all text-sm flex items-center justify-center space-x-2"
               >
                 <LogOut className="w-4 h-4 text-gray-500" />
-                <span>Chiqsh</span>
+                <span>{t("navbar.logout")}</span>
               </button>
             </>
           ) : (
@@ -349,7 +235,7 @@ const Navbar: React.FC = () => {
               }}
               className="w-full bg-[#E30A17] text-white font-bold text-center py-3.5 rounded-xl shadow-lg shadow-red-600/10 hover:bg-red-700 transition-all text-sm"
             >
-              Kirish
+              {t("navbar.login")}
             </button>
           )}
         </div>

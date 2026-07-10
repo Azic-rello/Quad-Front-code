@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { MapPin, Phone, Clock } from "lucide-react";
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-[#120808] text-zinc-400 pt-12 pb-6 md:pt-16 md:pb-8 px-4 sm:px-8 lg:px-16 border-t border-zinc-900/60 select-none font-sans">
       {/* 📱 To'liq moslashuvchan Grid tizimi */}
@@ -11,19 +14,17 @@ const Footer: React.FC = () => {
         <div className="space-y-5 text-center sm:text-left flex flex-col items-center sm:items-start">
           <div className="space-y-3">
             <h2 className="text-xl md:text-2xl font-black text-white tracking-wide">
-              Quad<span className="text-[#E30A17]">Uz</span>
+              Quad<span className="text-[#E30A17]">Pizza</span>
             </h2>
             <p className="text-xs md:text-sm text-zinc-400 max-w-sm leading-relaxed mx-auto sm:mx-0">
-              Uyingizga yetkazib beriladigan eng mazali tezkor taomlar. Yangi
-              masalliqlar, unutilmas ta'm va shahar bo'ylab chaqmoq tezligidagi
-              yetkazib berish. Premium pizza ta'mini bugunoq his qiling!
+              {t("footer.description")}
             </p>
           </div>
 
           {/* Ijtimoiy tarmoqlar */}
           <div className="space-y-2.5 w-full flex flex-col items-center sm:items-start">
             <h4 className="text-[11px] font-bold text-gray-400 tracking-widest uppercase">
-              Ijtimoiy tarmoqlar
+              {t("footer.socials")}
             </h4>
             <div className="flex items-center space-x-3">
               {/* Instagram */}
@@ -90,14 +91,13 @@ const Footer: React.FC = () => {
         {/* 2-Ustun: Tezkor havolalar (Menu) */}
         <div className="space-y-4 text-center sm:text-left flex flex-col items-center sm:items-start">
           <h3 className="text-white font-bold text-base tracking-wide relative after:content-[''] after:block after:w-8 after:h-0.5 after:bg-[#E30A17] after:mt-1 after:mx-auto sm:after:mx-0">
-            Tezkor havolalar
+            {t("footer.quickLinks")}
           </h3>
           <ul className="space-y-2.5 text-xs md:text-sm font-medium">
             {[
-              { path: "/", label: "Bosh sahifa" },
-              { path: "/menu", label: "Menyu" },
-              { path: "/news", label: "Yangiliklar" },
-              { path: "/about", label: "Biz haqimizda" },
+              { path: "/", label: t("navbar.home") },
+              { path: "/menu", label: t("navbar.menu") },
+              { path: "/about", label: t("navbar.about") },
             ].map((item) => (
               <li key={item.path}>
                 <Link
@@ -114,12 +114,12 @@ const Footer: React.FC = () => {
         {/* 3-Ustun: Bog'lanish ma'lumotlari (Contact) */}
         <div className="space-y-4 text-center sm:text-left flex flex-col items-center sm:items-start sm:col-span-2 lg:col-span-1">
           <h3 className="text-white font-bold text-base tracking-wide relative after:content-[''] after:block after:w-8 after:h-0.5 after:bg-[#E30A17] after:mt-1 after:mx-auto sm:after:mx-0">
-            Aloqa
+            {t("footer.contact")}
           </h3>
           <ul className="space-y-3.5 text-xs md:text-sm font-medium flex flex-col items-center sm:items-start">
             <li className="flex items-center space-x-3">
               <MapPin className="w-4 h-4 text-zinc-500 shrink-0" />
-              <span>Zarbdor Tumani Markazi</span>
+              <span>{t("footer.address")}</span>
             </li>
             <li className="flex items-center space-x-3">
               <Phone className="w-4 h-4 text-zinc-500 shrink-0" />
@@ -129,7 +129,7 @@ const Footer: React.FC = () => {
             </li>
             <li className="flex items-center space-x-2 text-[11px] text-zinc-500 pt-1">
               <Clock className="w-3.5 h-3.5" />
-              <span>Ish vaqti: 09:00 - 00:00</span>
+              <span>{t("footer.workingHours")}</span>
             </li>
           </ul>
         </div>
@@ -137,7 +137,7 @@ const Footer: React.FC = () => {
 
       {/* Pastki mualliflik huquqi qismi */}
       <div className="max-w-7xl mx-auto border-t border-zinc-900/60 pt-6 text-center text-[11px] text-zinc-600 font-medium tracking-wide">
-        © 2026 Quad Pizza. Barcha huquqlar himoyalangan.
+        {t("footer.rights")}
       </div>
     </footer>
   );

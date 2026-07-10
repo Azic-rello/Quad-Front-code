@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
+import "./i18n/i18react";
 import App from "./App/App";
 // LoaderProvider'ni import qilamiz
 import { LoaderProvider } from "./components/shared/Loader";

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { ArrowRight, Flame, Truck, Clock, Utensils } from "lucide-react";
 // react-router-dom dan Link komponentini olib kelamiz
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 // Animatsiya uchun AOS kutubxonasi
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -14,6 +15,8 @@ import margheritaImg from "../../../assets/Margherita.avif";
 import pepperoniImg from "../../../assets/Peperoni.avif";
 
 export default function HomeLayout() {
+  const { t } = useTranslation();
+
   // Sahifa yuklanganda animatsiyalarni xavfsiz ishga tushirish
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -25,35 +28,35 @@ export default function HomeLayout() {
     }
   }, []);
 
-  // Menyudagi har bir taomga o'z rasmini bog'lab chiqdik
+  // Menyudagi har bir taomga o'z rasmini va tarjima kalitlarini bog'lab chiqdik
   const menuItems = [
     {
       id: 1,
-      name: "Klassik Burger",
-      price: "35,000 so'm",
+      name: t("home.menuItems.classicBurger.name"),
+      price: t("home.menuItems.classicBurger.price"),
       image: classicBurgerImg,
-      desc: "Sershira go'sht, yangi sabzavotlar va maxsus sous.",
+      desc: t("home.menuItems.classicBurger.desc"),
     },
     {
       id: 2,
-      name: "Double Cheese",
-      price: "45,000 so'm",
+      name: t("home.menuItems.doubleCheese.name"),
+      price: t("home.menuItems.doubleCheese.price"),
       image: doubleCheeseImg,
-      desc: "Ikki hissa pishloq va ikki karra mazali go'sht.",
+      desc: t("home.menuItems.doubleCheese.desc"),
     },
     {
       id: 3,
-      name: "Margarita Pizza",
-      price: "65,000 so'm",
+      name: t("home.menuItems.margherita.name"),
+      price: t("home.menuItems.margherita.price"),
       image: margheritaImg,
-      desc: "Italyancha xamir, pomidor va motsarella pishlog'i.",
+      desc: t("home.menuItems.margherita.desc"),
     },
     {
       id: 4,
-      name: "Pepperoni Pizza",
-      price: "75,000 so'm",
+      name: t("home.menuItems.pepperoni.name"),
+      price: t("home.menuItems.pepperoni.price"),
       image: pepperoniImg,
-      desc: "Achchiqqina pepperoni va cho'ziluvchan pishloq.",
+      desc: t("home.menuItems.pepperoni.desc"),
     },
   ];
 
@@ -73,14 +76,14 @@ export default function HomeLayout() {
             >
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white">
                 <Flame className="w-4 h-4 text-yellow-300 shrink-0" />
-                <span>Zarbdorda 1-raqamli fastfud</span>
+                <span>{t("home.heroBadge")}</span>
               </div>
               <h1 className="mt-4 md:mt-6 text-white font-black leading-[1.05] tracking-tight text-[clamp(2rem,5vw,4.5rem)]">
-                Mazzali, <br /> Issiq Va Tez
+                {t("home.heroTitle").split(", ")[0]}, <br />{" "}
+                {t("home.heroTitle").split(", ")[1]}
               </h1>
               <p className="mt-4 md:mt-6 text-orange-50 leading-relaxed max-w-xl text-sm sm:text-base lg:text-lg">
-                Buyurtma qilingan Taomingniz Juda Tez Va ehtiyotkorlik Bilan
-                yetkaziladi
+                {t("home.heroDesc")}
               </p>
 
               {/* O'TISH TUGMALARI */}
@@ -89,14 +92,14 @@ export default function HomeLayout() {
                   to="/menu"
                   className="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all text-sm sm:text-base shrink-0 active:scale-95"
                 >
-                  <span>Menu Ko'rsh </span>
+                  <span>{t("home.btnMenu")}</span>
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   to="/about"
                   className="w-full sm:w-auto border border-white/60 hover:border-white hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-xl flex items-center justify-center transition-all text-sm sm:text-base shrink-0 active:scale-95"
                 >
-                  Biz Haqimizda
+                  {t("navbar.about")}
                 </Link>
               </div>
             </div>
@@ -131,9 +134,11 @@ export default function HomeLayout() {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 text-sm sm:text-base">
-                yetkazib berish
+                {t("home.features.delivery.title")}
               </h3>
-              <p className="text-xs text-gray-500 mt-0.5">10 000 soʻm</p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {t("home.features.delivery.desc")}
+              </p>
             </div>
           </div>
 
@@ -147,10 +152,10 @@ export default function HomeLayout() {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 text-sm sm:text-base">
-                30 daqiqada yetkazib berish
+                {t("home.features.time.title")}
               </h3>
               <p className="text-xs text-gray-500 mt-0.5">
-                O‘rtacha yetkazib berish vaqti
+                {t("home.features.time.desc")}
               </p>
             </div>
           </div>
@@ -165,10 +170,10 @@ export default function HomeLayout() {
             </div>
             <div>
               <h3 className="font-bold text-gray-800 text-sm sm:text-base">
-                Issiq va yangi
+                {t("home.features.fresh.title")}
               </h3>
               <p className="text-xs text-gray-500 mt-0.5">
-                Butun donli bug‘doy unidan tayyorlangan
+                {t("home.features.fresh.desc")}
               </p>
             </div>
           </div>
@@ -183,10 +188,10 @@ export default function HomeLayout() {
         >
           <div>
             <span className="text-orange-600 font-bold text-xs sm:text-sm uppercase tracking-wider">
-              Bizning maxsus
+              {t("home.menuSubtitle")}
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mt-1">
-              Menyular
+              {t("home.menuTitle")}
             </h2>
           </div>
           {/* O'ng tarafdagi View More tugmasi ham Link qilib o'zgartirildi */}
@@ -194,7 +199,7 @@ export default function HomeLayout() {
             to="/menu"
             className="text-orange-600 font-bold text-sm hover:text-orange-700 flex items-center gap-1 transition-all"
           >
-            <span>Ko`proq ko`rish</span>
+            <span>{t("home.viewMore")}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -228,7 +233,7 @@ export default function HomeLayout() {
                   </p>
                 </div>
                 <button className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2.5 rounded-xl text-sm transition-all shadow-md active:scale-95">
-                  Savatga qo‘shish
+                  {t("home.addToCart")}
                 </button>
               </div>
             </div>

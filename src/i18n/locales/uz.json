@@ -1,0 +1,120 @@
+{
+  "navbar": {
+    "home": "Bosh Sahifa",
+    "menu": "Menu",
+    "about": "Biz haqimizda",
+    "news": "Yangiliklar",
+    "login": "Kirish",
+    "logout": "Chiqish",
+    "dashboard": "Dashboard",
+    "language": "Tilni tanlang",
+    "cart": "Savat"
+  },
+  "common": {
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "search": "Qidirish",
+    "loading": "Yuklanmoqda...",
+    "yes": "Ha",
+    "no": "Yo'q"
+  },
+  "footer": {
+    "description": "Uyingizga yetkazib beriladigan eng mazali tezkor taomlar. Yangi masalliqlar, unutilmas ta'm va shahar bo'ylab chaqmoq tezligidagi yetkazib berish. Premium pizza ta'mini bugunoq his qiling!",
+    "socials": "Ijtimoiy tarmoqlar",
+    "quickLinks": "Tezkor havolalar",
+    "contact": "Aloqa",
+    "address": "Zarbdor Tumani Markazi",
+    "workingHours": "Ish vaqti: 09:00 - 00:00",
+    "rights": "© 2026 Quad Pizza. Barcha huquqlar himoyalangan."
+  },
+  "home": {
+    "heroBadge": "Zarbdorda 1-raqamli fastfud",
+    "heroTitle": "Mazzali, Issiq Va Tez",
+    "heroDesc": "Buyurtma qilingan Taomingniz Juda Tez Va ehtiyotkorlik Bilan yetkaziladi",
+    "btnMenu": "Menu Ko'rish",
+    "menuSubtitle": "Bizning maxsus",
+    "menuTitle": "Menyular",
+    "viewMore": "Ko`proq ko`rish",
+    "addToCart": "Savatga qo‘shish",
+    "features": {
+      "delivery": {
+        "title": "yetkazib berish",
+        "desc": "10 000 soʻm"
+      },
+      "time": {
+        "title": "30 daqiqada yetkazib berish",
+        "desc": "O‘rtacha yetkazib berish vaqti"
+      },
+      "fresh": {
+        "title": "Issiq va yangi",
+        "desc": "Butun donli bug‘doy unidan tayyorlangan"
+      }
+    },
+    "menuItems": {
+      "classicBurger": {
+        "name": "Klassik Burger",
+        "price": "35,000 so'm",
+        "desc": "Sershira go'sht, yangi sabzavotlar va maxsus sous."
+      },
+      "doubleCheese": {
+        "name": "Double Cheese",
+        "price": "45,000 so'm",
+        "desc": "Ikki hissa pishloq va ikki karra mazali go'sht."
+      },
+      "margherita": {
+        "name": "Margarita Pizza",
+        "price": "65,000 so'm",
+        "desc": "Italyancha xamir, pomidor va motsarella pishlog'i."
+      },
+      "pepperoni": {
+        "name": "Pepperoni Pizza",
+        "price": "75,000 so'm",
+        "desc": "Achchiqqina pepperoni va cho'ziluvchan pishloq."
+      }
+    }
+  },
+  "menu": {
+    "title": "Bizning Menyu",
+    "subtitle": "Eng sara va mazali taomlar faqat siz uchun",
+    "all": "Barchasi",
+    "noImage": "Rasm yo'q",
+    "currency": "so'm",
+    "defaultDesc": "Ajoyib retsept asosida yangi va issiq tayyorlangan maxsus taom.",
+    "selectSize": "O'lchamini tanlang",
+    "addToCartBtn": "Savatga qo'shish",
+    "addedToCart": "savatchaga qo'shildi!",
+    "emptyTitle": "Ushbu kategoriyada hozircha taomlar mavjud emas.",
+    "emptyDesc": "Birozdan so'ng tekshirib ko'ring yoki boshqa bo'limga o'ting."
+  },
+  "about": {
+    "title": "Quad Pizza Haqida",
+    "description": "Bizning Quad ochilganidan beri hechqande Ortiqcha nizolarsz shikoyatlarsiz mukamal bo'lib o'sib kelmoqda hamma qulay shart-sharoitlar bizda",
+    "featuresSubtitle": "Bizning ustunliklarimiz",
+    "featuresTitle": "Nega aynan bizni tanlashadi?",
+    "stats": {
+      "experience": "Yillik tajriba",
+      "customers": "Xursand MijoZlar",
+      "recipes": "Noyob retseptlar"
+    },
+    "features": {
+      "halal": {
+        "title": "100% Halol va Toza",
+        "desc": "Oshxonamizdagi har bir mahsulot va go'sht mahsulotlari to'liq halol sertifikatiga ega, gigiyena qoidalariga qat'iy amal qilinadi."
+      },
+      "hot": {
+        "title": "Issiq Holatda Yetkazish",
+        "desc": "Maxsus termo-sumkalarimiz yordamida taomlar pechdan qanday uzilgan bo'lsa, sizgacha aynan shunday issiqqina yetib boradi."
+      },
+      "payment": {
+        "title": "Oson To'lov Tizimi",
+        "desc": "Click, Payme, naqd pul yoki terminal orqali o'zingizga qulay usulda to'lovni amalga oshirishingiz mumkin."
+      },
+      "promo": {
+        "title": "Doimiy Aksiyalar",
+        "desc": "Sodiq mijozlarimiz uchun har hafta maxsus promo-kodlar, keshbeklar va bepul yetkazib berish kunlarini tashkil qilamiz."
+      }
+    }
+  }
+}
