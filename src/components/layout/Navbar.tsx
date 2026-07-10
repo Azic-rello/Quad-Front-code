@@ -97,7 +97,6 @@ const Navbar: React.FC = () => {
           {[
             { path: "/", label: "Bosh Sahifa" },
             { path: "/menu", label: "Menu" },
-            { path: "/news", label: "Yangiliklar " },
             { path: "/about", label: "Biz Haqimizda" },
           ].map((item) => (
             <NavLink

@@ -7,7 +7,6 @@ import PublicLayout from "@/layouts/PublicLayout";
 
 import HomeLayout from "@/pages/public/Home/HomeLayout";
 import MenuLayout from "@/pages/public/Menu/MenuLayout";
-import NewsLayout from "@/pages/public/News/NewsLayout";
 import AboutLayout from "@/pages/public/About/AboutLayout";
 import BasketLayout from "@/pages/public/Basket/BasketLayout";
 
@@ -53,7 +52,6 @@ function App() {
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<HomeLayout />} />
         <Route path="menu" element={<MenuLayout />} />
-        <Route path="news" element={<NewsLayout />} />
         <Route path="about" element={<AboutLayout />} />
         <Route path="basket" element={<BasketLayout />} />
       </Route>
