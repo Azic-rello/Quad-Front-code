@@ -1,6 +1,6 @@
 // 📁 productService.ts ni quyidagicha yangila:
 
-import { $api } from "../../../../../../services/api"; // 👈 Faqat himoyalangan $api ni olamiz
+import { $api, $publicApi } from "../../../../../../services/api"; // 👈 Faqat himoyalangan $api ni olamiz
 import type {
   Product,
   CreateProductDto,
@@ -52,7 +52,7 @@ export const productService = {
 export const categoryService = {
   // ✅ Kategoriyalarni ham token bilan himoyalangan holda olamiz
   getAll: async (): Promise<Category[]> => {
-    const response = await $api.get<Category[]>("/categories");
+    const response = await $publicApi.get<Category[]>("/categories");
     return response.data;
   },
 };

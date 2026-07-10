@@ -138,7 +138,6 @@ $api.interceptors.response.use(
         accessTokenMemory = null;
         Cookies.remove("refreshToken");
 
-        window.location.href = "/auth/login";
         return Promise.reject(refreshError);
       }
     }
