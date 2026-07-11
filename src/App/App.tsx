@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import PublicLayout from "@/layouts/PublicLayout";
-
 import HomeLayout from "@/pages/public/Home/HomeLayout";
 import MenuLayout from "@/pages/public/Menu/MenuLayout";
 import AboutLayout from "@/pages/public/About/AboutLayout";
@@ -25,27 +24,26 @@ import { CreateOrder } from "@/pages/dashboard/manager/Components/orderj/CreateO
 
 import WaiterSidebar from "@/pages/dashboard/waiter/components/WaiterSidebar";
 import WaiterTables from "@/pages/dashboard/waiter/components/WaiterTables";
-
 import WaiterOrderPage from "@/pages/dashboard/manager/Components/orderj/WaiterOrderPage";
 
 function App() {
   const location = useLocation();
-  const { showLoader, hideLoader } = useLoader();
-
+  const { setIsPageLoading } = useLoader();
   const prevPathname = useRef(location.pathname);
 
   useEffect(() => {
     if (prevPathname.current !== location.pathname) {
-      showLoader("Sahifa yuklanmoqda...");
+      // Sahifa almashganda loader 2 soniya davomida majburan ko'rsatiladi
+      setIsPageLoading(true);
 
       const timer = setTimeout(() => {
-        hideLoader();
-      }, 400);
+        setIsPageLoading(false);
+      }, 300); // 2 soniya (2000ms)
 
       prevPathname.current = location.pathname;
       return () => clearTimeout(timer);
     }
-  }, [location.pathname, showLoader, hideLoader]);
+  }, [location.pathname, setIsPageLoading]);
 
   return (
     <Routes>
@@ -67,12 +65,10 @@ function App() {
       <Route element={<AuthGuard roles={["MANAGER"]} />}>
         <Route path="manager" element={<ManagerSidebar />}>
           <Route index element={<Dashboard />} />
-          
           <Route path="menu" element={<ProductList />} />
           <Route path="waiters" element={<WaitersPage />} />
           <Route path="tables" element={<TablesPage />} />
           <Route path="liveOrder" element={<LiveOrder />} />
-
           <Route path="orders/create" element={<CreateOrder />} />
           <Route path="orders/:id" element={<OrderDetails />} />
         </Route>
@@ -81,7 +77,10 @@ function App() {
       <Route element={<AuthGuard roles={["WAITER"]} />}>
         <Route path="waiter" element={<WaiterSidebar />}>
           <Route index element={<WaiterTables />} />
-          <Route path="order/:tableId/:orderId?" element={<WaiterOrderPage />} />
+          <Route
+            path="order/:tableId/:orderId?"
+            element={<WaiterOrderPage />}
+          />
         </Route>
       </Route>
 

@@ -1,9 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { $api, $publicApi } from "../../services/api"; // Loyihangizdagi API yo'lini tekshirib oling
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
+import { $api, $publicApi } from "../../services/api";
 
 interface LoaderContextType {
-  showLoader: (text?: string) => void;
-  hideLoader: () => void;
+  setIsPageLoading: (value: boolean) => void;
 }
 
 const LoaderContext = createContext<LoaderContextType | undefined>(undefined);
@@ -20,61 +24,25 @@ export const useLoader = () => {
 export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [loaderText, setLoaderText] = useState("Tayyorlanmoqda");
+  const [isPageLoading, setIsPageLoading] = useState(false);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
 
-  const showLoader = (text = "Tayyorlanmoqda") => {
-    setLoaderText(text);
-    setIsLoading(true);
-  };
-
-  const hideLoader = () => setIsLoading(false);
-
-  // 🌐 INTERNET O'CHIB QOLISHINI NAZORAT QILISH
   useEffect(() => {
-    const handleOffline = () => showLoader("Internet bilan aloqa uzildi...");
-    const handleOnline = () => hideLoader();
-
+    const handleOffline = () => setIsOffline(true);
+    const handleOnline = () => setIsOffline(false);
     window.addEventListener("offline", handleOffline);
     window.addEventListener("online", handleOnline);
-
-    if (!navigator.onLine) {
-      showLoader("Internet bilan aloqa uzildi...");
-    }
-
     return () => {
       window.removeEventListener("offline", handleOffline);
       window.removeEventListener("online", handleOnline);
     };
   }, []);
 
-  // 🔒 AXIOS INTERCEPTOR - API SO'ROVLARI UCHUN DARHOL ISHLAYDI
+  // DIQQAT: API interseptorlar endi loaderni bloklay olmaydi, ular shunchaki toza ishlaydi
   useEffect(() => {
-    let activeRequests = 0;
-
-    const requestHandler = (config: any) => {
-      activeRequests++;
-      showLoader("Ma'lumotlar yuklanmoqda");
-      return config;
-    };
-
-    const responseHandler = (response: any) => {
-      activeRequests--;
-      if (activeRequests <= 0) {
-        activeRequests = 0;
-        hideLoader();
-      }
-      return response;
-    };
-
-    const errorHandler = (error: any) => {
-      activeRequests--;
-      if (activeRequests <= 0) {
-        activeRequests = 0;
-        hideLoader();
-      }
-      return Promise.reject(error);
-    };
+    const requestHandler = (config: any) => config;
+    const responseHandler = (response: any) => response;
+    const errorHandler = (error: any) => Promise.reject(error);
 
     const interceptorReq = $api.interceptors.request.use(
       requestHandler,
@@ -84,7 +52,6 @@ export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({
       responseHandler,
       errorHandler,
     );
-
     const pubInterceptorReq = $publicApi.interceptors.request.use(
       requestHandler,
       errorHandler,
@@ -102,10 +69,15 @@ export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, []);
 
+  const shouldShow = isPageLoading || isOffline;
+  const currentText = isOffline
+    ? "Internet bilan aloqa uzildi..."
+    : "Sahifa yuklanmoqda...";
+
   return (
-    <LoaderContext.Provider value={{ showLoader, hideLoader }}>
+    <LoaderContext.Provider value={{ setIsPageLoading }}>
       {children}
-      {isLoading && (
+      {shouldShow && (
         <div className="loader-wrap">
           <div className="loader-circle">
             <svg width="110" height="110" viewBox="0 0 110 110">
@@ -167,7 +139,7 @@ export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({
             </svg>
           </div>
           <div className="loader-text">
-            <p>{loaderText}</p>
+            <p>{currentText}</p>
             <div className="dots">
               <span />
               <span />
