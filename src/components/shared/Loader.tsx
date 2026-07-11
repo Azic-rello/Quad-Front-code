@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-} from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { $api, $publicApi } from "../../services/api";
 
 interface LoaderContextType {
@@ -38,7 +33,6 @@ export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, []);
 
-  // DIQQAT: API interseptorlar endi loaderni bloklay olmaydi, ular shunchaki toza ishlaydi
   useEffect(() => {
     const requestHandler = (config: any) => config;
     const responseHandler = (response: any) => response;
@@ -80,39 +74,41 @@ export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({
       {shouldShow && (
         <div className="loader-wrap">
           <div className="loader-circle">
-            <svg width="110" height="110" viewBox="0 0 110 110">
+            {/* O'lchamlar 110px dan 180px ga kattalashtirildi, stroke qalinligi 8 bo'ldi */}
+            <svg width="180" height="180" viewBox="0 0 180 180">
               <circle
-                cx="55"
-                cy="55"
-                r="48"
+                cx="90"
+                cy="90"
+                r="80"
                 fill="none"
                 stroke="rgba(227,18,33,0.15)"
-                strokeWidth="6"
+                strokeWidth="8"
               />
               <circle
-                cx="55"
-                cy="55"
-                r="48"
+                cx="90"
+                cy="90"
+                r="80"
                 fill="none"
                 stroke="#E31221"
-                strokeWidth="6"
+                strokeWidth="8"
                 strokeLinecap="round"
-                strokeDasharray="70 231"
+                strokeDasharray="110 390"
               >
                 <animateTransform
                   attributeName="transform"
                   type="rotate"
-                  from="0 55 55"
-                  to="360 55 55"
+                  from="0 90 90"
+                  to="360 90 90"
                   dur="1.1s"
                   repeatCount="indefinite"
                 />
               </circle>
             </svg>
+            {/* Pizza o'lchami 42px dan 70px ga kattalashtirildi */}
             <svg
               className="pizza-slice"
-              width="42"
-              height="42"
+              width="70"
+              height="70"
               viewBox="0 0 64 64"
             >
               <path
@@ -147,14 +143,32 @@ export const LoaderProvider: React.FC<{ children: React.ReactNode }> = ({
             </div>
           </div>
           <style>{`
-            .loader-wrap { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; background: #111111; font-family: sans-serif; }
-            .loader-circle { position: relative; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center; }
+            /* Orqa fon yarim shaffof (rgba) qilindi va backdrop-filter orqali 74px blur berildi */
+            .loader-wrap { 
+              position: fixed; 
+              inset: 0; 
+              width: 100vw; 
+              height: 100vh; 
+              z-index: 9999; 
+              display: flex; 
+              flex-direction: column; 
+              align-items: center; 
+              justify-content: center; 
+              gap: 2rem; 
+              background: rgba(17, 17, 17, 0.4); 
+              backdrop-filter: blur(74px); 
+              -webkit-backdrop-filter: blur(74px);
+              font-family: sans-serif; 
+            }
+            /* Aylana konteyneri ham yangi o'lchamga moslandi */
+            .loader-circle { position: relative; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; }
             .loader-circle svg:first-child { position: absolute; top: 0; left: 0; }
             .pizza-slice { animation: spin-pizza 1.6s linear infinite; }
-            .loader-text { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-            .loader-text p { font-size: 16px; font-weight: 500; color: #ffffff; margin: 0; }
+            .loader-text { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+            /* Text rangi oq, lekin orqa fon blur bo'lgani uchun oson o'qilishi uchun ozroq soyali qilindi */
+            .loader-text p { font-size: 18px; font-weight: 600; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.2); margin: 0; }
             .dots { display: flex; gap: 6px; }
-            .dots span { width: 6px; height: 6px; border-radius: 50%; background: #E31221; animation: pulse 1.2s ease-in-out infinite; }
+            .dots span { width: 7px; height: 7px; border-radius: 50%; background: #E31221; animation: pulse 1.2s ease-in-out infinite; }
             .dots span:nth-child(2) { animation-delay: 0.2s; }
             .dots span:nth-child(3) { animation-delay: 0.4s; }
             @keyframes spin-pizza { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

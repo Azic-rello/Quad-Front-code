@@ -38,7 +38,7 @@ function App() {
 
       const timer = setTimeout(() => {
         setIsPageLoading(false);
-      }, 300); // 2 soniya (2000ms)
+      }, 400); // 2 soniya (2000ms)
 
       prevPathname.current = location.pathname;
       return () => clearTimeout(timer);
