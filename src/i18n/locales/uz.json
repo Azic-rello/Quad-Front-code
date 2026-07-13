@@ -54,23 +54,19 @@
     },
     "menuItems": {
       "classicBurger": {
-        "name": "Klassik Burger",
-        "price": "35,000 so'm",
-        "desc": "Sershira go'sht, yangi sabzavotlar va maxsus sous."
+        "name": "Pishloqli Burger",
+        "desc": "Sershira pishloq, yangi sabzavotlar va maxsus sous."
       },
       "doubleCheese": {
-        "name": "Double Cheese",
-        "price": "45,000 so'm",
-        "desc": "Ikki hissa pishloq va ikki karra mazali go'sht."
+        "name": "Klassik pizza",
+        "desc": "mozzarella pishlog‘i, pepperoni, mol go‘shti, qo‘ziqorin, qora zaytun, bulg‘or qalampiri va pomidor sousi bilan tayyorlangan, barchaga manzur bo‘ladigan mazali klassik pizza."
       },
       "margherita": {
-        "name": "Margarita Pizza",
-        "price": "65,000 so'm",
-        "desc": "Italyancha xamir, pomidor va motsarella pishlog'i."
+        "name": "Tovuqli Lavash",
+        "desc": "yumshoq lavash ichiga tovuq go‘shti, yangi sabzavotlar, pishloq va maxsus sous qo‘shib tayyorlanadi."
       },
       "pepperoni": {
         "name": "Pepperoni Pizza",
-        "price": "75,000 so'm",
         "desc": "Achchiqqina pepperoni va cho'ziluvchan pishloq."
       }
     }

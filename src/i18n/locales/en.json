@@ -54,24 +54,20 @@
     },
     "menuItems": {
       "classicBurger": {
-        "name": "Classic Burger",
-        "price": "35,000 soum",
-        "desc": "Juicy meat, fresh vegetables, and special sauce."
+        "name": "Cheese Burger",
+        "desc": "Juicy beef patty, cheese, fresh vegetables, and our signature sauce."
       },
       "doubleCheese": {
-        "name": "Double Cheese",
-        "price": "45,000 soum",
-        "desc": "Double cheese and double delicious meat."
+        "name": "Classic Pizza",
+        "desc": "Mozzarella cheese, pepperoni, beef, mushrooms, black olives, bell peppers, and tomato sauce."
       },
       "margherita": {
-        "name": "Margherita Pizza",
-        "price": "65,000 soum",
-        "desc": "Italian dough, tomatoes, and mozzarella cheese."
+        "name": "Chicken Lavash",
+        "desc": "Soft lavash filled with chicken, fresh vegetables, cheese, and our signature sauce."
       },
       "pepperoni": {
         "name": "Pepperoni Pizza",
-        "price": "75,000 soum",
-        "desc": "Spicy pepperoni and stretchy cheese."
+        "desc": "Spicy pepperoni with stretchy mozzarella cheese."
       }
     }
   },

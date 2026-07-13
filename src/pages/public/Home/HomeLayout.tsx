@@ -9,10 +9,10 @@ import "aos/dist/aos.css";
 
 // Loyihangizdagi barcha rasmlarni import qilish
 import burgerImg from "../../../assets/photo-1568901346375-23c9450c58cd.avif";
-import classicBurgerImg from "../../../assets/Clasic Burger.avif";
-import doubleCheeseImg from "../../../assets/Double Cheese.avif";
-import margheritaImg from "../../../assets/Margherita.avif";
-import pepperoniImg from "../../../assets/Peperoni.avif";
+import cheeseBurgerImg from "../../../assets/cheeseburger.jpg";
+import classicpizzaImg from "../../../assets/classicpizza.png";
+import chickenlavashImg from "../../../assets/chickenlavash.png";  
+import pepperoniImg from "../../../assets/site3.png";
 
 export default function HomeLayout() {
   const { t } = useTranslation();
@@ -34,21 +34,21 @@ export default function HomeLayout() {
       id: 1,
       name: t("home.menuItems.classicBurger.name"),
       price: t("home.menuItems.classicBurger.price"),
-      image: classicBurgerImg,
+      image: cheeseBurgerImg,
       desc: t("home.menuItems.classicBurger.desc"),
     },
     {
       id: 2,
       name: t("home.menuItems.doubleCheese.name"),
       price: t("home.menuItems.doubleCheese.price"),
-      image: doubleCheeseImg,
+      image: classicpizzaImg,
       desc: t("home.menuItems.doubleCheese.desc"),
     },
     {
       id: 3,
       name: t("home.menuItems.margherita.name"),
       price: t("home.menuItems.margherita.price"),
-      image: margheritaImg,
+      image: chickenlavashImg,
       desc: t("home.menuItems.margherita.desc"),
     },
     {
@@ -219,9 +219,6 @@ export default function HomeLayout() {
                   alt={item.name}
                   className="w-full h-full object-cover object-center select-none transition-transform duration-500 hover:scale-110"
                 />
-                <span className="absolute top-3 right-3 bg-red-500 text-white font-bold text-xs px-2.5 py-1 rounded-full shadow-md">
-                  {item.price}
-                </span>
               </div>
               <div className="p-5 flex-grow flex flex-col justify-between">
                 <div>
@@ -232,9 +229,6 @@ export default function HomeLayout() {
                     {item.desc}
                   </p>
                 </div>
-                <button className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2.5 rounded-xl text-sm transition-all shadow-md active:scale-95">
-                  {t("home.addToCart")}
-                </button>
               </div>
             </div>
           ))}
