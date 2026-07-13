@@ -17,7 +17,6 @@ import pepperoniImg from "../../../assets/site3.png";
 export default function HomeLayout() {
   const { t } = useTranslation();
 
-  // Sahifa yuklanganda animatsiyalarni xavfsiz ishga tushirish
   useEffect(() => {
     if (typeof window !== "undefined") {
       AOS.init({
